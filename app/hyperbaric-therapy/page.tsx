@@ -31,6 +31,9 @@ export default function HyperbaricTherapyPage() {
           label: `Call ${site.phone}`,
           href: `tel:${site.phoneE164}`,
         }}
+        image="/images/hero/patient-in-chamber.jpg"
+        imageAlt="HBOTQ patient inside a hard-shell hyperbaric oxygen chamber in Woodside, Queens"
+        priority
       />
       <TrustBar />
       <section className="section bg-white">

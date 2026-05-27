@@ -11,7 +11,7 @@ export const conditions: Condition[] = [
     metaDescription:
       "HBOT in Woodside, Queens for chronic non-healing wounds. Our wound program combines hyperbaric oxygen, debridement, and advanced wound care for patients across NYC.",
     fdaStatus: "on-label",
-    heroImage: "/images/conditions/non-healing-wounds.jpg",
+    heroImage: "/images/conditions/service.webp",
     howHbotHelps:
       "Chronic wounds stall when the surrounding tissue is starved of oxygen. Inside the hyperbaric chamber, you breathe 100% oxygen at increased atmospheric pressure, which dissolves significantly more oxygen into your plasma than breathing air at sea level. That additional oxygen reaches tissue that compromised blood vessels can no longer feed, supporting fibroblast activity, new capillary growth, collagen synthesis, and infection control — the building blocks of wound closure.",
     sections: [
@@ -55,7 +55,7 @@ export const conditions: Condition[] = [
     metaDescription:
       "Hyperbaric oxygen therapy for diabetic foot ulcers and lower-extremity wounds in Woodside, Queens. Limb-salvage focused program with experienced wound physicians.",
     fdaStatus: "on-label",
-    heroImage: "/images/conditions/diabetic-wounds.jpg",
+    heroImage: "/images/conditions/diabetic-wounds.webp",
     howHbotHelps:
       "Diabetes damages the small blood vessels that feed the feet and legs, so even a minor wound can become an ulcer that refuses to close. Hyperbaric oxygen therapy raises the oxygen tension in plasma high enough to reach tissue that microvascular disease has cut off, which supports new capillary growth, infection control, and the cellular signals needed for closure.",
     sections: [
@@ -101,7 +101,7 @@ export const conditions: Condition[] = [
     metaDescription:
       "Hyperbaric oxygen therapy in Woodside, Queens for soft tissue radionecrosis, osteoradionecrosis, radiation cystitis, and other late-effect radiation injuries.",
     fdaStatus: "on-label",
-    heroImage: "/images/conditions/radiation.jpg",
+    heroImage: "/images/conditions/radiation-tissue-damage.webp",
     howHbotHelps:
       "Radiation can leave tissue with reduced blood supply and oxygen for years after treatment ends. When new injury or surgery is introduced into that tissue, it heals poorly or breaks down. HBOT stimulates fibroblast and endothelial activity in irradiated tissue, builds new capillary beds, and improves the body's ability to repair and tolerate further intervention.",
     sections: [
@@ -141,7 +141,7 @@ export const conditions: Condition[] = [
     metaDescription:
       "Sudden hearing loss in one ear? Hyperbaric oxygen therapy started within two weeks of onset can support recovery. HBOTQ Woodside, Queens.",
     fdaStatus: "on-label",
-    heroImage: "/images/conditions/hearing.jpg",
+    heroImage: "/images/conditions/suitable.webp",
     howHbotHelps:
       "The inner ear's hair cells have a very high oxygen demand and are supplied by tiny end-arteries with no collateral circulation. When that blood supply is interrupted, hearing can disappear within hours. Hyperbaric oxygen therapy delivers a far higher concentration of oxygen to inner-ear tissue, which can support recovery when treatment starts early — ideally within two weeks of onset.",
     sections: [
@@ -173,7 +173,7 @@ export const conditions: Condition[] = [
     metaDescription:
       "Hyperbaric oxygen therapy in Woodside, Queens for post-COVID fatigue, brain fog, and exercise intolerance. Off-label use; honest expectations from experienced physicians.",
     fdaStatus: "off-label",
-    heroImage: "/images/conditions/post-covid.jpg",
+    heroImage: "/images/conditions/post-covid.webp",
     howHbotHelps:
       "Long COVID involves multiple overlapping mechanisms — microvascular dysfunction, persistent inflammation, mitochondrial stress, and changes in tissue oxygenation. HBOT addresses several of these in parallel: by saturating plasma with oxygen, it can help reach tissue that microvascular damage no longer reaches efficiently, and it has been shown in early studies to modulate inflammation and support cognitive and physical function in carefully selected patients.",
     sections: [
@@ -213,7 +213,7 @@ export const conditions: Condition[] = [
     metaDescription:
       "Hyperbaric oxygen therapy in Woodside, Queens for chronic pain conditions including complex regional pain syndrome and fibromyalgia. Honest, physician-supervised care.",
     fdaStatus: "off-label",
-    heroImage: "/images/conditions/chronic-pain.jpg",
+    heroImage: "/images/conditions/treats.webp",
     howHbotHelps:
       "Many chronic pain conditions involve underlying tissue inflammation, microvascular dysfunction, or impaired healing. HBOT increases tissue oxygenation, modulates inflammatory mediators, and supports cellular repair processes. For some patients, this translates into reduced pain intensity and improved function — though responses vary and HBOT works best alongside the rest of your pain management plan.",
     sections: [

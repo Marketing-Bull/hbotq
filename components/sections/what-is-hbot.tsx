@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export function WhatIsHbot() {
   return (
     <section className="section bg-[var(--color-sand-100)]">
@@ -23,14 +25,11 @@ export function WhatIsHbot() {
               wound closure, infection control, and tissue repair — and it
               powers the FDA-approved indications we treat every day.
             </p>
-          </div>
-
-          <div className="relative">
-            <div className="rounded-2xl bg-white border border-[var(--color-surface-border)] p-8 shadow-sm">
-              <h3 className="font-display text-xl font-semibold text-[var(--color-brand-500)]">
+            <div className="mt-8 rounded-2xl bg-white border border-[var(--color-surface-border)] p-6">
+              <h3 className="font-display text-lg font-semibold text-[var(--color-brand-500)]">
                 Inside the chamber
               </h3>
-              <ul className="mt-6 space-y-4">
+              <ul className="mt-4 space-y-4">
                 <Step
                   num="1"
                   label="Compression"
@@ -48,6 +47,16 @@ export function WhatIsHbot() {
                 />
               </ul>
             </div>
+          </div>
+
+          <div className="relative aspect-[4/3] rounded-2xl overflow-hidden ring-1 ring-[var(--color-surface-border)] shadow-sm">
+            <Image
+              src="/images/facility/chamber.jpg"
+              alt="Hard-shell hyperbaric oxygen chamber at HBOTQ"
+              fill
+              sizes="(min-width: 1024px) 45vw, 100vw"
+              className="object-cover"
+            />
           </div>
         </div>
       </div>

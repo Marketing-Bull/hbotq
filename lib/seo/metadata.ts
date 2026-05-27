@@ -18,15 +18,16 @@ export function buildMetadata({
 }: BuildArgs): Metadata {
   const url = `${site.url}${path}`;
   const ogImage = image ?? "/images/og/default.jpg";
+  const fullTitle = title.includes("HBOTQ") ? title : `${title} | HBOTQ`;
   return {
-    title,
+    title: { absolute: fullTitle },
     description,
     alternates: { canonical: url },
     robots: noIndex
       ? { index: false, follow: false }
       : { index: true, follow: true },
     openGraph: {
-      title,
+      title: fullTitle,
       description,
       url,
       siteName: site.name,
@@ -35,7 +36,7 @@ export function buildMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: fullTitle,
       description,
       images: [ogImage],
     },

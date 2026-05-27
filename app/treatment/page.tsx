@@ -27,6 +27,9 @@ export default function TreatmentPage() {
         subtitle="The science behind HBOT, what a session feels like, and how the treatment fits into your broader care plan."
         primaryCta={{ label: "Book a consultation", href: "/contact-us/" }}
         secondaryCta={{ label: "See conditions we treat", href: "/conditions/" }}
+        image="/images/facility/chamber.jpg"
+        imageAlt="Hard-shell hyperbaric oxygen chamber at HBOTQ in Woodside, Queens"
+        priority
       />
       <TrustBar />
       <WhatIsHbot />

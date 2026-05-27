@@ -88,6 +88,9 @@ export default async function ConditionPage(props: {
         subtitle={condition.summary}
         primaryCta={{ label: "Book a free consultation", href: "/contact-us/" }}
         secondaryCta={{ label: `Call ${site.phone}`, href: `tel:${site.phoneE164}` }}
+        image={condition.heroImage}
+        imageAlt={`HBOTQ — hyperbaric oxygen therapy for ${condition.name.toLowerCase()}`}
+        priority
       />
       <TrustBar />
 

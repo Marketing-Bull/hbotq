@@ -30,6 +30,9 @@ export default function HomePage() {
         subtitle="HBOTQ is the Hyperbaric Medicine and Wound Treatment Center of Queens — physician-led hyperbaric oxygen therapy for patients across NYC."
         primaryCta={{ label: "Book a free consultation", href: "/contact-us/" }}
         secondaryCta={{ label: "See what HBOT treats", href: "/conditions/" }}
+        image="/images/hero/patient-in-chamber.jpg"
+        imageAlt="A patient relaxing inside a hard-shell hyperbaric oxygen chamber at HBOTQ"
+        priority
       />
       <TrustBar />
       <ConditionsGrid />

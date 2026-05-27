@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { site } from "@/lib/data/site";
 
 type HeroVariant = "home" | "condition" | "lp" | "page";
@@ -11,6 +12,8 @@ interface HeroProps {
   primaryCta?: { label: string; href: string };
   secondaryCta?: { label: string; href: string };
   image?: string;
+  imageAlt?: string;
+  priority?: boolean;
 }
 
 export function Hero({
@@ -20,9 +23,13 @@ export function Hero({
   subtitle,
   primaryCta,
   secondaryCta,
+  image,
+  imageAlt = "",
+  priority = false,
 }: HeroProps) {
   const isHome = variant === "home";
   const isLp = variant === "lp";
+  const hasImage = Boolean(image);
 
   return (
     <section
@@ -37,8 +44,12 @@ export function Hero({
             "radial-gradient(circle at 20% 20%, var(--color-brand-500) 0, transparent 40%), radial-gradient(circle at 80% 60%, var(--color-accent) 0, transparent 35%)",
         }}
       />
-      <div className="container-page relative z-10 py-16 md:py-24 lg:py-32">
-        <div className="max-w-3xl">
+      <div
+        className={`container-page relative z-10 py-16 md:py-24 lg:py-32 ${
+          hasImage ? "lg:grid lg:grid-cols-2 lg:gap-16 lg:items-center" : ""
+        }`}
+      >
+        <div className={hasImage ? "max-w-xl" : "max-w-3xl"}>
           {eyebrow ? (
             <p className="text-sm font-semibold uppercase tracking-[0.15em] text-[var(--color-brand-500)] mb-4">
               {eyebrow}
@@ -91,6 +102,21 @@ export function Hero({
             </p>
           ) : null}
         </div>
+
+        {hasImage ? (
+          <div className="mt-12 lg:mt-0 lg:justify-self-end w-full">
+            <div className="relative aspect-[4/3] lg:aspect-[5/4] w-full max-w-xl rounded-2xl overflow-hidden shadow-lg ring-1 ring-[var(--color-surface-border)]">
+              <Image
+                src={image!}
+                alt={imageAlt}
+                fill
+                priority={priority}
+                sizes="(min-width: 1024px) 40vw, 100vw"
+                className="object-cover"
+              />
+            </div>
+          </div>
+        ) : null}
       </div>
     </section>
   );
