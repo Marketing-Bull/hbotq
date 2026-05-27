@@ -1,36 +1,211 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# HBOTQ — hbotq.com rebuild
 
-## Getting Started
+Marketing site for **Hyperbaric Medicine and Wound Treatment Center of Queens** (HBOTQ), the hyperbaric oxygen therapy and advanced wound-care clinic at 65-35 Queens Blvd, Suite #100, Woodside, NY.
 
-First, run the development server:
+This repository replaces the legacy WordPress site. The job of the new site is to **educate patients about HBOT and convert them into consultations**.
+
+- **Live preview**: <https://hbotq.vercel.app>
+- **Production** (still WordPress until DNS cutover): <https://hbotq.com>
+
+---
+
+## Stack
+
+| Layer       | Choice                                                                 |
+| ----------- | ---------------------------------------------------------------------- |
+| Framework   | **Next.js 16** (App Router, Turbopack, React 19)                       |
+| Language    | TypeScript 5, strict mode                                              |
+| Styling     | **Tailwind CSS v4** (CSS-based config via `@theme` in `app/globals.css`) |
+| Fonts       | Inter (body) + Fraunces (display), via `next/font/google`              |
+| Forms       | `react-hook-form` + `@hookform/resolvers/zod`                          |
+| Validation  | Zod                                                                    |
+| Email       | Resend + `@react-email/components`                                     |
+| Analytics   | Google Tag Manager (single container; GA4 etc. configured inside GTM)  |
+| Deployment  | Vercel                                                                 |
+| Content     | Hardcoded typed TS in `lib/data/*.ts` — **no CMS**                     |
+
+> **Heads up — Next.js 16:** the `params` and `searchParams` props on pages and `generateMetadata` are now **Promises** and must be awaited. Tailwind v4 has no `tailwind.config.ts` — design tokens live in `app/globals.css` under `@theme`. AGENTS.md instructs agents to read `node_modules/next/dist/docs/` before writing Next.js code; please do the same.
+
+---
+
+## Quick start
 
 ```bash
+# 1. Install
+npm install
+
+# 2. Copy environment variables
+cp .env.example .env.local
+# Fill in RESEND_API_KEY, LEAD_TO_EMAIL, NEXT_PUBLIC_GTM_ID
+
+# 3. Dev server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# → http://localhost:3000
+
+# 4. Production build (matches Vercel)
+npm run build
+npm run start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Docker dev
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+A `compose.yml` is included for parity with the production runtime:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+docker compose up
+```
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Environment variables
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Variable             | Required | Purpose                                                                 |
+| -------------------- | -------- | ----------------------------------------------------------------------- |
+| `RESEND_API_KEY`     | Prod     | Sends consultation-form leads. In dev with the key unset, the API logs the lead instead and returns 200. |
+| `LEAD_TO_EMAIL`      | No       | Where leads go. Defaults to `hello@hbotq.com`.                          |
+| `NEXT_PUBLIC_GTM_ID` | No       | Google Tag Manager container ID (e.g. `GTM-XXXXXXX`). Loader is a no-op when unset, which is convenient locally. |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The Resend sending domain (`hbotq.com`) needs DKIM/SPF verified in the Resend dashboard before production launch.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Architecture
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Routing (`app/`)
+
+```
+/                       Home — full conversion funnel
+/treatment/             How HBOT works
+/conditions/            Conditions overview
+/condition/[slug]/      6 prerendered condition pages
+/physicians/            Care team
+/faqs/                  Grouped FAQs with FAQPage JSON-LD
+/contact-us/            Form + map + hours
+/hyperbaric-therapy/    Paid-traffic landing page
+/thank-you/             Form post-submit (fires GTM conversion event, noindex)
+/privacy-policy/        Legal — DRAFT, needs counsel review
+/terms-of-service/      Legal — DRAFT, needs counsel review
+/accessibility/         Accessibility statement (WCAG 2.1 AA target)
+/sample/non-healing-wounds/  Editorial-design sandbox (noindex)
+
+/api/consultation       POST-only Zod-validated lead handler
+sitemap.xml, robots.txt All routes enumerated; sample + api + thank-you blocked
+```
+
+URLs use **`trailingSlash: true`** to match the legacy WordPress site so existing SEO equity carries over. Legacy WP slug aliases (`/contact`, `/faq`, `/conditions/<slug>/`, etc.) 301 to the new equivalents — see `next.config.ts → redirects()`.
+
+### Data layer (`lib/data/`)
+
+All copy is hardcoded as typed TypeScript. No CMS, no MDX. Editing content = editing a file + opening a PR.
+
+```
+lib/data/site.ts          Phone, address, hours, social URLs
+lib/data/nav.ts           Primary + footer navigation
+lib/data/conditions.ts    6 conditions (slug, body, sections, benefits, FAQs)
+lib/data/faqs.ts          12 FAQs grouped by category
+lib/data/physicians.ts    Real people: Dr. Manoj Sadhnani, Regina Matatova
+lib/data/testimonials.ts  Patient quotes
+lib/data/benefits.ts      "Mechanisms of HBOT" cards
+lib/data/process.ts       4-step what-to-expect timeline
+```
+
+Condition slugs are **frozen for SEO** — they match the legacy WordPress URLs. Adding a new condition is safe; renaming an existing one is not.
+
+### SEO (`lib/seo/` and `app/sitemap.ts`, `app/robots.ts`)
+
+- `buildMetadata()` helper produces canonical URLs, OG, Twitter, and noindex flags from a single call. Every page uses it.
+- JSON-LD schemas authored in `lib/seo/schemas.ts` and rendered through a hardened `<JsonLd>` component (escapes `<` to `<`).
+  - `MedicalBusiness` (root layout, every page)
+  - `Physician` (on `/physicians/`)
+  - `MedicalCondition` + `BreadcrumbList` (on each condition page)
+  - `FAQPage` (on `/faqs/` and condition pages with FAQ blocks)
+
+### Forms & leads (`app/api/consultation/route.ts`)
+
+- POST-only, JSON in / JSON out
+- Shared Zod schema in `lib/validation/consultation.ts` — same source of truth on the client and the server
+- **Honeypot**: hidden `website` field is checked **before** validation; if filled, the route returns `{ok:true}` silently (no email sent, no field error leaked) so bots can’t learn they were caught
+- **Rate limit**: 15-second per-IP cooldown in-memory (sufficient given Vercel’s function lifecycle; swap for upstash/redis if abuse becomes a real problem)
+- Email rendered with `@react-email/components` and sent via Resend; success redirects to `/thank-you/` which fires `form_submission_success` to GTM
+
+### Components
+
+| Folder                  | What lives there                                         |
+| ----------------------- | -------------------------------------------------------- |
+| `components/layout/`    | `Header`, `Footer`, `MobileNav` (Sheet pattern), `StickyCta` |
+| `components/sections/`  | Composable page sections (Hero, ConditionsGrid, TestimonialCarousel, etc.) |
+| `components/cards/`     | `ConditionCard`, `BenefitCard`, `PhysicianCard`, `TestimonialCard` |
+| `components/forms/`     | `ConsultationForm`                                       |
+| `components/seo/`       | `JsonLd`                                                 |
+| `components/analytics/` | GTM loader (`afterInteractive`)                          |
+
+Pages compose sections. There are no shadcn primitives — the chrome is small enough that hand-rolled Tailwind components are simpler.
+
+### Design tokens
+
+Tailwind v4 tokens are defined in `app/globals.css`:
+
+- **Brand teal** `#0E5C5E` (50–900 ramp)
+- **Sand** cream backgrounds `#F5EFE4` / `#FBF6EC`
+- **Coral accent** `#E07856` for primary CTAs
+- **Ink** body text `#0F1B1C` with muted `#4B5C5E`
+- Fonts: `--font-sans` (Inter), `--font-display` (Fraunces)
+
+---
+
+## Scripts
+
+```bash
+npm run dev      # next dev (Turbopack)
+npm run build    # next build (production, with TS check)
+npm run start    # next start (production server)
+npm run lint     # eslint
+```
+
+The CI build is just `npm run build`; that runs TypeScript and the production bundle and is what Vercel runs on each push to `main`.
+
+---
+
+## Deployment
+
+`main` is auto-deployed to <https://hbotq.vercel.app> by Vercel. Custom domain `hbotq.com` is added in the Vercel project but **not yet pointed at Vercel via DNS** — the WordPress site is still serving production until cutover.
+
+### Cutover checklist (when you’re ready to flip DNS)
+
+1. Set Vercel env vars (`RESEND_API_KEY`, `LEAD_TO_EMAIL`, `NEXT_PUBLIC_GTM_ID`)
+2. Verify the Resend sending domain
+3. Lower DNS TTL 24h ahead
+4. Point apex + `www` at Vercel; pick apex as canonical, redirect `www → apex`
+5. Submit the new sitemap to Google Search Console and Bing Webmaster Tools
+6. Spot-check top traffic URLs from GSC against the redirects in `next.config.ts`
+7. Update the Google Business Profile website URL (see also: the GBP name/phone reconciliation noted in the SEO snapshot)
+8. Keep WordPress live for ~7 days as a rollback path
+
+---
+
+## Sample / design-experiment routes
+
+- `/sample/non-healing-wounds/` — an editorial-direction redesign of the non-healing-wounds condition page (longform-magazine typography, asymmetric grid, inline SVG diagrams, scroll-linked motion). `noindex`. Useful as a side-by-side comparison against the live `/condition/non-healing-wounds/`.
+
+---
+
+## Content edits — workflow
+
+1. Edit the relevant file under `lib/data/`.
+2. `npm run build` locally to catch any type breakage.
+3. Open a PR. Vercel preview deploys on every PR.
+4. Merge to `main`; production preview redeploys.
+
+Condition slug renames and route deletions are SEO-impacting — coordinate with whoever owns search before merging.
+
+---
+
+## Legal note
+
+`/privacy-policy/` and `/terms-of-service/` are currently flagged as **drafts** at the top of each page. The drafts hit the standard points (HIPAA carve-out, medical disclaimer, NY governing law, etc.) but **must be reviewed by counsel** before they ship as final.
+
+---
+
+## License & contributions
+
+This is a private project owned by HBOTQ / Marketing Bull. Outside contributions are not currently being accepted.

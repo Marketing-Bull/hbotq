@@ -30,5 +30,7 @@ export const footerNav = {
   legal: [
     { label: "Contact", href: "/contact-us/" },
     { label: "Privacy Policy", href: "/privacy-policy/" },
+    { label: "Terms of Service", href: "/terms-of-service/" },
+    { label: "Accessibility", href: "/accessibility/" },
   ],
 } as const;
