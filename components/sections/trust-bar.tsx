@@ -2,7 +2,7 @@ export function TrustBar() {
   const items = [
     "FDA-Approved Indications",
     "Hard-Shell Medical-Grade Chambers",
-    "Board-Certified Medical Director",
+    "Board-Certified Physicians",
     "Medicare & Major Insurers Accepted",
   ];
   return (

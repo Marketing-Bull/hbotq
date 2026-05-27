@@ -32,7 +32,7 @@ export default function PhysiciansPage() {
         variant="page"
         eyebrow="Our Care Team"
         title="A medical team built around hyperbaric medicine."
-        subtitle="Every HBOTQ patient is evaluated and supervised by our board-certified medical director — supported by certified hyperbaric technicians and wound care nurses."
+        subtitle="Every HBOTQ patient is evaluated and supervised by board-certified physicians and wound-care specialists — not technicians or wellness consultants."
         primaryCta={{ label: "Book a consultation", href: "/contact-us/" }}
       />
       <PhysiciansSection

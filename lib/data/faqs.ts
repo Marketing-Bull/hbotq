@@ -27,7 +27,7 @@ export const faqs: Faq[] = [
     category: "treatment",
     question: "How many treatments will I need?",
     answer:
-      "Course length depends on your condition. Sudden hearing loss is typically 10–20 sessions. Most wound and radiation injury protocols run 20–40 sessions. Off-label protocols are often 30–40 sessions. Your medical director will lay out an exact plan after evaluating you and will reassess regularly.",
+      "Course length depends on your condition. Sudden hearing loss is typically 10–20 sessions. Most wound and radiation injury protocols run 20–40 sessions. Off-label protocols are often 30–40 sessions. Your physician will lay out an exact plan after evaluating you and will reassess regularly.",
   },
   {
     id: "is-hbot-painful",
@@ -83,7 +83,7 @@ export const faqs: Faq[] = [
     category: "general",
     question: "Is HBOT safe?",
     answer:
-      "HBOT is generally very safe in the hands of an experienced team. The most common side effects are mild ear pressure and temporary changes in vision that resolve after treatment. Serious complications are rare. Your medical director reviews your full medical history before starting treatment to identify any contraindications.",
+      "HBOT is generally very safe in the hands of an experienced team. The most common side effects are mild ear pressure and temporary changes in vision that resolve after treatment. Serious complications are rare. Your physician reviews your full medical history before starting treatment to identify any contraindications.",
   },
 ];
 

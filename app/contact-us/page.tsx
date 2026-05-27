@@ -19,7 +19,7 @@ export default function ContactPage() {
         variant="page"
         eyebrow="Contact"
         title="Tell us about your situation."
-        subtitle="A short message is enough to start. We'll review and follow up to schedule a free consultation with our medical director."
+        subtitle="A short message is enough to start. We’ll review and follow up to schedule a free consultation with our medical team."
       />
       <section className="section bg-white">
         <div className="container-page">
@@ -41,7 +41,7 @@ export default function ContactPage() {
                   <Step
                     num={2}
                     title="Free consultation"
-                    body="An in-person visit with our medical director — bring records, your questions, and someone you trust if you'd like."
+                    body="An in-person visit with our medical team — bring records, your questions, and someone you trust if you’d like."
                   />
                   <Step
                     num={3}

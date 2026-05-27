@@ -25,7 +25,7 @@ export default function HyperbaricTherapyPage() {
         variant="lp"
         eyebrow="Hyperbaric Oxygen Therapy · Queens, NY"
         title="Advanced HBOT in Woodside, Queens — physician-led."
-        subtitle="HBOTQ is the Hyperbaric Medicine and Wound Treatment Center of Queens. Hard-shell medical-grade chambers. Board-certified medical director. Medicare and most insurers accepted."
+        subtitle="HBOTQ is the Hyperbaric Medicine and Wound Treatment Center of Queens. Hard-shell medical-grade chambers. Board-certified physicians. Medicare and most insurers accepted."
         primaryCta={{ label: "Book a free consultation", href: "/contact-us/" }}
         secondaryCta={{
           label: `Call ${site.phone}`,
@@ -55,7 +55,7 @@ export default function HyperbaricTherapyPage() {
             <ul className="mt-6 space-y-3 text-[var(--color-ink-muted)]">
               {[
                 "Hard-shelled medical-grade chambers (2.0–2.5 ATA)",
-                "Board-certified medical director on every case",
+                "Board-certified physicians supervising every case",
                 "Medicare, Medicaid, and most major insurers accepted",
                 "Convenient Woodside location with patient parking",
               ].map((b) => (

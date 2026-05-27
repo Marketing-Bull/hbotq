@@ -31,7 +31,7 @@ export const conditions: Condition[] = [
       },
       {
         heading: "What you can expect",
-        body: "Wounds rarely change visibly in the first week. By weeks two and three, granulation tissue and edge contraction become measurable. Most patients see meaningful closure progress by treatments 20–30, and your medical director will reassess regularly to confirm the wound is responding.",
+        body: "Wounds rarely change visibly in the first week. By weeks two and three, granulation tissue and edge contraction become measurable. Most patients see meaningful closure progress by treatments 20–30, and your physician will reassess regularly to confirm the wound is responding.",
       },
     ],
     benefits: [
@@ -151,7 +151,7 @@ export const conditions: Condition[] = [
       },
       {
         heading: "What treatment looks like",
-        body: "A standard protocol is typically 10–20 sessions, often combined with the oral or intratympanic steroids prescribed by your ENT physician. Your medical director will reassess hearing partway through to confirm response and decide on the full course.",
+        body: "A standard protocol is typically 10–20 sessions, often combined with the oral or intratympanic steroids prescribed by your ENT physician. Your physician will reassess hearing partway through to confirm response and decide on the full course.",
       },
     ],
     benefits: [
@@ -183,7 +183,7 @@ export const conditions: Condition[] = [
       },
       {
         heading: "Our approach",
-        body: "Before recommending HBOT for post-COVID symptoms, our medical director reviews your full clinical picture and rules out other treatable causes. If we move forward, a typical protocol is 40 sessions, with reassessment at the midpoint. We don't make recovery promises — we use the chamber as one part of a broader recovery plan with honest expectations.",
+        body: "Before recommending HBOT for post-COVID symptoms, your physician reviews your full clinical picture and rules out other treatable causes. If we move forward, a typical protocol is 40 sessions, with reassessment at the midpoint. We don't make recovery promises — we use the chamber as one part of a broader recovery plan with honest expectations.",
       },
       {
         heading: "Insurance",

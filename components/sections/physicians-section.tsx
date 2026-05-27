@@ -3,7 +3,7 @@ import { PhysicianCard } from "@/components/cards/physician-card";
 
 export function PhysiciansSection({
   heading = "Care led by experienced physicians",
-  subtitle = "Every HBOTQ patient is evaluated and supervised by our board-certified medical director — not a technician or a wellness consultant.",
+  subtitle = "Every HBOTQ patient is evaluated and supervised by board-certified physicians and wound-care specialists — not a technician or a wellness consultant.",
 }: {
   heading?: string;
   subtitle?: string;
