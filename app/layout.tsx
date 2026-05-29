@@ -4,7 +4,7 @@ import "./globals.css";
 import { site } from "@/lib/data/site";
 import { GTM, GTMNoScript } from "@/components/analytics/gtm";
 import { JsonLd } from "@/components/seo/json-ld";
-import { medicalBusinessSchema } from "@/lib/seo/schemas";
+import { medicalBusinessSchema, aggregateRatingSchema } from "@/lib/seo/schemas";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { StickyCta } from "@/components/layout/sticky-cta";
@@ -56,6 +56,7 @@ export default function RootLayout({
       <head>
         <GTM gtmId={gtmId} />
         <JsonLd data={medicalBusinessSchema()} />
+        <JsonLd data={aggregateRatingSchema()} />
       </head>
       <body className="min-h-screen flex flex-col bg-white text-[var(--color-ink)]">
         <a href="#main" className="skip-link">

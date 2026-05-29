@@ -1,5 +1,6 @@
 import { site } from "@/lib/data/site";
 import { physicians } from "@/lib/data/physicians";
+import { testimonials } from "@/lib/data/testimonials";
 import type { Condition, Faq } from "@/types/content";
 
 export function medicalBusinessSchema() {
@@ -113,5 +114,45 @@ export function breadcrumbSchema(
       name: c.name,
       item: c.url,
     })),
+  };
+}
+
+export function aggregateRatingSchema() {
+  const count = testimonials.length;
+  if (count === 0) return null;
+  const avg =
+    testimonials.reduce((sum, t) => sum + (t.rating ?? 0), 0) / count;
+  return {
+    "@context": "https://schema.org",
+    "@type": "AggregateRating",
+    ratingValue: avg.toFixed(1),
+    reviewCount: count,
+    bestRating: 5,
+    worstRating: 1,
+  };
+}
+
+export function reviewSchema(
+  opts: { quote: string; author: string; conditionLabel: string; rating?: number },
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Review",
+    reviewRating: {
+      "@type": "Rating",
+      ratingValue: opts.rating ?? 5,
+      bestRating: 5,
+      worstRating: 1,
+    },
+    author: {
+      "@type": "Person",
+      name: opts.author,
+    },
+    reviewBody: opts.quote,
+    itemReviewed: {
+      "@type": "MedicalBusiness",
+      name: site.legalName,
+      url: site.url,
+    },
   };
 }
