@@ -16,9 +16,7 @@
   - Map existing testimonials in `lib/data/testimonials.ts` to `@type: Review` JSON-LD
   - Add to homepage or dedicated reviews page
 
-- [ ] **S-03** — Add `MedicalCondition` schema on condition pages
-  - Already has `medicalConditionSchema()` helper — verify it renders via JsonLd on each condition/[slug] page
-  - Each condition page should call `<JsonLd data={medicalConditionSchema(c)} />`
+
 
 - [ ] **S-04** — Add `Physician` schema on physicians page
   - Already has `physicianSchema()` in lib — verify each physician page calls it
@@ -116,4 +114,9 @@
 ---
 
 ## 🟢 COMPLETED
-(None yet on this branch — previous work on main branch established schema base)
+- **S-01** — AggregateRating schema — `lib/seo/schemas.ts` + `layout.tsx` (2026-05-29, PR #1)
+- **S-02** — Review schema helper — `lib/seo/schemas.ts` (2026-05-29, PR #1)
+- **S-03** — MedicalCondition schema — `condition/[slug]/page.tsx` calls `<JsonLd data={medicalConditionSchema(c)} />` (2026-05-29, PR #1)
+- **T-02** — GTM form_submit event — `consultation-form.tsx` (2026-05-29, PR #1)
+- **SE-02** — robots.txt created — `public/robots.txt` (2026-05-29, PR #1)
+
