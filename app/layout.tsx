@@ -56,7 +56,7 @@ export default function RootLayout({
       <head>
         <GTM gtmId={gtmId} />
         <JsonLd data={medicalBusinessSchema()} />
-        <JsonLd data={aggregateRatingSchema()} />
+        {aggregateRatingSchema() && <JsonLd data={aggregateRatingSchema()!} />}
       </head>
       <body className="min-h-screen flex flex-col bg-white text-[var(--color-ink)]">
         <a href="#main" className="skip-link">
