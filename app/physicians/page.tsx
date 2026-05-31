@@ -11,6 +11,7 @@ export const metadata = buildMetadata({
   description:
     "Meet the HBOTQ medical team — board-certified hyperbaric medicine and wound care physicians serving Woodside, Queens, and the greater NYC area.",
   path: "/physicians/",
+  image: "/images/og/physicians.jpg",
 });
 
 export const dynamic = "force-static";

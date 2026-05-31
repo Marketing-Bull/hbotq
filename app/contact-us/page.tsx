@@ -8,6 +8,7 @@ export const metadata = buildMetadata({
   description:
     "Book a free hyperbaric oxygen therapy consultation at HBOTQ in Woodside, Queens. Call 718-925-3322 or use the form — most messages get a same-day response.",
   path: "/contact-us/",
+  image: "/images/og/contact.jpg",
 });
 
 export const dynamic = "force-static";
