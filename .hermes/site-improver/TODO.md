@@ -25,10 +25,10 @@
 ---
 
 ### Category: SEO Meta
-- [ ] **SE-01** — Add real OG images (currently using `default.jpg`)
-  - Create `/public/images/og/` with page-specific og images at 1200x630
+- [x] **SE-01** — Add real OG images (currently using `default.jpg`) ✅ DONE 2026-05-31
+  - Created `/public/images/og/` with page-specific og images at 1200x630
   - At minimum: homepage, conditions, treatment, contact-us, physicians
-  - Hook: `buildMetadata({ image: "/images/og/page-specific.jpg" })` on each page
+  - Hook: `buildMetadata({ image: "/images/og/page-specific.jpg" })` on each page ✅
 
 - [ ] **SE-02** — Add robots.txt
   - Check if `/public/robots.txt` exists — if not, create it
@@ -114,6 +114,7 @@
 ---
 
 ## 🟢 COMPLETED
+- **SE-01** — Real page-specific OG images — `public/images/og/{homepage,conditions,treatment,physicians,contact}.jpg` (2026-05-31, PR #1)
 - **S-01** — AggregateRating schema — `lib/seo/schemas.ts` + `layout.tsx` (2026-05-29, PR #1)
 - **S-02** — Review schema helper — `lib/seo/schemas.ts` (2026-05-29, PR #1)
 - **S-03** — MedicalCondition schema — `condition/[slug]/page.tsx` calls `<JsonLd data={medicalConditionSchema(c)} />` (2026-05-29, PR #1)

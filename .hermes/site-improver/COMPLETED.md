@@ -17,6 +17,10 @@ Format per entry:
 - **Infrastructure** — Created `.hermes/site-improver/` with RUN.md + TODO.md + COMPLETED.md for nightly automation
 - **PR**: https://github.com/Marketing-Bull/hbotq/pull/1
 
+## 2026-05-31 — PR #1 (open, 4th commit)
+- **SE-01** — Created 5 page-specific OG images at 1200×630 using existing site photography + ImageMagick text overlays: homepage (patient-in-chamber), conditions (diabetic-wounds), treatment (facility chamber), physicians (Dr. Sadhnani), contact-us (service). Each page now passes its own `image` to `buildMetadata()` so social shares show context-relevant previews instead of the generic `default.jpg`
+- **PR**: https://github.com/Marketing-Bull/hbotq/pull/1
+
 ## 2026-05-30 — PR #2 (open)
 - **S-03 (cleanup)** — Fixed type error: `aggregateRatingSchema()` can return `null`, guarded with conditional render in `layout.tsx` so `JsonLd` only receives non-null data
 - **PR**: https://github.com/Marketing-Bull/hbotq/pull/1 (same branch, auto-updated)
