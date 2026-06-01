@@ -17,6 +17,12 @@ Format per entry:
 - **Infrastructure** — Created `.hermes/site-improver/` with RUN.md + TODO.md + COMPLETED.md for nightly automation
 - **PR**: https://github.com/Marketing-Bull/hbotq/pull/1
 
+## 2026-06-01 — PR #1 (open)
+- **SE-05** — Added geo meta tags (`geo.region=NY-US`, `geo.placename=Woodside, Queens`) to homepage, /conditions/, /contact-us/, and all individual `/condition/[slug]/` pages via an extended `buildMetadata({ geo: {...} })`. Implemented by adding `geo.region` and `geo.placename` to the Next.js `Metadata.other` field in `lib/seo/metadata.ts`.
+- **SE-04** — Audit: `thank-you/` page already has `noIndex: true` ✓; `accessibility/` intentionally indexable (public content) ✓
+- **SE-03** — Audit: `sitemap.ts` covers all static routes + dynamic `/condition/[slug]/` routes via `generateStaticParams` ✓
+- **PR**: https://github.com/Marketing-Bull/hbotq/pull/1
+
 ## 2026-05-31 — PR #1 (open, 4th commit)
 - **SE-01** — Created 5 page-specific OG images at 1200×630 using existing site photography + ImageMagick text overlays: homepage (patient-in-chamber), conditions (diabetic-wounds), treatment (facility chamber), physicians (Dr. Sadhnani), contact-us (service). Each page now passes its own `image` to `buildMetadata()` so social shares show context-relevant previews instead of the generic `default.jpg`
 - **PR**: https://github.com/Marketing-Bull/hbotq/pull/1

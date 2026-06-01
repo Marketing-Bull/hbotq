@@ -30,6 +30,11 @@
   - At minimum: homepage, conditions, treatment, contact-us, physicians
   - Hook: `buildMetadata({ image: "/images/og/page-specific.jpg" })` on each page ✅
 
+- [x] **SE-05** — Add geo meta tags to condition/city pages ✅ DONE 2026-06-01
+  - Extended `buildMetadata()` with `geo?: { region?: string; placename?: string }` via Next.js `other` metadata field
+  - Added `geo.region=NY-US` + `geo.placename=Woodside, Queens` to homepage, /conditions/, /contact-us/, and all `/condition/[slug]/` pages
+  - Helps local SEO for Woodside/Queens/NYC hyperbaric oxygen searches
+
 - [ ] **SE-02** — Add robots.txt
   - Check if `/public/robots.txt` exists — if not, create it
   - Should allow all, reference sitemap at `https://hbotq.com/sitemap.xml`
@@ -40,9 +45,6 @@
 
 - [ ] **SE-04** — Audit noIndex pages
   - Check for any pages that should be noIndex (e.g., thank-you, accessibility) — verify `noIndex: true` in metadata
-
-- [ ] **SE-05** — Add geo meta tags to condition/city pages
-  - For local intent: `<meta name="geo.region" content="NY-US" />` + `geo.placename` for borough/neighborhood SEO
 
 ---
 
