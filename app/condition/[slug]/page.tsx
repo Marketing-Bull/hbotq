@@ -49,6 +49,10 @@ export async function generateMetadata(props: { params: Promise<Params> }) {
     description: condition.metaDescription,
     path: `/condition/${condition.slug}/`,
     image: condition.heroImage,
+    geo: {
+      region: "NY-US",
+      placename: "Woodside, Queens",
+    },
   });
 }
 

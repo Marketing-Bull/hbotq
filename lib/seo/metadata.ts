@@ -7,6 +7,10 @@ type BuildArgs = {
   path: string;
   image?: string;
   noIndex?: boolean;
+  geo?: {
+    region?: string;
+    placename?: string;
+  };
 };
 
 export function buildMetadata({
@@ -15,10 +19,16 @@ export function buildMetadata({
   path,
   image,
   noIndex,
+  geo,
 }: BuildArgs): Metadata {
   const url = `${site.url}${path}`;
   const ogImage = image ?? "/images/og/default.jpg";
   const fullTitle = title.includes("HBOTQ") ? title : `${title} | HBOTQ`;
+
+  const other: Record<string, string | number | (string | number)[]> = {};
+  if (geo?.region) other["geo.region"] = geo.region;
+  if (geo?.placename) other["geo.placename"] = geo.placename;
+
   return {
     title: { absolute: fullTitle },
     description,
@@ -40,5 +50,6 @@ export function buildMetadata({
       description,
       images: [ogImage],
     },
+    other,
   };
 }

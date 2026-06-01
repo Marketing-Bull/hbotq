@@ -18,6 +18,10 @@ export const metadata = buildMetadata({
     "HBOTQ in Woodside, Queens offers hyperbaric oxygen therapy for non-healing wounds, diabetic ulcers, radiation injury, sudden hearing loss, post-COVID, and chronic pain. Physician-led care, Medicare and most insurers accepted.",
   path: "/",
   image: "/images/og/homepage.jpg",
+  geo: {
+    region: "NY-US",
+    placename: "Woodside, Queens",
+  },
 });
 
 export const dynamic = "force-static";
