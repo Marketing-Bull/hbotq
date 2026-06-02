@@ -61,10 +61,10 @@
   - Track `tel:` links and `mailto:` links via GTM auto-event (link click listener)
   - `tel: +1-718-925-3322` is the main conversion signal
 
-- [ ] **T-04** — Check Google Business Profile integration
-  - Footer has Facebook/Instagram but no Google Business Profile link
-  - Update social links to include Google Business Profile listing
-  - Add `sameAs` in schema if GBP profile URL is available
+- [ ] **T-04** — Check Google Business Profile integration ✅ DONE 2026-06-02
+  - Footer has Facebook/Instagram but no Google Business Profile link ✅ NOW ADDED
+  - Update social links to include Google Business Profile listing ✅
+  - Add `sameAs` in schema if GBP profile URL is available ✅
 
 ---
 
