@@ -32,6 +32,8 @@ export const site = {
   social: {
     facebook: "https://www.facebook.com/hbotq",
     instagram: "https://www.instagram.com/hbotq",
+    googleBusinessProfile:
+      "https://www.google.com/maps/place/?api=1&query=Hyperbaric+Medicine+and+Wound+Treatment+Center+of+Queens+Woodside+NY",
   },
   ctas: {
     book: "Book a free consultation",
