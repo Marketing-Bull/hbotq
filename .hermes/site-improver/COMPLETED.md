@@ -34,3 +34,7 @@ Format per entry:
 ## 2026-05-30 — PR #2 (open)
 - **S-03 (cleanup)** — Fixed type error: `aggregateRatingSchema()` can return `null`, guarded with conditional render in `layout.tsx` so `JsonLd` only receives non-null data
 - **PR**: https://github.com/Marketing-Bull/hbotq/pull/1 (same branch, auto-updated)
+
+## 2026-06-03 — PR #1 (open)
+- **S-02** — Added individual `@type: Review` JSON-LD for all 5 testimonials rendered in `app/page.tsx` via `<JsonLd data={reviewSchema(...)} />`. Each Review includes author, quote, conditionLabel, and star rating. Previously only the helper function existed in `lib/seo/schemas.ts`; now the schemas are actually injected into the homepage DOM.
+- **PR**: https://github.com/Marketing-Bull/hbotq/pull/1
