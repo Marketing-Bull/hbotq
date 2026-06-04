@@ -67,7 +67,7 @@ export const physicians: Physician[] = [
       "Focus on diabetic, venous & pressure wounds",
       "Consults in English, Hebrew & Russian",
     ],
-    image: "/images/physicians/nurse-regina.webp",
+    image: "/images/physicians/nurse-rigina.webp",
     education: ["Master of Science in Nursing — CUNY Hunter College"],
     languages: ["English", "Hebrew", "Russian"],
     sameAs: [
