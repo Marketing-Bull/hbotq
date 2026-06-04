@@ -1,9 +1,6 @@
 import { Hero } from "@/components/sections/hero";
 import { PhysiciansSection } from "@/components/sections/physicians-section";
 import { CtaBanner } from "@/components/sections/cta-banner";
-import { JsonLd } from "@/components/seo/json-ld";
-import { physicianSchema } from "@/lib/seo/schemas";
-import { physicians } from "@/lib/data/physicians";
 import { buildMetadata } from "@/lib/seo/metadata";
 
 export const metadata = buildMetadata({
@@ -18,9 +15,6 @@ export const dynamic = "force-static";
 export default function PhysiciansPage() {
   return (
     <>
-      {physicians.map((p) => (
-        <JsonLd key={p.slug} data={physicianSchema(p)} />
-      ))}
       <Hero
         variant="page"
         eyebrow="Our Care Team"

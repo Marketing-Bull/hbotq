@@ -4,6 +4,7 @@ import { conditions } from "@/lib/data/conditions";
 import { locations } from "@/lib/data/locations";
 import { wellnessUses } from "@/lib/data/wellness";
 import { articles } from "@/lib/data/articles";
+import { physicians } from "@/lib/data/physicians";
 
 const STATIC_ROUTES: { path: string; priority: number }[] = [
   { path: "/", priority: 1.0 },
@@ -48,10 +49,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: "monthly" as const,
     priority: 0.6,
   }));
+  const articleEntries = articles.map((a) => ({
+    url: `${site.url}/resources/${a.slug}/`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.6,
+  }));
+  const physicianEntries = physicians.map((p) => ({
+    url: `${site.url}/physicians/${p.slug}/`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.6,
+  }));
   return [
     ...staticEntries,
     ...conditionEntries,
     ...locationEntries,
     ...wellnessEntries,
+    ...articleEntries,
+    ...physicianEntries,
   ];
 }
