@@ -89,7 +89,12 @@ export interface Physician {
   title: string;
   credentials: string[];
   specialties: string[];
+  /** Short bio used on cards and meta descriptions. */
   bio: string;
+  /** Longer, multi-paragraph bio for the detail page. */
+  bioLong?: string[];
+  /** Quick-scan credential highlights. */
+  highlights?: string[];
   image?: string;
   education?: string[];
   affiliations?: string[];
