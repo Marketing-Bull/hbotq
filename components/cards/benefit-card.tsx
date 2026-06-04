@@ -60,8 +60,8 @@ const ICONS: Record<Benefit["icon"], React.ReactNode> = {
 
 export function BenefitCard({ benefit }: { benefit: Benefit }) {
   return (
-    <div className="rounded-2xl bg-white border border-[var(--color-surface-border)] p-6">
-      <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-[var(--color-brand-50)] text-[var(--color-brand-500)]">
+    <div className="group rounded-2xl bg-white border border-[var(--color-surface-border)] p-6 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:border-[var(--color-brand-200)]">
+      <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-[var(--color-brand-50)] text-[var(--color-brand-500)] transition-all duration-200 group-hover:bg-[var(--color-brand-500)] group-hover:text-white">
         <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden>
           {ICONS[benefit.icon]}
         </svg>
