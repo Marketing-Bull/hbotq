@@ -32,6 +32,8 @@ export const site = {
   social: {
     facebook: "https://www.facebook.com/hbotq",
     instagram: "https://www.instagram.com/hbotq",
+    youtube: "https://www.youtube.com/@hyperbaricoxygentherapyque5418",
+    tiktok: "https://www.tiktok.com/@hyperbaricqueens",
   },
   ctas: {
     book: "Book a free consultation",
