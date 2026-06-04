@@ -30,6 +30,20 @@ export interface Condition {
   relatedSlugs: ConditionSlug[];
 }
 
+export interface WellnessUse {
+  slug: string;
+  name: string;
+  shortName: string;
+  metaTitle: string;
+  metaDescription: string;
+  summary: string;
+  intro: string;
+  sections: ConditionSection[];
+  benefits: string[];
+  honestNote: string;
+  tiktokIds: string[];
+}
+
 export interface Location {
   slug: string;
   area: string;
