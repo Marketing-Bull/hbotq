@@ -1,7 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import { primaryNav } from "@/lib/data/nav";
 import { site } from "@/lib/data/site";
 import { MobileNav } from "@/components/layout/mobile-nav";
+import { trackClick } from "@/lib/analytics/track";
 
 export function Header() {
   return (
@@ -36,6 +39,7 @@ export function Header() {
         <div className="hidden lg:flex items-center gap-3">
           <a
             href={`tel:${site.phoneE164}`}
+            onClick={trackClick("phone_call", { location: "header" })}
             className="text-sm font-semibold text-[var(--color-brand-500)] hover:text-[var(--color-brand-600)]"
           >
             {site.phone}

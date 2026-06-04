@@ -1,6 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { site } from "@/lib/data/site";
+import { trackClick } from "@/lib/analytics/track";
 
 type HeroVariant = "home" | "condition" | "lp" | "page";
 
@@ -95,6 +98,7 @@ export function Hero({
               Or call us directly:{" "}
               <a
                 href={`tel:${site.phoneE164}`}
+                onClick={trackClick("phone_call", { location: "hero" })}
                 className="text-[var(--color-brand-500)] font-semibold hover:underline"
               >
                 {site.phone}

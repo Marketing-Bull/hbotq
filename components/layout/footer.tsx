@@ -1,6 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import { footerNav } from "@/lib/data/nav";
 import { site } from "@/lib/data/site";
+import { trackClick } from "@/lib/analytics/track";
 
 export function Footer() {
   return (
@@ -30,12 +33,14 @@ export function Footer() {
             <div className="mt-4 flex flex-col gap-1 text-sm">
               <a
                 href={`tel:${site.phoneE164}`}
+                onClick={trackClick("phone_call", { location: "footer" })}
                 className="text-white font-semibold hover:underline"
               >
                 {site.phone}
               </a>
               <a
                 href={`mailto:${site.email}`}
+                onClick={trackClick("mailto", { location: "footer" })}
                 className="text-[var(--color-sand-300)] hover:text-white"
               >
                 {site.email}

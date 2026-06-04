@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import { site } from "@/lib/data/site";
+import { trackClick } from "@/lib/analytics/track";
 
 export function StickyCta() {
   return (
@@ -7,6 +10,7 @@ export function StickyCta() {
       <div className="container-page py-2 grid grid-cols-2 gap-2">
         <a
           href={`tel:${site.phoneE164}`}
+          onClick={trackClick("phone_call", { location: "sticky_cta" })}
           className="inline-flex items-center justify-center rounded-full bg-[var(--color-brand-500)] text-white px-4 py-3 text-sm font-semibold"
           aria-label={`Call ${site.phone}`}
         >

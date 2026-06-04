@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import { site } from "@/lib/data/site";
+import { trackClick } from "@/lib/analytics/track";
 
 export function CtaBanner({
   heading = "Ready to find out if HBOT can help?",
@@ -26,6 +29,7 @@ export function CtaBanner({
           </Link>
           <a
             href={`tel:${site.phoneE164}`}
+            onClick={trackClick("phone_call", { location: "cta_banner" })}
             className="inline-flex items-center justify-center rounded-full border border-white/40 text-white px-7 py-3.5 font-semibold hover:bg-white/10"
           >
             Call {site.phone}

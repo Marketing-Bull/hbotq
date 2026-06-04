@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { primaryNav } from "@/lib/data/nav";
 import { site } from "@/lib/data/site";
+import { trackClick } from "@/lib/analytics/track";
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);
@@ -68,8 +69,11 @@ export function MobileNav() {
             <div className="mt-6 flex flex-col gap-3">
               <a
                 href={`tel:${site.phoneE164}`}
+                onClick={(e) => {
+                  trackClick("phone_call", { location: "mobile_nav" });
+                  setOpen(false);
+                }}
                 className="inline-flex items-center justify-center rounded-full bg-[var(--color-brand-500)] text-white px-5 py-3 font-semibold"
-                onClick={() => setOpen(false)}
               >
                 Call {site.phone}
               </a>
