@@ -25,6 +25,11 @@ export const footerNav = {
       label: "Radiation Tissue Damage",
       href: "/condition/radiation-tissue-damage/",
     },
+    {
+      label: "Refractory Osteomyelitis",
+      href: "/condition/refractory-osteomyelitis/",
+    },
+    { label: "Severe Anemia", href: "/condition/severe-anemia/" },
     { label: "Sudden Hearing Loss", href: "/condition/sudden-hearing-loss/" },
   ],
   legal: [
