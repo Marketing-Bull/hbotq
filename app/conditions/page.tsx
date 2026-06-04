@@ -26,7 +26,7 @@ export default function ConditionsPage() {
       />
       <TrustBar />
       <ConditionsGrid
-        heading="Six core conditions, one care team"
+        heading="Eight conditions, one care team"
         subtitle="Click any condition for a deeper look at how HBOT helps, what to expect, and how we coordinate with the rest of your care team."
       />
       <PhysiciansSection />

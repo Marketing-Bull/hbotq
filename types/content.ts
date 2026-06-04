@@ -4,6 +4,8 @@ export type ConditionSlug =
   | "non-healing-wounds"
   | "post-covid"
   | "radiation-tissue-damage"
+  | "refractory-osteomyelitis"
+  | "severe-anemia"
   | "sudden-hearing-loss";
 
 export interface ConditionSection {

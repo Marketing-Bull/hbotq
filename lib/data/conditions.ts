@@ -241,6 +241,88 @@ export const conditions: Condition[] = [
     faqIds: ["is-hbot-painful", "how-many-treatments"],
     relatedSlugs: ["post-covid", "non-healing-wounds"],
   },
+  {
+    slug: "refractory-osteomyelitis",
+    name: "Chronic Refractory Osteomyelitis",
+    shortName: "Refractory Osteomyelitis",
+    summary:
+      "Bone infections that keep coming back after antibiotics and surgery are an FDA-approved indication for hyperbaric oxygen therapy, used alongside surgical debridement and IV antibiotics to clear infection from poorly oxygenated bone.",
+    metaTitle:
+      "HBOT for Chronic Refractory Osteomyelitis (Bone Infection) | Queens, NY",
+    metaDescription:
+      "Hyperbaric oxygen therapy in Woodside, Queens for chronic refractory osteomyelitis — recurrent bone infection that hasn't cleared with antibiotics and surgery alone.",
+    fdaStatus: "on-label",
+    heroImage: "/images/conditions/service.webp",
+    howHbotHelps:
+      "Osteomyelitis becomes \"refractory\" when infection persists in bone that no longer has the blood supply to deliver antibiotics or immune cells where they're needed. Inside the hyperbaric chamber, you breathe 100% oxygen at increased atmospheric pressure, raising oxygen levels in the infected bone high enough to restore the function of infection-fighting white cells, boost the killing power of certain antibiotics, and stimulate new blood vessel growth into the dead and devitalized tissue that harbors the infection.",
+    sections: [
+      {
+        heading: "When osteomyelitis becomes refractory",
+        body: "Most bone infections resolve with surgery and a course of antibiotics. It is called chronic refractory osteomyelitis when the infection returns or fails to clear despite appropriate surgical debridement and antibiotic therapy. At that point the limiting factor is often oxygen — the infected bone is too poorly perfused for treatment to reach it. HBOT is added as an adjunct, never as a replacement for surgery and antibiotics.",
+        bullets: [
+          "Infection that recurs after debridement and antibiotics",
+          "Compromised, poorly vascularized, or previously irradiated bone",
+          "Diabetic and post-traumatic bone infections of the foot and leg",
+          "Hardware-associated infection cleared surgically but slow to heal",
+        ],
+      },
+      {
+        heading: "How we coordinate your care",
+        body: "HBOT for osteomyelitis only works as part of a team plan. Before starting, we coordinate with your orthopedic or podiatric surgeon and infectious-disease physician so that surgical debridement, culture-directed IV antibiotics, and hyperbaric oxygen are all working together. We handle scheduling so your chamber sessions line up with the rest of your treatment.",
+      },
+      {
+        heading: "Standard protocol",
+        body: "A typical course for refractory osteomyelitis runs 20–40 sessions, scheduled five days a week, with each session about 90 minutes at treatment pressure. Your physician reassesses with your surgical and ID team partway through to confirm the infection is responding before completing the full course.",
+      },
+    ],
+    benefits: [
+      "Restores oxygen levels that infection-fighting white cells need to work",
+      "Enhances the effectiveness of several antibiotics in low-oxygen bone",
+      "Stimulates new blood vessel growth into devitalized bone",
+      "Supports limb salvage in diabetic and post-traumatic bone infections",
+      "FDA-approved indication; typically covered when medically necessary",
+    ],
+    faqIds: ["how-many-treatments", "covered-by-insurance", "is-hbot-safe"],
+    relatedSlugs: ["diabetic-lower-extremity-wounds", "non-healing-wounds"],
+  },
+  {
+    slug: "severe-anemia",
+    name: "Severe Anemia (Bridge Therapy)",
+    shortName: "Severe Anemia",
+    summary:
+      "When a blood transfusion isn't possible — by choice or by clinical circumstance — hyperbaric oxygen therapy can serve as a temporary bridge, oxygenating tissue directly through the plasma. This is an FDA-approved indication for exceptional blood-loss anemia.",
+    metaTitle:
+      "HBOT for Severe Anemia & Bridge Therapy | Queens, NY",
+    metaDescription:
+      "Hyperbaric oxygen therapy in Woodside, Queens as bridge therapy for severe blood-loss anemia when transfusion is unavailable or declined. FDA-approved indication, physician-supervised.",
+    fdaStatus: "on-label",
+    heroImage: "/images/conditions/safe-effective.webp",
+    howHbotHelps:
+      "In severe anemia there aren't enough red blood cells to carry oxygen to the tissues. Hyperbaric oxygen therapy works around that bottleneck: under pressure, so much oxygen dissolves directly into the blood plasma that the body can be oxygenated without relying on hemoglobin at all. That makes HBOT a temporary bridge — buying critical time for tissue to stay oxygenated while the body rebuilds its own red cells or other treatment is arranged.",
+    sections: [
+      {
+        heading: "When HBOT is used as a bridge",
+        body: "This is what hyperbaric medicine calls \"exceptional blood-loss anemia\" — severe anemia where transfusion is not an option. That may be because compatible blood isn't available, because of a transfusion reaction risk, or because the patient declines blood products for personal or religious reasons. In these situations HBOT can sustain tissue oxygenation while the underlying problem is addressed.",
+        bullets: [
+          "Patients who decline blood transfusion, including for religious reasons",
+          "Severe anemia where compatible blood is unavailable",
+          "Bridging tissue oxygenation while red-cell production recovers",
+        ],
+      },
+      {
+        heading: "A carefully supervised, time-limited treatment",
+        body: "Bridge therapy for severe anemia is an acute, closely monitored use of HBOT, not an outpatient program. Sessions and dosing are individualized to the patient's condition and coordinated with the treating hospital team. Your physician will explain exactly how HBOT fits into the broader plan to stabilize and recover.",
+      },
+    ],
+    benefits: [
+      "Oxygenates tissue directly through plasma, bypassing low red-cell counts",
+      "Provides a temporary bridge when transfusion is unavailable or declined",
+      "Supports patients who decline blood products on religious grounds",
+      "FDA-approved indication, delivered under close physician supervision",
+    ],
+    faqIds: ["how-does-hbot-work", "is-hbot-safe"],
+    relatedSlugs: ["non-healing-wounds", "radiation-tissue-damage"],
+  },
 ];
 
 export function getCondition(slug: string): Condition | undefined {
