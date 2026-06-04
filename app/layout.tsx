@@ -32,9 +32,6 @@ export const metadata: Metadata = {
   applicationName: site.name,
   authors: [{ name: site.legalName }],
   generator: "Next.js",
-  icons: {
-    icon: "/favicon.ico",
-  },
   openGraph: {
     siteName: site.name,
     type: "website",
