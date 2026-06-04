@@ -1,6 +1,7 @@
 export const primaryNav = [
   { label: "Treatment", href: "/treatment/" },
   { label: "Conditions", href: "/conditions/" },
+  { label: "Locations", href: "/locations/" },
   { label: "Physicians", href: "/physicians/" },
   { label: "FAQs", href: "/faqs/" },
   { label: "Contact", href: "/contact-us/" },
