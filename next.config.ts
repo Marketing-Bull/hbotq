@@ -52,6 +52,16 @@ const nextConfig: NextConfig = {
         destination: "/condition/sudden-hearing-loss/",
         permanent: true,
       },
+      {
+        source: "/hyperbaric-therapy",
+        destination: "/lp/hyperbaric-therapy/",
+        permanent: true,
+      },
+      {
+        source: "/hyperbaric-therapy/",
+        destination: "/lp/hyperbaric-therapy/",
+        permanent: true,
+      },
     ];
   },
 };

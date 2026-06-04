@@ -13,7 +13,8 @@ export const metadata: Metadata = buildMetadata({
   title: "Hyperbaric Oxygen Therapy in Queens & NYC | HBOTQ",
   description:
     "Medical-grade hyperbaric oxygen therapy in Woodside, Queens. Board-certified physicians, hard-shell chambers, Medicare & most insurers accepted. Free consultation.",
-  path: "/hyperbaric-therapy/",
+  path: "/lp/hyperbaric-therapy/",
+  noIndex: true,
 });
 
 export const dynamic = "force-static";
@@ -155,7 +156,7 @@ export default function HyperbaricTherapyPage() {
 
             {/* The form card */}
             <ConsultationForm
-              source="hyperbaric-therapy-lp-hero"
+              source="lp-hyperbaric-therapy-hero"
               heading="Book your free consultation"
               subheading="Tell us your situation. We respond within one business day."
             />
@@ -348,7 +349,7 @@ export default function HyperbaricTherapyPage() {
       <section className="section bg-white">
         <div className="container-page max-w-3xl">
           <ConsultationForm
-            source="hyperbaric-therapy-lp-bottom"
+            source="lp-hyperbaric-therapy-bottom"
             heading="Ready to find out if HBOT can help?"
             subheading="Free consultation, no commitment. Our physicians will review your situation and give you an honest answer — and handle insurance if it's a covered indication."
           />

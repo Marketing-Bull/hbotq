@@ -18,7 +18,6 @@ const STATIC_ROUTES: { path: string; priority: number }[] = [
   { path: "/physicians/", priority: 0.7 },
   { path: "/faqs/", priority: 0.7 },
   { path: "/contact-us/", priority: 0.8 },
-  { path: "/hyperbaric-therapy/", priority: 0.9 },
   { path: "/privacy-policy/", priority: 0.3 },
   { path: "/terms-of-service/", priority: 0.3 },
   { path: "/accessibility/", priority: 0.3 },
