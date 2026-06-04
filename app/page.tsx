@@ -13,9 +13,9 @@ import { CtaBanner } from "@/components/sections/cta-banner";
 import { buildMetadata } from "@/lib/seo/metadata";
 
 export const metadata = buildMetadata({
-  title: "Hyperbaric Oxygen Therapy in Queens, NY",
+  title: "Hyperbaric Oxygen Therapy in Queens & NYC",
   description:
-    "HBOTQ in Woodside, Queens offers hyperbaric oxygen therapy for non-healing wounds, diabetic ulcers, radiation injury, sudden hearing loss, post-COVID, and chronic pain. Physician-led care, Medicare and most insurers accepted.",
+    "HBOTQ in Woodside, Queens offers hyperbaric oxygen therapy for patients across NYC — non-healing wounds, diabetic ulcers, radiation injury, sudden hearing loss, post-COVID, and chronic pain. Physician-led care, Medicare and most insurers accepted.",
   path: "/",
 });
 

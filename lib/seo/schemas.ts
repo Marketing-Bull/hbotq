@@ -45,6 +45,22 @@ export function medicalBusinessSchema() {
       latitude: site.geo.latitude,
       longitude: site.geo.longitude,
     },
+    hasMap: `https://www.google.com/maps?q=${encodeURIComponent(
+      `${site.address.street}, ${site.address.city}, ${site.address.region} ${site.address.postalCode}`,
+    )}`,
+    areaServed: [
+      "Queens",
+      "Manhattan",
+      "Brooklyn",
+      "New York City",
+      "Long Island City",
+      "Astoria",
+      "Jackson Heights",
+      "Forest Hills",
+      "Flushing",
+      "Elmhurst",
+      "Woodside",
+    ].map((name) => ({ "@type": "AdministrativeArea", name })),
     openingHoursSpecification,
     sameAs: Object.values(site.social),
     employee: physicians.map((p) => ({

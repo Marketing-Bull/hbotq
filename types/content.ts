@@ -30,6 +30,23 @@ export interface Condition {
   relatedSlugs: ConditionSlug[];
 }
 
+export interface Location {
+  slug: string;
+  area: string;
+  shortName: string;
+  metaTitle: string;
+  metaDescription: string;
+  summary: string;
+  intro: string;
+  gettingHere: {
+    transit: string;
+    driving: string;
+    parking: string;
+  };
+  neighborhoods: string[];
+  whyTravel: string;
+}
+
 export interface Faq {
   id: string;
   category: "general" | "treatment" | "conditions" | "logistics";

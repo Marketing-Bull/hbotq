@@ -1,11 +1,13 @@
 import type { MetadataRoute } from "next";
 import { site } from "@/lib/data/site";
 import { conditions } from "@/lib/data/conditions";
+import { locations } from "@/lib/data/locations";
 
 const STATIC_ROUTES: { path: string; priority: number }[] = [
   { path: "/", priority: 1.0 },
   { path: "/treatment/", priority: 0.9 },
   { path: "/conditions/", priority: 0.9 },
+  { path: "/locations/", priority: 0.8 },
   { path: "/physicians/", priority: 0.7 },
   { path: "/faqs/", priority: 0.7 },
   { path: "/contact-us/", priority: 0.8 },
@@ -29,5 +31,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: "monthly" as const,
     priority: 0.85,
   }));
-  return [...staticEntries, ...conditionEntries];
+  const locationEntries = locations.map((l) => ({
+    url: `${site.url}/locations/${l.slug}/`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.75,
+  }));
+  return [...staticEntries, ...conditionEntries, ...locationEntries];
 }
