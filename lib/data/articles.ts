@@ -145,6 +145,170 @@ export const articles: Article[] = [
       "radiation-tissue-damage",
     ],
   },
+  {
+    slug: "what-conditions-does-hbot-treat",
+    title: "What Conditions Does Hyperbaric Oxygen Therapy Treat?",
+    metaTitle: "What Conditions Does HBOT Treat? Full List | HBOTQ Queens",
+    metaDescription:
+      "Complete guide to conditions treated with hyperbaric oxygen therapy — FDA-approved indications (wounds, radiation injury, hearing loss) and carefully evaluated off-label uses.",
+    excerpt:
+      "HBOT has a specific list of FDA-approved indications — conditions where clinical evidence is strong enough for insurance coverage — and a set of off-label uses where the evidence is still developing. Here's the honest breakdown.",
+    datePublished: "2026-06-01",
+    dateModified: "2026-06-01",
+    authorSlug: "dr-manoj-sadhnani",
+    readMinutes: 6,
+    keyTakeaways: [
+      "HBOT has specific FDA-approved indications — not everything benefits from it.",
+      "For FDA-approved uses, Medicare, Medicaid, and most major insurers typically cover treatment.",
+      "Off-label uses like post-COVID and chronic pain can be appropriate but are self-pay and honestly discussed.",
+      "The best way to know if HBOT can help you is a physician evaluation — not a list.",
+    ],
+    sections: [
+      {
+        heading: "FDA-approved indications",
+        body: "These are the conditions where clinical evidence is strong enough that regulators have approved hyperbaric oxygen as a treatment, and where Medicare, Medicaid, and most major insurers will cover the cost when medical necessity is documented.",
+        bullets: [
+          "Non-healing wounds — including surgical wounds, venous and arterial ulcers, and traumatic wounds that haven't closed after 30+ days of standard care",
+          "Diabetic lower-extremity wounds — diabetic foot ulcers that have failed standard care, where HBOT supports limb salvage",
+          "Radiation tissue damage — late-effect injuries including osteoradionecrosis, soft tissue radionecrosis, radiation cystitis, and proctitis",
+          "Sudden sensorineural hearing loss — a medical emergency where HBOT started within two weeks of onset can support recovery",
+          "Chronic refractory osteomyelitis — bone infection that keeps returning after antibiotics and surgery, used alongside surgical debridement",
+          "Severe anemia (bridge therapy) — when transfusion is unavailable or declined, HBOT can temporarily oxygenate tissue through the plasma",
+          "Several additional indications — including crush injuries, compromised skin grafts and flaps, necrotizing soft tissue infections, and others",
+        ],
+      },
+      {
+        heading: "Off-label uses we evaluate honestly",
+        body: "Off-label means the FDA has not formally approved HBOT for that indication — not that it's unsafe or ineffective, but that the evidence hasn't reached the threshold for formal approval. We see patients for these uses after an honest conversation about what the research does and doesn't support, and they are self-pay.",
+        bullets: [
+          "Post-COVID recovery — fatigue, brain fog, and exercise intolerance after COVID-19; evidence is emerging and promising",
+          "Chronic pain — complex regional pain syndrome, fibromyalgia, and refractory post-surgical pain in selected patients",
+          "Athletic recovery and performance — used by active people as a recovery tool between training sessions",
+          "Healthy aging — an oxygen-focused addition to a wellness routine",
+        ],
+      },
+      {
+        heading: "Conditions HBOT does not treat",
+        body: "Equally important: there are conditions where HBOT is not indicated and where we'll tell you clearly that it won't help. We don't see patients for cancer treatment, general fatigue without an underlying cause, or conditions where better-evidenced treatments exist and haven't been tried. Our job is to tell you honestly whether HBOT fits your situation — not to find a reason to put everyone in a chamber.",
+      },
+      {
+        heading: "How to find out if HBOT can help you",
+        body: "No list substitutes for a physician evaluation. The same diagnosis can be an excellent indication in one patient and not appropriate in another depending on prior treatment, vascular status, overall health, and how the condition is progressing. A free consultation with our team is the right starting point — we'll review your records, ask the right questions, and give you a direct answer.",
+      },
+    ],
+    relatedConditionSlugs: [
+      "non-healing-wounds",
+      "diabetic-lower-extremity-wounds",
+      "radiation-tissue-damage",
+      "sudden-hearing-loss",
+    ],
+  },
+  {
+    slug: "hard-vs-soft-hyperbaric-chambers",
+    title: "Hard vs. Soft Hyperbaric Chambers: Why It Matters",
+    metaTitle: "Hard vs. Soft Hyperbaric Chambers: What's the Difference? | HBOTQ",
+    metaDescription:
+      "Hard-shell and soft-sided hyperbaric chambers are not the same thing. Learn why the pressure difference matters for medical outcomes — and what to look for in a provider.",
+    excerpt:
+      "Not all hyperbaric chambers are equal — and the difference isn't cosmetic. The pressure a chamber reaches determines whether it can deliver the biological effects that make HBOT work for medical conditions. Here's what you need to know.",
+    datePublished: "2026-06-01",
+    dateModified: "2026-06-01",
+    authorSlug: "dr-manoj-sadhnani",
+    readMinutes: 5,
+    keyTakeaways: [
+      "Hard-shell chambers operate at 2.0–2.5 ATA — the pressure required for FDA-approved indications.",
+      "Soft-sided chambers typically reach only 1.3–1.5 ATA, which is insufficient for most medical uses.",
+      "The biological effects of HBOT — angiogenesis, infection control, wound healing — depend on reaching true treatment pressure.",
+      "For FDA-approved indications, insurers require treatment in a medical-grade hard-shell chamber.",
+    ],
+    sections: [
+      {
+        heading: "The pressure is the point",
+        body: "Hyperbaric oxygen therapy works by dissolving far more oxygen into your blood plasma than is possible at normal atmospheric pressure. The key word is pressure — and there is a large gap between the pressure a medical-grade hard-shell chamber reaches and what a soft-sided chamber can achieve.",
+        bullets: [
+          "Hard-shell chambers: 2.0–2.5 ATA (two to two-and-a-half times normal atmospheric pressure)",
+          "Soft-sided chambers: 1.3–1.5 ATA (30–50% above normal pressure)",
+          "The biological effects that matter — angiogenesis, white-cell killing power, fibroblast activity — activate at medical treatment pressures",
+        ],
+      },
+      {
+        heading: "What soft chambers can and can't do",
+        body: "Soft-sided chambers are sometimes marketed as \"mild hyperbaric\" therapy. At 1.3–1.5 ATA breathing ambient air or slightly enriched oxygen, you do get a modest increase in dissolved oxygen. Some people find them relaxing. But they do not reach the pressure at which the clinical evidence for wound healing, radiation injury, sudden hearing loss, and other FDA-approved indications was established — and they cannot be used to satisfy the criteria for insurance-covered treatment.",
+      },
+      {
+        heading: "What to ask any HBOT provider",
+        body: "Before committing to a course of treatment anywhere, ask these questions:",
+        bullets: [
+          "What chamber type do you use — hard-shell or soft-sided?",
+          "What pressure do you treat at (in ATA)?",
+          "Is a physician supervising my case, or just a technician?",
+          "Will my insurer cover this, and can you handle pre-authorization?",
+        ],
+      },
+      {
+        heading: "What HBOTQ uses",
+        body: "HBOTQ uses hard-shell, medical-grade hyperbaric chambers operating at 2.0–2.5 ATA — the same standard required for FDA-approved indications and for insurance coverage. Every case is supervised by board-certified physicians. If you've previously tried soft-chamber HBOT and didn't see results, it's worth discussing whether medical-grade treatment at true pressure might be appropriate for your condition.",
+      },
+    ],
+    relatedConditionSlugs: [
+      "non-healing-wounds",
+      "diabetic-lower-extremity-wounds",
+    ],
+  },
+  {
+    slug: "hbot-cost-insurance-medicare",
+    title: "How Much Does HBOT Cost? Insurance, Medicare & Self-Pay Explained",
+    metaTitle: "How Much Does Hyperbaric Oxygen Therapy Cost? | HBOTQ Queens",
+    metaDescription:
+      "What hyperbaric oxygen therapy costs depends entirely on whether your condition is FDA-approved and insured. Here's the honest breakdown — including Medicare, self-pay, and what questions to ask.",
+    excerpt:
+      "The cost of HBOT ranges from fully covered by insurance to several hundred dollars per session out of pocket — and which camp you fall into depends almost entirely on your diagnosis and whether it's an FDA-approved indication. Here's how to figure out where you stand.",
+    datePublished: "2026-06-01",
+    dateModified: "2026-06-01",
+    authorSlug: "dr-manoj-sadhnani",
+    readMinutes: 5,
+    keyTakeaways: [
+      "For FDA-approved indications, Medicare, Medicaid, and most major insurers typically cover HBOT.",
+      "Coverage requires documented medical necessity — diagnosis, prior treatment attempts, and clinical records.",
+      "Off-label and wellness uses are self-pay; prices vary by provider and course length.",
+      "Our team handles pre-authorization — you don't need to navigate the paperwork yourself.",
+    ],
+    sections: [
+      {
+        heading: "When insurance covers HBOT",
+        body: "For FDA-approved indications, hyperbaric oxygen therapy is typically covered by Medicare Part B, Medicaid, and most major commercial insurers when medical necessity is properly documented. Coverage is not automatic — it requires your diagnosis to match a covered indication, evidence that standard treatments have been tried, and clinical records that support the case for HBOT.",
+        bullets: [
+          "Medicare Part B covers HBOT for approved wound and other indications",
+          "Most major commercial plans — Aetna, Cigna, UnitedHealthcare, Blue Cross — follow similar coverage guidelines",
+          "Medicaid coverage varies by state; New York Medicaid generally covers FDA-approved indications",
+          "Our team handles the pre-authorization process and coordinates with your referring physician",
+        ],
+      },
+      {
+        heading: "When it's self-pay",
+        body: "Off-label uses — post-COVID recovery, most chronic pain conditions, wellness and athletic recovery uses — are generally not covered by insurance. Costs for self-pay HBOT vary by provider, location, and the length of your course. At HBOTQ, we discuss pricing transparently on your consultation call for any self-pay indication. We don't quote costs on this page because course length is individualized, but we'll give you a clear number before you commit to anything.",
+      },
+      {
+        heading: "The paperwork side",
+        body: "For covered indications, the pre-authorization process involves documenting your diagnosis, prior treatment history, and the clinical rationale for HBOT. This is where many patients hit friction — insurers have specific criteria, and documentation gaps are the most common reason claims are delayed or denied. Our team manages this process on your behalf, working with your referring physician to submit the right documentation the first time.",
+      },
+      {
+        heading: "What to ask before you book anywhere",
+        body: "Whether you're considering HBOTQ or another provider, ask these questions before starting:",
+        bullets: [
+          "Is my specific diagnosis a covered indication under my plan?",
+          "Will you handle pre-authorization, or do I need to do that myself?",
+          "What is the expected course length, and what will my out-of-pocket cost be?",
+          "Do you use hard-shell medical-grade chambers? (Required for insurance coverage)",
+        ],
+      },
+    ],
+    relatedConditionSlugs: [
+      "non-healing-wounds",
+      "diabetic-lower-extremity-wounds",
+      "sudden-hearing-loss",
+    ],
+  },
 ];
 
 export function getArticle(slug: string): Article | undefined {
