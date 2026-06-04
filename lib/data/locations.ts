@@ -146,6 +146,114 @@ export const locations: Location[] = [
     whyTravel:
       "For neighboring Astoria, HBOTQ combines a genuinely short commute with what wellness pods can't offer: hard-shell chambers at clinical pressures, board-certified physician oversight, and insurance pre-authorization handled for you.",
   },
+  {
+    slug: "jackson-heights",
+    area: "Jackson Heights",
+    shortName: "Jackson Heights",
+    metaTitle: "Hyperbaric Oxygen Therapy Near Jackson Heights | HBOTQ Queens",
+    metaDescription:
+      "Jackson Heights patients are minutes from HBOTQ in neighboring Woodside. Physician-led, medical-grade hyperbaric oxygen therapy with free parking. Medicare and most insurers accepted.",
+    summary:
+      "Practically next door — medical-grade hyperbaric oxygen therapy a stop or two up the 7 line from Jackson Heights.",
+    intro:
+      "Jackson Heights sits right beside Woodside, which makes HBOTQ one of the closest medical-grade hyperbaric centers to the neighborhood. Whether you take the 7 a stop west or drive a few minutes up Roosevelt Avenue, you'll find a dedicated hyperbaric medicine and wound-care center treating non-healing and diabetic wounds, radiation injury, sudden hearing loss, and more.",
+    gettingHere: {
+      transit:
+        "From the 74th Street–Broadway / Jackson Heights–Roosevelt Av hub, the 7 train runs one to two stops west to 61st Street–Woodside — under 10 minutes. We're two blocks from the station.",
+      driving:
+        "Roosevelt Avenue or Northern Boulevard reach us in about 5–10 minutes by car.",
+      parking: "Free patient parking is available on-site.",
+    },
+    neighborhoods: [
+      "Roosevelt Avenue corridor",
+      "74th Street",
+      "Travers Park area",
+      "Elmhurst border",
+    ],
+    whyTravel:
+      "When a treatment course runs five days a week, being one neighborhood over matters. Jackson Heights patients get a short, repeatable trip to hard-shell medical chambers, physician-led care, free parking, and insurance handled on their behalf.",
+  },
+  {
+    slug: "forest-hills",
+    area: "Forest Hills",
+    shortName: "Forest Hills",
+    metaTitle: "Hyperbaric Oxygen Therapy Near Forest Hills | HBOTQ Queens",
+    metaDescription:
+      "Forest Hills patients reach HBOTQ via a straight shot up Queens Boulevard. Physician-led, medical-grade hyperbaric oxygen therapy with free parking. Medicare and most insurers accepted.",
+    summary:
+      "A straight shot up Queens Boulevard — physician-led, medical-grade hyperbaric oxygen therapy with free parking on arrival.",
+    intro:
+      "Forest Hills and HBOTQ sit on the same road: Queens Boulevard runs directly between the two, making the trip simple by car or subway. Our center treats FDA-approved indications including non-healing wounds, diabetic lower-extremity wounds, radiation tissue damage, and sudden sensorineural hearing loss, in hard-shell clinical chambers.",
+    gettingHere: {
+      transit:
+        "The M and R trains run beneath Queens Boulevard between Forest Hills–71st Avenue and the Woodside area; many patients pair the subway with a short walk or find driving simplest. Plan on roughly 15–20 minutes.",
+      driving:
+        "Queens Boulevard connects Forest Hills straight to our door — about 12–15 minutes by car.",
+      parking: "Free patient parking is available on-site.",
+    },
+    neighborhoods: [
+      "Forest Hills Gardens",
+      "71st Avenue / Continental",
+      "Rego Park border",
+      "Kew Gardens border",
+    ],
+    whyTravel:
+      "Forest Hills patients choose HBOTQ for dedicated medical-grade chambers and board-certified physician oversight rather than a low-pressure wellness pod — plus quicker scheduling, free parking, and insurance pre-authorization handled for them.",
+  },
+  {
+    slug: "flushing",
+    area: "Flushing",
+    shortName: "Flushing",
+    metaTitle: "Hyperbaric Oxygen Therapy Near Flushing | HBOTQ Queens",
+    metaDescription:
+      "Flushing patients ride the 7 train straight to HBOTQ in Woodside for physician-led, medical-grade hyperbaric oxygen therapy. Wounds, diabetic ulcers, radiation injury, hearing loss.",
+    summary:
+      "One direct 7-train ride from downtown Flushing to medical-grade hyperbaric oxygen therapy in Woodside.",
+    intro:
+      "Flushing sits at the eastern end of the 7 line, and HBOTQ is a straight ride west on the same train — no transfers. We're a dedicated hyperbaric medicine and wound-treatment center serving the many Flushing patients who need medical-grade HBOT for non-healing wounds, diabetic foot ulcers, radiation injury, sudden hearing loss, and other conditions.",
+    gettingHere: {
+      transit:
+        "From Flushing–Main Street, the 7 train runs directly to 61st Street–Woodside in about 15–20 minutes, with no transfers. We're two blocks from the station.",
+      driving:
+        "Northern Boulevard or the Long Island Expressway (I-495) reach us in roughly 15–20 minutes by car.",
+      parking: "Free patient parking is available on-site.",
+    },
+    neighborhoods: [
+      "Downtown Flushing / Main Street",
+      "Murray Hill",
+      "Queensboro Hill",
+      "College Point border",
+    ],
+    whyTravel:
+      "Flushing patients get a simple, transfer-free commute to hard-shell medical chambers and physician-led care. Our team also handles insurance pre-authorization and offers free on-site parking for those who drive.",
+  },
+  {
+    slug: "elmhurst",
+    area: "Elmhurst",
+    shortName: "Elmhurst",
+    metaTitle: "Hyperbaric Oxygen Therapy Near Elmhurst | HBOTQ Queens",
+    metaDescription:
+      "Elmhurst patients are minutes from HBOTQ in neighboring Woodside. Physician-led, medical-grade hyperbaric oxygen therapy with free parking. Medicare and most insurers accepted.",
+    summary:
+      "Just up the road from Elmhurst — medical-grade hyperbaric oxygen therapy, physician-led, with free parking.",
+    intro:
+      "Elmhurst borders Woodside, so HBOTQ is only minutes away. A short ride on the 7 or the M and R, or a quick drive up Broadway, brings Elmhurst patients to a dedicated hyperbaric medicine and wound-care center treating non-healing wounds, diabetic lower-extremity wounds, radiation tissue damage, and sudden hearing loss.",
+    gettingHere: {
+      transit:
+        "From 90th Street–Elmhurst Avenue on the 7, or the Elmhurst Avenue stop on the M and R, you're a few minutes from the Woodside area. Total trips run about 10–15 minutes.",
+      driving:
+        "Broadway or Queens Boulevard reach us in roughly 5–10 minutes by car.",
+      parking: "Free patient parking is available on-site.",
+    },
+    neighborhoods: [
+      "Broadway corridor",
+      "Elmhurst Hospital area",
+      "Newtown",
+      "Jackson Heights border",
+    ],
+    whyTravel:
+      "For neighboring Elmhurst, HBOTQ pairs a genuinely short commute with hard-shell chambers at clinical pressures, board-certified physician oversight, free parking, and insurance pre-authorization handled for you.",
+  },
 ];
 
 export function getLocation(slug: string): Location | undefined {
