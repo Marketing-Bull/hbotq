@@ -1,13 +1,22 @@
 import Link from "next/link";
 import { footerNav } from "@/lib/data/nav";
 import { site } from "@/lib/data/site";
+import { locations } from "@/lib/data/locations";
+
+const areaLinks = [
+  { label: "All areas we serve", href: "/locations/" },
+  ...locations.map((l) => ({
+    label: l.area,
+    href: `/locations/${l.slug}/`,
+  })),
+];
 
 export function Footer() {
   return (
     <footer className="bg-[var(--color-brand-800)] text-[var(--color-sand-100)]">
       <div className="container-page py-16 lg:py-20">
-        <div className="grid gap-10 lg:grid-cols-4">
-          <div>
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-5">
+          <div className="sm:col-span-2 lg:col-span-1">
             <Link
               href="/"
               className="inline-flex items-center gap-2 font-display text-xl font-semibold text-white"
@@ -45,6 +54,7 @@ export function Footer() {
 
           <FooterColumn title="Explore" links={footerNav.explore} />
           <FooterColumn title="Conditions" links={footerNav.conditions} />
+          <FooterColumn title="Areas We Serve" links={areaLinks} />
           <FooterColumn title="Visit" links={footerNav.legal} />
         </div>
 
