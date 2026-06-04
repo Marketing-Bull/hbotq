@@ -8,6 +8,7 @@ const STATIC_ROUTES: { path: string; priority: number }[] = [
   { path: "/treatment/", priority: 0.9 },
   { path: "/conditions/", priority: 0.9 },
   { path: "/locations/", priority: 0.8 },
+  { path: "/videos/", priority: 0.6 },
   { path: "/physicians/", priority: 0.7 },
   { path: "/faqs/", priority: 0.7 },
   { path: "/contact-us/", priority: 0.8 },
