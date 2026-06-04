@@ -3,6 +3,7 @@ import { site } from "@/lib/data/site";
 import { conditions } from "@/lib/data/conditions";
 import { locations } from "@/lib/data/locations";
 import { wellnessUses } from "@/lib/data/wellness";
+import { articles } from "@/lib/data/articles";
 
 const STATIC_ROUTES: { path: string; priority: number }[] = [
   { path: "/", priority: 1.0 },
@@ -10,6 +11,7 @@ const STATIC_ROUTES: { path: string; priority: number }[] = [
   { path: "/conditions/", priority: 0.9 },
   { path: "/locations/", priority: 0.8 },
   { path: "/wellness/", priority: 0.7 },
+  { path: "/resources/", priority: 0.7 },
   { path: "/videos/", priority: 0.6 },
   { path: "/physicians/", priority: 0.7 },
   { path: "/faqs/", priority: 0.7 },
