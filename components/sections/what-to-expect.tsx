@@ -21,9 +21,13 @@ export function WhatToExpect() {
           {processSteps.map((s) => (
             <div
               key={s.step}
-              className="rounded-2xl border border-[var(--color-surface-border)] p-6 bg-white"
+              className="group relative rounded-2xl border border-[var(--color-surface-border)] p-6 bg-white transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:border-[var(--color-brand-200)]"
             >
-              <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[var(--color-brand-500)] text-white font-semibold">
+              <span
+                aria-hidden
+                className="absolute inset-x-6 -top-px h-1 rounded-b bg-[var(--color-brand-500)] opacity-0 transition-opacity group-hover:opacity-100"
+              />
+              <span className="inline-flex items-center justify-center w-11 h-11 rounded-full bg-[var(--color-brand-500)] text-white font-semibold font-display text-lg transition-transform group-hover:scale-110">
                 {s.step}
               </span>
               <h3 className="mt-4 font-display text-lg font-semibold">
