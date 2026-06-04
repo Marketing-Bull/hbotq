@@ -131,43 +131,12 @@ export default async function PhysicianDetailPage(props: {
       <section className="section bg-white">
         <div className="container-page grid gap-12 lg:grid-cols-[1fr_320px]">
           <div className="max-w-2xl">
-            {p.highlights?.length ? (
-              <ul className="mb-10 grid gap-x-6 gap-y-2.5 sm:grid-cols-2">
-                {p.highlights.map((h) => (
-                  <li
-                    key={h}
-                    className="flex items-start gap-2.5 text-sm font-medium text-[var(--color-ink)]"
-                  >
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      aria-hidden
-                      className="mt-0.5 shrink-0 text-[var(--color-brand-500)]"
-                    >
-                      <path
-                        d="M5 12l4 4L19 7"
-                        stroke="currentColor"
-                        strokeWidth="2.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        fill="none"
-                      />
-                    </svg>
-                    {h}
-                  </li>
-                ))}
-              </ul>
-            ) : null}
-
             <h2 className="font-display text-2xl lg:text-3xl font-semibold">
               About {p.name.split(",")[0].split(" ").slice(0, 2).join(" ")}
             </h2>
-            <div className="mt-5 space-y-4 text-lg text-[var(--color-ink-muted)] leading-relaxed">
-              {(p.bioLong ?? [p.bio]).map((para) => (
-                <p key={para}>{para}</p>
-              ))}
-            </div>
+            <p className="mt-5 text-lg text-[var(--color-ink-muted)] leading-relaxed">
+              {p.bio}
+            </p>
 
             {p.specialties.length ? (
               <>
