@@ -13,6 +13,7 @@ export const footerNav = {
     { label: "Conditions", href: "/conditions/" },
     { label: "Areas We Serve", href: "/locations/" },
     { label: "Wellness & Recovery", href: "/wellness/" },
+    { label: "Resources & Guides", href: "/resources/" },
     { label: "Video Library", href: "/videos/" },
     { label: "Physicians", href: "/physicians/" },
     { label: "FAQs", href: "/faqs/" },

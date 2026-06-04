@@ -158,6 +158,37 @@ export function videoObjectSchema(v: {
   };
 }
 
+export function articleSchema(opts: {
+  title: string;
+  description: string;
+  path: string;
+  datePublished: string;
+  dateModified: string;
+  author: { name: string; title: string };
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "MedicalScholarlyArticle",
+    headline: opts.title,
+    description: opts.description,
+    url: `${site.url}${opts.path}`,
+    mainEntityOfPage: `${site.url}${opts.path}`,
+    datePublished: opts.datePublished,
+    dateModified: opts.dateModified,
+    author: {
+      "@type": "Physician",
+      name: opts.author.name,
+      jobTitle: opts.author.title,
+    },
+    reviewedBy: {
+      "@type": "Physician",
+      name: opts.author.name,
+      jobTitle: opts.author.title,
+    },
+    publisher: { "@id": `${site.url}/#business` },
+  };
+}
+
 export function medicalWebPageSchema(opts: {
   name: string;
   description: string;

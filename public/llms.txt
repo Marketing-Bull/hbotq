@@ -33,6 +33,7 @@ Website: https://hbotq.com
 - Physicians: https://hbotq.com/physicians/
 - Areas served (NYC, Manhattan, Brooklyn, Queens neighborhoods): https://hbotq.com/locations/
 - FAQs: https://hbotq.com/faqs/
+- Resources & guides (physician-reviewed): https://hbotq.com/resources/
 - Video library: https://hbotq.com/videos/
 - Contact / book a consultation: https://hbotq.com/contact-us/
 

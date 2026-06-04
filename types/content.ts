@@ -30,6 +30,21 @@ export interface Condition {
   relatedSlugs: ConditionSlug[];
 }
 
+export interface Article {
+  slug: string;
+  title: string;
+  metaTitle: string;
+  metaDescription: string;
+  excerpt: string;
+  datePublished: string;
+  dateModified: string;
+  authorSlug: string;
+  readMinutes: number;
+  keyTakeaways: string[];
+  sections: ConditionSection[];
+  relatedConditionSlugs?: ConditionSlug[];
+}
+
 export interface WellnessUse {
   slug: string;
   name: string;
