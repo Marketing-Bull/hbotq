@@ -10,6 +10,7 @@ export const footerNav = {
   explore: [
     { label: "Treatment", href: "/treatment/" },
     { label: "Conditions", href: "/conditions/" },
+    { label: "Areas We Serve", href: "/locations/" },
     { label: "Physicians", href: "/physicians/" },
     { label: "FAQs", href: "/faqs/" },
   ],
