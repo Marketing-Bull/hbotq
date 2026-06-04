@@ -77,77 +77,94 @@ export default function HyperbaricTherapyPage() {
   return (
     <div>
 
-      {/* ── HERO ──────────────────────────────────────────────────────────── */}
+      {/* ── HERO + FORM ───────────────────────────────────────────────────── */}
       <section className="relative bg-[var(--color-brand-800)] overflow-hidden">
         <div
           aria-hidden
           className="absolute inset-0 opacity-10"
           style={{
             backgroundImage:
-              "radial-gradient(circle at 20% 50%, var(--color-brand-500) 0, transparent 60%), radial-gradient(circle at 80% 30%, #e07856 0, transparent 50%)",
+              "radial-gradient(circle at 15% 60%, var(--color-brand-500) 0, transparent 55%), radial-gradient(circle at 85% 20%, #e07856 0, transparent 45%)",
           }}
         />
-        <div className="container-page relative z-10 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center py-14 lg:py-20">
-          <div>
+        <div className="container-page relative z-10 grid lg:grid-cols-[1fr_420px] gap-10 lg:gap-14 items-start py-12 lg:py-16">
+
+          {/* Left: headline + quick trust signals */}
+          <div className="lg:pt-4">
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--color-sand-300)]">
               Hyperbaric Medicine · Woodside, Queens, NY
             </p>
-            <h1 className="mt-4 font-display text-4xl sm:text-5xl lg:text-6xl font-semibold text-white leading-[1.05]">
+            <h1 className="mt-4 font-display text-4xl sm:text-5xl lg:text-[3.25rem] font-semibold text-white leading-[1.05]">
               Hyperbaric oxygen therapy,{" "}
               <span className="text-[var(--color-accent)]">done right.</span>
             </h1>
-            <p className="mt-6 text-lg text-white/80 leading-relaxed max-w-xl">
-              HBOTQ is the Hyperbaric Medicine and Wound Treatment Center of
-              Queens — hard-shell medical-grade chambers, board-certified
-              physicians, and insurance handled for you.
+            <p className="mt-5 text-lg text-white/80 leading-relaxed">
+              HBOTQ is the Hyperbaric Medicine and Wound Treatment Center of Queens —
+              hard-shell medical-grade chambers, board-certified physicians,
+              and insurance handled for you.
             </p>
 
-            <div className="mt-8 grid grid-cols-2 gap-3 max-w-sm">
+            {/* Bullet trust signals */}
+            <ul className="mt-7 space-y-2.5">
+              {[
+                "Hard-shell chambers at medical pressure (2.0–2.5 ATA)",
+                "Board-certified physicians supervising every case",
+                "Medicare, Medicaid & most major insurers accepted",
+                "Free patient parking · 2 blocks from the 7 train",
+              ].map((b) => (
+                <li key={b} className="flex items-center gap-3 text-white/85 text-base">
+                  <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden className="shrink-0 text-[var(--color-accent)]">
+                    <path d="M5 12l4 4L19 7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                  </svg>
+                  {b}
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-8 flex flex-wrap gap-3">
+              <a
+                href={`tel:${site.phoneE164}`}
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-white/15 border border-white/30 text-white px-6 py-3 font-semibold hover:bg-white/25 transition-colors"
+              >
+                <svg width="17" height="17" viewBox="0 0 24 24" aria-hidden fill="currentColor">
+                  <path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .58 3.6 1 1 0 0 1-.24 1z" />
+                </svg>
+                Call {site.phone}
+              </a>
+            </div>
+          </div>
+
+          {/* Right: trust badges above form → form → reassurance below */}
+          <div>
+            {/* Trust badge strip above the form */}
+            <div className="grid grid-cols-2 gap-2 mb-3">
               {TRUST_BADGES.map((b) => (
                 <div
                   key={b.stat}
-                  className="rounded-xl bg-white/10 border border-white/20 px-4 py-3"
+                  className="flex items-center gap-2 rounded-lg bg-white/10 border border-white/20 px-3 py-2"
                 >
-                  <p className="font-display text-lg font-semibold text-white leading-tight">
-                    {b.stat}
-                  </p>
-                  <p className="text-xs text-white/70 mt-0.5">{b.label}</p>
+                  <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden className="shrink-0 text-[var(--color-accent)]">
+                    <path d="M5 12l4 4L19 7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                  </svg>
+                  <span className="text-xs font-semibold text-white leading-tight">
+                    {b.stat} <span className="font-normal text-white/70">{b.label}</span>
+                  </span>
                 </div>
               ))}
             </div>
 
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link
-                href="/contact-us/"
-                className="inline-flex items-center justify-center rounded-full bg-[var(--color-accent)] text-white px-7 py-4 text-base font-semibold hover:bg-[var(--color-accent-hover)] transition-colors"
-              >
-                Book a free consultation
-              </Link>
-              <a
-                href={`tel:${site.phoneE164}`}
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-white/40 text-white px-7 py-4 text-base font-semibold hover:bg-white/10 transition-colors"
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden fill="currentColor">
-                  <path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .58 3.6 1 1 0 0 1-.24 1z" />
-                </svg>
-                {site.phone}
-              </a>
-            </div>
+            {/* The form card */}
+            <ConsultationForm
+              source="hyperbaric-therapy-lp-hero"
+              heading="Book your free consultation"
+              subheading="Tell us your situation. We respond within one business day."
+            />
+
+            {/* Reassurance strip below the form */}
             <ReassuranceLine
               tone="light"
-              className="mt-5 justify-start"
-              items={["Free consultation", "No obligation", "We handle insurance"]}
-            />
-          </div>
-
-          <div className="relative aspect-[4/3] rounded-2xl overflow-hidden hidden lg:block ring-1 ring-white/20">
-            <Image
-              src="/images/hero/patient-in-chamber.jpg"
-              alt="Patient resting in a hard-shell hyperbaric oxygen chamber at HBOTQ in Woodside, Queens"
-              fill
-              priority
-              sizes="45vw"
-              className="object-cover"
+              className="mt-3 justify-center text-xs"
+              items={["Free & no obligation", "We handle insurance paperwork", "No referral needed"]}
             />
           </div>
         </div>
@@ -155,71 +172,43 @@ export default function HyperbaricTherapyPage() {
 
       <TrustBar />
 
-      {/* ── CONDITIONS + FORM ─────────────────────────────────────────────── */}
+      {/* ── CONDITIONS ────────────────────────────────────────────────────── */}
       <section className="section bg-white">
-        <div className="container-page grid gap-12 lg:grid-cols-[1fr_380px] items-start">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.15em] text-[var(--color-brand-500)]">
-              FDA-approved indications
-            </p>
-            <h2 className="mt-3 font-display text-3xl lg:text-4xl font-semibold">
-              Conditions we treat.
-            </h2>
-            <p className="mt-4 text-lg text-[var(--color-ink-muted)]">
-              For these indications, treatment is typically covered by Medicare,
-              Medicaid, and most major insurers.
-            </p>
-            <div className="mt-8 grid gap-4 sm:grid-cols-2">
-              {fdaConditions.map((c) => (
-                <Link
-                  key={c.slug}
-                  href={`/condition/${c.slug}/`}
-                  className="group flex items-start gap-3 rounded-xl border border-[var(--color-surface-border)] bg-[var(--color-sand-100)] p-4 hover:border-[var(--color-brand-300)] hover:shadow-md transition-all duration-200"
-                >
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    aria-hidden
-                    className="shrink-0 mt-0.5 text-[var(--color-brand-500)]"
-                  >
-                    <path
-                      d="M5 12l4 4L19 7"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      fill="none"
-                    />
-                  </svg>
-                  <div>
-                    <p className="font-semibold text-[var(--color-ink)] group-hover:text-[var(--color-brand-500)] leading-snug">
-                      {c.name}
-                    </p>
-                    <p className="mt-1 text-xs text-[var(--color-ink-muted)] leading-snug line-clamp-2">
-                      {c.summary}
-                    </p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-            <Link
-              href="/conditions/"
-              className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--color-brand-500)] hover:underline"
-            >
-              See all conditions including off-label uses
-              <span aria-hidden>→</span>
-            </Link>
+        <div className="container-page">
+          <p className="text-sm font-semibold uppercase tracking-[0.15em] text-[var(--color-brand-500)]">
+            FDA-approved indications
+          </p>
+          <h2 className="mt-3 font-display text-3xl lg:text-4xl font-semibold">
+            Conditions we treat.
+          </h2>
+          <p className="mt-4 text-lg text-[var(--color-ink-muted)] max-w-2xl">
+            For these indications, treatment is typically covered by Medicare,
+            Medicaid, and most major insurers.
+          </p>
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {fdaConditions.map((c) => (
+              <Link
+                key={c.slug}
+                href={`/condition/${c.slug}/`}
+                className="group flex items-start gap-3 rounded-xl border border-[var(--color-surface-border)] bg-[var(--color-sand-100)] p-4 hover:border-[var(--color-brand-300)] hover:shadow-md transition-all duration-200"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden className="shrink-0 mt-0.5 text-[var(--color-brand-500)]">
+                  <path d="M5 12l4 4L19 7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                </svg>
+                <div>
+                  <p className="font-semibold text-[var(--color-ink)] group-hover:text-[var(--color-brand-500)] leading-snug">
+                    {c.name}
+                  </p>
+                  <p className="mt-1 text-xs text-[var(--color-ink-muted)] leading-snug line-clamp-2">
+                    {c.summary}
+                  </p>
+                </div>
+              </Link>
+            ))}
           </div>
-
-          {/* Sticky consultation form */}
-          <div className="lg:sticky lg:top-24">
-            <ConsultationForm
-              source="hyperbaric-therapy-lp"
-              heading="Book your free consultation"
-              subheading="Tell us your situation. We respond within one business day and will let you know honestly whether HBOT can help."
-            />
-          </div>
+          <Link href="/conditions/" className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--color-brand-500)] hover:underline">
+            See all conditions including off-label uses <span aria-hidden>→</span>
+          </Link>
         </div>
       </section>
 
