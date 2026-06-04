@@ -57,9 +57,11 @@
   - In `ConsultationForm`, on successful submit: `dataLayer.push({ event: 'form_submit', form_name: source })`
   - Track in GTM as a custom trigger
 
-- [ ] **T-03** — Add outbound link click tracking
-  - Track `tel:` links and `mailto:` links via GTM auto-event (link click listener)
-  - `tel: +1-718-925-3322` is the main conversion signal
+- [ ] **T-03** — Add outbound link click tracking ✅ DONE 2026-06-04
+  - Added `lib/analytics/track.ts` with `trackClick()` helper → fires `dataLayer.push({ event: 'outbound_click', outbound_category, location })`
+  - Applied to all `tel:` and `mailto:` links across: StickyCta, Hero, PhoneCta, CtaBanner, Header, Footer, MobileNav
+  - GTM already loads via `afterInteractive` Script — no additional GTM setup needed
+  - All tracking components marked `"use client"` to support onClick event handlers
 
 - [ ] **T-04** — Check Google Business Profile integration ✅ DONE 2026-06-02
   - Footer has Facebook/Instagram but no Google Business Profile link ✅ NOW ADDED
