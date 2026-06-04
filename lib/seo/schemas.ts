@@ -102,6 +102,32 @@ export function medicalConditionSchema(c: Condition) {
   };
 }
 
+export function videoObjectSchema(v: {
+  id: string;
+  title: string;
+  description: string;
+  uploadDate: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    name: v.title,
+    description: v.description,
+    thumbnailUrl: [
+      `https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`,
+      `https://i.ytimg.com/vi/${v.id}/maxresdefault.jpg`,
+    ],
+    uploadDate: v.uploadDate,
+    embedUrl: `https://www.youtube-nocookie.com/embed/${v.id}`,
+    contentUrl: `https://www.youtube.com/watch?v=${v.id}`,
+    publisher: {
+      "@type": "Organization",
+      name: site.name,
+      url: site.url,
+    },
+  };
+}
+
 export function faqPageSchema(items: Faq[]) {
   return {
     "@context": "https://schema.org",

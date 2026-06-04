@@ -21,6 +21,7 @@ import {
   medicalConditionSchema,
   breadcrumbSchema,
   faqPageSchema,
+  videoObjectSchema,
 } from "@/lib/seo/schemas";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { site } from "@/lib/data/site";
@@ -79,6 +80,7 @@ export default async function ConditionPage(props: {
         ])}
       />
       {faqs.length > 0 ? <JsonLd data={faqPageSchema(faqs)} /> : null}
+      {video ? <JsonLd data={videoObjectSchema(video)} /> : null}
 
       <Hero
         variant="condition"
