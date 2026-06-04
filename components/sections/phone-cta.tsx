@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { site } from "@/lib/data/site";
+import { ReassuranceLine } from "@/components/sections/reassurance-line";
 
 export function PhoneCta() {
   return (
@@ -30,6 +31,7 @@ export function PhoneCta() {
               Book a free consultation
             </Link>
           </div>
+          <ReassuranceLine className="mt-6" />
         </div>
       </div>
     </section>

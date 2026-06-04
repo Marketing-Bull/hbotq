@@ -68,7 +68,7 @@ export default function RootLayout({
         </main>
         <Footer />
         <StickyCta />
-        <div className="h-16 lg:hidden" aria-hidden />
+        <div className="h-20 lg:hidden" aria-hidden />
       </body>
     </html>
   );

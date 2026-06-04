@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { site } from "@/lib/data/site";
+import { ReassuranceLine } from "@/components/sections/reassurance-line";
 
 export function CtaBanner({
   heading = "Ready to find out if HBOT can help?",
@@ -31,6 +32,7 @@ export function CtaBanner({
             Call {site.phone}
           </a>
         </div>
+        <ReassuranceLine tone="light" className="mt-6" />
       </div>
     </section>
   );
