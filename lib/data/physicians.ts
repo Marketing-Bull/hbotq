@@ -23,7 +23,11 @@ export const physicians: Physician[] = [
       "New York Methodist Hospital",
     ],
     languages: ["English", "Spanish", "Hindi"],
-    // npi / sameAs: add once verified from the NPPES registry & external profiles
+    sameAs: [
+      "https://data.cms.gov/tools/medicare-revalidation-list/provider/I20050215000786",
+      "https://www.zocdoc.com/doctor/manoj-sadhnani-dpm-470942",
+      "https://www.healthgrades.com/physician/dr-manoj-sadhnani-32d6x",
+    ],
   },
   {
     slug: "regina-matatova",
@@ -40,6 +44,9 @@ export const physicians: Physician[] = [
     image: "/images/physicians/nurse-regina.webp",
     education: ["Master of Science in Nursing — CUNY Hunter College"],
     languages: ["English", "Hebrew", "Russian"],
-    // npi / sameAs: add once verified from the NPPES registry & external profiles
+    sameAs: [
+      "https://www.doximity.com/pub/rigina-matatova-np",
+      "https://www.vitals.com/doctors/rigina-matatova-n02ve5",
+    ],
   },
 ];
