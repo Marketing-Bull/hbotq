@@ -13,6 +13,7 @@ export const metadata = buildMetadata({
   description:
     "How hyperbaric oxygen therapy works at HBOTQ in Woodside, Queens — serving patients across NYC. From the science of pressurized oxygen to what a session actually looks like.",
   path: "/treatment/",
+  image: "/images/og/treatment.jpg",
 });
 
 export const dynamic = "force-static";
