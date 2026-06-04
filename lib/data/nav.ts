@@ -12,6 +12,7 @@ export const footerNav = {
     { label: "Treatment", href: "/treatment/" },
     { label: "Conditions", href: "/conditions/" },
     { label: "Areas We Serve", href: "/locations/" },
+    { label: "Video Library", href: "/videos/" },
     { label: "Physicians", href: "/physicians/" },
     { label: "FAQs", href: "/faqs/" },
   ],

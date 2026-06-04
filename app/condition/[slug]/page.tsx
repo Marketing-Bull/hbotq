@@ -9,11 +9,13 @@ import { ConsultationForm } from "@/components/forms/consultation-form";
 import { CtaBanner } from "@/components/sections/cta-banner";
 import { JsonLd } from "@/components/seo/json-ld";
 import { ConditionCard } from "@/components/cards/condition-card";
+import { VideoEmbed } from "@/components/media/video-embed";
 import {
   conditions,
   getCondition,
   relatedConditions,
 } from "@/lib/data/conditions";
+import { getConditionVideo } from "@/lib/data/videos";
 import { getFaqsByIds } from "@/lib/data/faqs";
 import {
   medicalConditionSchema,
@@ -61,6 +63,7 @@ export default async function ConditionPage(props: {
 
   const related = relatedConditions(slug);
   const faqs = condition.faqIds ? getFaqsByIds(condition.faqIds) : [];
+  const video = getConditionVideo(slug);
 
   return (
     <>
@@ -107,6 +110,26 @@ export default async function ConditionPage(props: {
           </p>
         </div>
       </section>
+
+      {video ? (
+        <section className="section bg-[var(--color-sand-100)]">
+          <div className="container-page max-w-4xl">
+            <p className="text-sm font-semibold uppercase tracking-[0.15em] text-[var(--color-brand-500)]">
+              Watch
+            </p>
+            <h2 className="mt-3 font-display text-2xl lg:text-3xl font-semibold">
+              {condition.shortName} & HBOT, explained
+            </h2>
+            <div className="mt-8">
+              <VideoEmbed
+                id={video.id}
+                title={video.title}
+                caption={video.description}
+              />
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       {condition.sections.map((s, idx) => (
         <section
