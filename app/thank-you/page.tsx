@@ -31,6 +31,45 @@ export default function ThankYouPage() {
         subtitle="A member of our team will follow up shortly, usually within the same business day."
       />
       <section className="section bg-white">
+        <div className="container-page max-w-3xl">
+          <h2 className="text-center font-display text-2xl lg:text-3xl font-semibold">
+            What happens next
+          </h2>
+          <ol className="mt-8 grid gap-5 sm:grid-cols-3">
+            {[
+              {
+                t: "We review your note",
+                d: "Our team reads what you shared and matches you with the right physician.",
+              },
+              {
+                t: "We call to schedule",
+                d: "Usually within the same business day, we reach out to set up your evaluation.",
+              },
+              {
+                t: "You meet your physician",
+                d: "An honest assessment of whether HBOT can help — and we handle insurance.",
+              },
+            ].map((s, i) => (
+              <li
+                key={s.t}
+                className="rounded-2xl border border-[var(--color-surface-border)] bg-white p-6"
+              >
+                <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[var(--color-brand-500)] text-white font-display font-semibold">
+                  {i + 1}
+                </span>
+                <h3 className="mt-4 font-display text-lg font-semibold">
+                  {s.t}
+                </h3>
+                <p className="mt-2 text-sm text-[var(--color-ink-muted)] leading-relaxed">
+                  {s.d}
+                </p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section className="section bg-white pt-0">
         <div className="container-page max-w-2xl text-center">
           <div className="rounded-2xl border border-[var(--color-surface-border)] bg-[var(--color-sand-100)] p-8 lg:p-10">
             <h2 className="font-display text-2xl font-semibold">
@@ -49,10 +88,10 @@ export default function ThankYouPage() {
                 Call {site.phone}
               </a>
               <Link
-                href="/conditions/"
+                href="/videos/"
                 className="inline-flex items-center justify-center rounded-full border border-[var(--color-brand-500)] text-[var(--color-brand-500)] px-6 py-3 font-semibold"
               >
-                Read about conditions
+                Watch: how HBOT works
               </Link>
             </div>
           </div>
