@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { primaryNav } from "@/lib/data/nav";
 import { site } from "@/lib/data/site";
 import { MobileNav } from "@/components/layout/mobile-nav";
@@ -9,13 +10,17 @@ export function Header() {
       <div className="container-page flex items-center justify-between h-16 lg:h-20">
         <Link
           href="/"
-          className="flex items-center gap-2 font-display text-xl font-semibold text-[var(--color-brand-500)]"
-          aria-label="HBOTQ home"
+          className="flex items-center"
+          aria-label="HBOTQ — Hyperbaric Medicine and Wound Treatment Center of Queens, home"
         >
-          <span className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-[var(--color-brand-500)] text-white text-sm font-bold">
-            H
-          </span>
-          <span>HBOTQ</span>
+          <Image
+            src="/images/brand/wordmark.webp"
+            alt="HBOTQ — Hyperbaric Medicine and Wound Treatment Center of Queens"
+            width={284}
+            height={78}
+            priority
+            className="h-9 lg:h-10 w-auto"
+          />
         </Link>
 
         <nav
