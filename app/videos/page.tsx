@@ -3,8 +3,10 @@ import { Hero } from "@/components/sections/hero";
 import { TrustBar } from "@/components/sections/trust-bar";
 import { CtaBanner } from "@/components/sections/cta-banner";
 import { VideoEmbed } from "@/components/media/video-embed";
-import { conditionVideos, topicVideos } from "@/lib/data/videos";
+import { JsonLd } from "@/components/seo/json-ld";
+import { conditionVideos, topicVideos, videos } from "@/lib/data/videos";
 import { getCondition } from "@/lib/data/conditions";
+import { videoObjectSchema } from "@/lib/seo/schemas";
 import { buildMetadata } from "@/lib/seo/metadata";
 
 export const metadata = buildMetadata({
@@ -19,6 +21,9 @@ export const dynamic = "force-static";
 export default function VideosPage() {
   return (
     <>
+      {videos.map((v) => (
+        <JsonLd key={v.id} data={videoObjectSchema(v)} />
+      ))}
       <Hero
         variant="page"
         eyebrow="Video Library"
