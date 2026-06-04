@@ -1,6 +1,18 @@
 import Image from "next/image";
 import type { Physician } from "@/types/content";
 
+const PROFILE_LABELS: { match: string; label: string }[] = [
+  { match: "healthgrades.com", label: "Healthgrades" },
+  { match: "zocdoc.com", label: "Zocdoc" },
+  { match: "doximity.com", label: "Doximity" },
+  { match: "vitals.com", label: "Vitals" },
+  { match: "cms.gov", label: "Medicare (CMS)" },
+];
+
+function profileLabel(url: string): string {
+  return PROFILE_LABELS.find((p) => url.includes(p.match))?.label ?? "Profile";
+}
+
 export function PhysicianCard({ p }: { p: Physician }) {
   const initials = p.name
     .split(" ")
@@ -49,6 +61,26 @@ export function PhysicianCard({ p }: { p: Physician }) {
               {s}
             </span>
           ))}
+        </div>
+      ) : null}
+      {p.sameAs?.length ? (
+        <div className="mt-5 border-t border-[var(--color-surface-border)] pt-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--color-ink-muted)]">
+            Verified profiles
+          </p>
+          <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1.5">
+            {p.sameAs.map((url) => (
+              <a
+                key={url}
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm font-medium text-[var(--color-brand-500)] hover:underline"
+              >
+                {profileLabel(url)}
+              </a>
+            ))}
+          </div>
         </div>
       ) : null}
     </article>
