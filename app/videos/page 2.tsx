@@ -3,17 +3,8 @@ import { Hero } from "@/components/sections/hero";
 import { TrustBar } from "@/components/sections/trust-bar";
 import { CtaBanner } from "@/components/sections/cta-banner";
 import { VideoEmbed } from "@/components/media/video-embed";
-import { TikTokEmbed } from "@/components/media/tiktok-embed";
-import { JsonLd } from "@/components/seo/json-ld";
-import {
-  conditionVideos,
-  topicVideos,
-  videos,
-  tiktoks,
-  TIKTOK_PROFILE_URL,
-} from "@/lib/data/videos";
+import { conditionVideos, topicVideos } from "@/lib/data/videos";
 import { getCondition } from "@/lib/data/conditions";
-import { videoObjectSchema } from "@/lib/seo/schemas";
 import { buildMetadata } from "@/lib/seo/metadata";
 
 export const metadata = buildMetadata({
@@ -28,9 +19,6 @@ export const dynamic = "force-static";
 export default function VideosPage() {
   return (
     <>
-      {videos.map((v) => (
-        <JsonLd key={v.id} data={videoObjectSchema(v)} />
-      ))}
       <Hero
         variant="page"
         eyebrow="Video Library"
@@ -101,35 +89,6 @@ export default function VideosPage() {
                   {v.description}
                 </p>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section bg-white">
-        <div className="container-page">
-          <div className="max-w-3xl">
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-              <h2 className="font-display text-3xl lg:text-4xl font-semibold">
-                From our TikTok
-              </h2>
-              <a
-                href={TIKTOK_PROFILE_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm font-semibold text-[var(--color-brand-500)] hover:underline"
-              >
-                @hyperbaricqueens →
-              </a>
-            </div>
-            <p className="mt-4 text-lg text-[var(--color-ink-muted)]">
-              Quick, everyday looks at how hyperbaric oxygen therapy supports
-              healing, recovery, and wellness.
-            </p>
-          </div>
-          <div className="mt-12 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
-            {tiktoks.map((t) => (
-              <TikTokEmbed key={t.id} id={t.id} label={t.label} />
             ))}
           </div>
         </div>

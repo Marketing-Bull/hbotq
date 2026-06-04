@@ -10,12 +10,13 @@ import { CtaBanner } from "@/components/sections/cta-banner";
 import { JsonLd } from "@/components/seo/json-ld";
 import { ConditionCard } from "@/components/cards/condition-card";
 import { VideoEmbed } from "@/components/media/video-embed";
+import { TikTokEmbed } from "@/components/media/tiktok-embed";
 import {
   conditions,
   getCondition,
   relatedConditions,
 } from "@/lib/data/conditions";
-import { getConditionVideo } from "@/lib/data/videos";
+import { getConditionVideo, getConditionTikTok } from "@/lib/data/videos";
 import { getFaqsByIds } from "@/lib/data/faqs";
 import {
   medicalConditionSchema,
@@ -65,6 +66,7 @@ export default async function ConditionPage(props: {
   const related = relatedConditions(slug);
   const faqs = condition.faqIds ? getFaqsByIds(condition.faqIds) : [];
   const video = getConditionVideo(slug);
+  const tiktok = getConditionTikTok(slug);
 
   return (
     <>
@@ -113,7 +115,7 @@ export default async function ConditionPage(props: {
         </div>
       </section>
 
-      {video ? (
+      {video || tiktok ? (
         <section className="section bg-[var(--color-sand-100)]">
           <div className="container-page max-w-4xl">
             <p className="text-sm font-semibold uppercase tracking-[0.15em] text-[var(--color-brand-500)]">
@@ -122,12 +124,22 @@ export default async function ConditionPage(props: {
             <h2 className="mt-3 font-display text-2xl lg:text-3xl font-semibold">
               {condition.shortName} & HBOT, explained
             </h2>
-            <div className="mt-8">
-              <VideoEmbed
-                id={video.id}
-                title={video.title}
-                caption={video.description}
-              />
+            <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-start">
+              {video ? (
+                <VideoEmbed
+                  id={video.id}
+                  title={video.title}
+                  caption={video.description}
+                />
+              ) : null}
+              {tiktok ? (
+                <div className="lg:w-[300px]">
+                  <TikTokEmbed id={tiktok.id} label={tiktok.label} />
+                  <p className="mt-3 text-center text-sm text-[var(--color-ink-muted)]">
+                    A quick look, from our TikTok
+                  </p>
+                </div>
+              ) : null}
             </div>
           </div>
         </section>
