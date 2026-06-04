@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { footerNav } from "@/lib/data/nav";
 import { site } from "@/lib/data/site";
 import { locations } from "@/lib/data/locations";
@@ -19,12 +20,16 @@ export function Footer() {
           <div className="sm:col-span-2 lg:col-span-1">
             <Link
               href="/"
-              className="inline-flex items-center gap-2 font-display text-xl font-semibold text-white"
+              className="inline-flex items-center"
+              aria-label="HBOTQ home"
             >
-              <span className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-[var(--color-accent)] text-white text-sm font-bold">
-                H
-              </span>
-              <span>HBOTQ</span>
+              <Image
+                src="/images/brand/wordmark-white.webp"
+                alt="HBOTQ — Hyperbaric Medicine and Wound Treatment Center of Queens"
+                width={284}
+                height={78}
+                className="h-10 w-auto"
+              />
             </Link>
             <p className="mt-4 text-sm leading-relaxed text-[var(--color-sand-300)]">
               {site.legalName}. Hyperbaric oxygen therapy and advanced wound
