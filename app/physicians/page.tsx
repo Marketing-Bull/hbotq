@@ -19,14 +19,7 @@ export default function PhysiciansPage() {
   return (
     <>
       {physicians.map((p) => (
-        <JsonLd
-          key={p.slug}
-          data={physicianSchema({
-            name: p.name,
-            title: p.title,
-            specialties: p.specialties,
-          })}
-        />
+        <JsonLd key={p.slug} data={physicianSchema(p)} />
       ))}
       <Hero
         variant="page"

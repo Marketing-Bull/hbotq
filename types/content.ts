@@ -76,6 +76,13 @@ export interface Physician {
   specialties: string[];
   bio: string;
   image?: string;
+  education?: string[];
+  affiliations?: string[];
+  languages?: string[];
+  /** Public NPI number — only populate if verified via the NPPES registry. */
+  npi?: string;
+  /** Verified external profile URLs (Healthgrades, NPI, LinkedIn, etc.). */
+  sameAs?: string[];
 }
 
 export interface Testimonial {

@@ -9,6 +9,7 @@ import { ConsultationForm } from "@/components/forms/consultation-form";
 import { CtaBanner } from "@/components/sections/cta-banner";
 import { JsonLd } from "@/components/seo/json-ld";
 import { ConditionCard } from "@/components/cards/condition-card";
+import { MedicalReviewer } from "@/components/seo/medical-reviewer";
 import { VideoEmbed } from "@/components/media/video-embed";
 import { TikTokEmbed } from "@/components/media/tiktok-embed";
 import {
@@ -109,6 +110,9 @@ export default async function ConditionPage(props: {
           <h2 className="mt-3 font-display text-3xl lg:text-4xl font-semibold">
             {condition.name} & hyperbaric oxygen
           </h2>
+          <div className="mt-6">
+            <MedicalReviewer />
+          </div>
           <p className="mt-6 text-lg text-[var(--color-ink-muted)] leading-relaxed">
             {condition.howHbotHelps}
           </p>

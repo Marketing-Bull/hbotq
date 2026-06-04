@@ -72,19 +72,49 @@ export function medicalBusinessSchema() {
   };
 }
 
-export function physicianSchema(opts: {
+export function physicianSchema(p: {
+  slug?: string;
   name: string;
   title: string;
   specialties: readonly string[];
+  bio?: string;
+  image?: string;
+  education?: readonly string[];
+  affiliations?: readonly string[];
+  languages?: readonly string[];
+  npi?: string;
+  sameAs?: readonly string[];
 }) {
-  return {
+  const schema: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "Physician",
-    name: opts.name,
-    jobTitle: opts.title,
-    medicalSpecialty: opts.specialties,
+    name: p.name,
+    jobTitle: p.title,
+    medicalSpecialty: p.specialties,
     worksFor: { "@id": `${site.url}/#business` },
   };
+  if (p.slug) schema["@id"] = `${site.url}/physicians/#${p.slug}`;
+  if (p.bio) schema.description = p.bio;
+  if (p.image) schema.image = `${site.url}${p.image}`;
+  if (p.education?.length)
+    schema.alumniOf = p.education.map((name) => ({
+      "@type": "EducationalOrganization",
+      name,
+    }));
+  if (p.affiliations?.length)
+    schema.affiliation = p.affiliations.map((name) => ({
+      "@type": "Organization",
+      name,
+    }));
+  if (p.languages?.length) schema.knowsLanguage = p.languages;
+  if (p.npi)
+    schema.identifier = {
+      "@type": "PropertyValue",
+      propertyID: "NPI",
+      value: p.npi,
+    };
+  if (p.sameAs?.length) schema.sameAs = p.sameAs;
+  return schema;
 }
 
 export function medicalConditionSchema(c: Condition) {
