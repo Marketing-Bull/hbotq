@@ -4,8 +4,6 @@ import { physicians } from "@/lib/data/physicians";
 
 /** Date this clinical content was last reviewed by a physician. */
 export const LAST_MEDICALLY_REVIEWED = "June 2026";
-/** ISO form for schema.org lastReviewed. */
-export const LAST_MEDICALLY_REVIEWED_ISO = "2026-06-01";
 
 /**
  * E-E-A-T byline: shows who medically reviewed the page and when.
@@ -35,7 +33,7 @@ export function MedicalReviewer({
         <p className="text-[var(--color-ink-muted)]">
           Medically reviewed by{" "}
           <Link
-            href={`/physicians/${reviewer.slug}/`}
+            href="/physicians/"
             className="font-semibold text-[var(--color-ink)] hover:text-[var(--color-brand-500)]"
           >
             {reviewer.name}
