@@ -33,6 +33,11 @@ export default function HomePage() {
         image="/images/hero/patient-in-chamber.jpg"
         imageAlt="A patient relaxing inside a hard-shell hyperbaric oxygen chamber at HBOTQ"
         priority
+        highlights={[
+          "FDA-approved indications",
+          "Board-certified physicians",
+          "Medicare & major insurers accepted",
+        ]}
       />
       <TrustBar />
       <ConditionsGrid />

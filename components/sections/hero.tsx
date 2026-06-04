@@ -14,6 +14,8 @@ interface HeroProps {
   image?: string;
   imageAlt?: string;
   priority?: boolean;
+  /** Short trust signals shown as chips beneath the CTAs */
+  highlights?: string[];
 }
 
 export function Hero({
@@ -26,6 +28,7 @@ export function Hero({
   image,
   imageAlt = "",
   priority = false,
+  highlights,
 }: HeroProps) {
   const isHome = variant === "home";
   const isLp = variant === "lp";
@@ -100,6 +103,35 @@ export function Hero({
                 {site.phone}
               </a>
             </p>
+          ) : null}
+
+          {highlights?.length ? (
+            <ul className="mt-8 flex flex-wrap gap-x-5 gap-y-2.5">
+              {highlights.map((h) => (
+                <li
+                  key={h}
+                  className="flex items-center gap-2 text-sm font-medium text-[var(--color-ink)]"
+                >
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    aria-hidden
+                    className="shrink-0 text-[var(--color-brand-500)]"
+                  >
+                    <path
+                      d="M5 12l4 4L19 7"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      fill="none"
+                    />
+                  </svg>
+                  {h}
+                </li>
+              ))}
+            </ul>
           ) : null}
         </div>
 
