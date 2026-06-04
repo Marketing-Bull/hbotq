@@ -5,6 +5,7 @@ import { locations } from "@/lib/data/locations";
 import { wellnessUses } from "@/lib/data/wellness";
 import { articles } from "@/lib/data/articles";
 import { physicians } from "@/lib/data/physicians";
+import { conditionLps } from "@/lib/data/lps";
 
 const STATIC_ROUTES: { path: string; priority: number }[] = [
   { path: "/", priority: 1.0 },
@@ -61,6 +62,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: "monthly" as const,
     priority: 0.6,
   }));
+  // lp/ pages are intentionally excluded from the sitemap —
+  // they're ad landing pages and should not compete with condition pages in organic.
+  void conditionLps; // import kept for type safety; not used in sitemap
+
   return [
     ...staticEntries,
     ...conditionEntries,
