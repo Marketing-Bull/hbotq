@@ -44,8 +44,8 @@ export const physicians: Physician[] = [
     ],
   },
   {
-    slug: "regina-matatova",
-    name: "Regina Matatova, MSN, APRN, AGPCNP-BC",
+    slug: "rigina-matatova",
+    name: "Rigina Matatova, MSN, APRN, AGPCNP-BC",
     title: "Adult-Gerontology Primary Care Nurse Practitioner",
     credentials: ["MSN", "APRN", "AGPCNP-BC"],
     specialties: [
@@ -54,11 +54,11 @@ export const physicians: Physician[] = [
       "Venous Stasis Ulcers",
       "Pressure Injuries",
     ],
-    bio: "Regina Matatova is a board-certified Adult-Gerontology Primary Care Nurse Practitioner specializing in wound care. She brings extensive experience treating complex wounds — diabetic foot ulcers, venous stasis ulcers, pressure injuries, and more — and partners with HBOTQ to use hyperbaric oxygen therapy as part of her patients' recovery plans. She holds a Master of Science in Nursing from CUNY Hunter College and consults with patients in English, Hebrew, and Russian.",
+    bio: "Rigina Matatova is a board-certified Adult-Gerontology Primary Care Nurse Practitioner specializing in wound care. She brings extensive experience treating complex wounds — diabetic foot ulcers, venous stasis ulcers, pressure injuries, and more — and partners with HBOTQ to use hyperbaric oxygen therapy as part of her patients' recovery plans. She holds a Master of Science in Nursing from CUNY Hunter College and consults with patients in English, Hebrew, and Russian.",
     bioLong: [
-      "Regina Matatova is a board-certified Adult-Gerontology Primary Care Nurse Practitioner (AGPCNP-BC) who has built her career around wound care. She earned her Master of Science in Nursing from CUNY Hunter College and brings extensive hands-on experience managing the kinds of complex, chronic wounds that don't respond to routine treatment.",
+      "Rigina Matatova is a board-certified Adult-Gerontology Primary Care Nurse Practitioner (AGPCNP-BC) who has built her career around wound care. She earned her Master of Science in Nursing from CUNY Hunter College and brings extensive hands-on experience managing the kinds of complex, chronic wounds that don't respond to routine treatment.",
       "Her clinical focus spans diabetic foot ulcers, venous stasis ulcers, pressure injuries, and other non-healing wounds. She partners with the HBOTQ team to integrate hyperbaric oxygen therapy into her patients' recovery plans — pairing meticulous wound management with the oxygen delivery that stalled tissue needs to heal.",
-      "Her approach is thorough and unhurried: she takes time to explain each step, coordinates closely with the rest of the medical team, and follows wounds through to closure. Regina consults with patients in English, Hebrew, and Russian.",
+      "Her approach is thorough and unhurried: she takes time to explain each step, coordinates closely with the rest of the medical team, and follows wounds through to closure. Rigina consults with patients in English, Hebrew, and Russian.",
     ],
     highlights: [
       "Board-certified nurse practitioner (AGPCNP-BC)",
