@@ -9,7 +9,10 @@ import { ConsultationForm } from "@/components/forms/consultation-form";
 import { CtaBanner } from "@/components/sections/cta-banner";
 import { JsonLd } from "@/components/seo/json-ld";
 import { ConditionCard } from "@/components/cards/condition-card";
-import { MedicalReviewer } from "@/components/seo/medical-reviewer";
+import {
+  MedicalReviewer,
+  LAST_MEDICALLY_REVIEWED_ISO,
+} from "@/components/seo/medical-reviewer";
 import { VideoEmbed } from "@/components/media/video-embed";
 import { TikTokEmbed } from "@/components/media/tiktok-embed";
 import {
@@ -24,7 +27,10 @@ import {
   breadcrumbSchema,
   faqPageSchema,
   videoObjectSchema,
+  medicalWebPageSchema,
 } from "@/lib/seo/schemas";
+import { getCitations } from "@/lib/data/citations";
+import { physicians } from "@/lib/data/physicians";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { site } from "@/lib/data/site";
 import type { ConsultationInput } from "@/lib/validation/consultation";
@@ -68,6 +74,8 @@ export default async function ConditionPage(props: {
   const faqs = condition.faqIds ? getFaqsByIds(condition.faqIds) : [];
   const video = getConditionVideo(slug);
   const tiktok = getConditionTikTok(slug);
+  const citations = getCitations(slug);
+  const reviewer = physicians[0];
 
   return (
     <>
@@ -84,6 +92,16 @@ export default async function ConditionPage(props: {
       />
       {faqs.length > 0 ? <JsonLd data={faqPageSchema(faqs)} /> : null}
       {video ? <JsonLd data={videoObjectSchema(video)} /> : null}
+      <JsonLd
+        data={medicalWebPageSchema({
+          name: condition.metaTitle,
+          description: condition.metaDescription,
+          path: `/condition/${condition.slug}/`,
+          lastReviewed: LAST_MEDICALLY_REVIEWED_ISO,
+          reviewer: { name: reviewer.name, title: reviewer.title },
+          citations,
+        })}
+      />
 
       <Hero
         variant="condition"
@@ -237,6 +255,50 @@ export default async function ConditionPage(props: {
           heading={`${condition.shortName} — common questions`}
           faqs={faqs}
         />
+      ) : null}
+
+      {citations.length ? (
+        <section className="section bg-[var(--color-sand-100)]">
+          <div className="container-page max-w-4xl">
+            <h2 className="font-display text-2xl lg:text-3xl font-semibold">
+              Sources &amp; further reading
+            </h2>
+            <p className="mt-3 text-[var(--color-ink-muted)]">
+              This page is informational and reviewed by our medical team. For
+              the underlying evidence, see:
+            </p>
+            <ul className="mt-6 space-y-3">
+              {citations.map((c) => (
+                <li key={c.url} className="flex items-start gap-3">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    aria-hidden
+                    className="mt-0.5 shrink-0 text-[var(--color-brand-500)]"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path
+                      d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  <a
+                    href={c.url}
+                    target="_blank"
+                    rel="noopener noreferrer nofollow"
+                    className="text-[var(--color-ink)] hover:text-[var(--color-brand-500)] hover:underline"
+                  >
+                    {c.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
       ) : null}
 
       {related.length ? (

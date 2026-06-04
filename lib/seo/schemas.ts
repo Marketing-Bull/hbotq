@@ -158,6 +158,37 @@ export function videoObjectSchema(v: {
   };
 }
 
+export function medicalWebPageSchema(opts: {
+  name: string;
+  description: string;
+  path: string;
+  lastReviewed: string;
+  reviewer: { name: string; title: string };
+  citations?: { label: string; url: string }[];
+}) {
+  const schema: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "MedicalWebPage",
+    name: opts.name,
+    description: opts.description,
+    url: `${site.url}${opts.path}`,
+    lastReviewed: opts.lastReviewed,
+    reviewedBy: {
+      "@type": "Physician",
+      name: opts.reviewer.name,
+      jobTitle: opts.reviewer.title,
+    },
+    publisher: { "@id": `${site.url}/#business` },
+  };
+  if (opts.citations?.length)
+    schema.citation = opts.citations.map((c) => ({
+      "@type": "CreativeWork",
+      name: c.label,
+      url: c.url,
+    }));
+  return schema;
+}
+
 export function faqPageSchema(items: Faq[]) {
   return {
     "@context": "https://schema.org",
