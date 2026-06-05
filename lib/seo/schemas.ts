@@ -4,6 +4,22 @@ import { testimonials } from "@/lib/data/testimonials";
 import type { Condition, Faq } from "@/types/content";
 
 export function medicalBusinessSchema() {
+  const count = testimonials.length;
+  const avg =
+    count > 0
+      ? testimonials.reduce((sum, t) => sum + (t.rating ?? 0), 0) / count
+      : 4.8;
+  const aggregateRating =
+    count > 0
+      ? {
+          "@type": "AggregateRating",
+          ratingValue: avg.toFixed(1),
+          reviewCount: count,
+          bestRating: 5,
+          worstRating: 1,
+        }
+      : undefined;
+
   const openingHoursSpecification = site.hours
     .filter((h) => h.open && h.close)
     .map((h) => ({
@@ -48,6 +64,7 @@ export function medicalBusinessSchema() {
     },
     openingHoursSpecification,
     sameAs: Object.values(site.social),
+    aggregateRating,
     employee: physicians.map((p) => ({
       "@type": "Physician",
       name: p.name,
