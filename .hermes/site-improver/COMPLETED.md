@@ -39,6 +39,8 @@ Format per entry:
 - **T-03** — Added `lib/analytics/track.ts` with `trackClick()` helper that fires `dataLayer.push({ event: 'outbound_click', outbound_category, location })` on tel: and mailto: link clicks. Applied to all phone/email links across: StickyCta, Hero, PhoneCta, CtaBanner, Header, Footer, MobileNav. All tracking components marked `"use client"` for onClick handler support. GTM already loads via `afterInteractive` Script — no additional GTM setup needed.
 - **PR**: https://github.com/Marketing-Bull/hbotq/pull/1
 
-## 2026-06-03 — PR #1 (open)
+## 2026-06-05 — PR #37
+- **S-01** — Moved `AggregateRating` from a separate `aggregateRatingSchema()` (rendered as its own JSON-LD block in `layout.tsx`) into `medicalBusinessSchema()` as a nested `aggregateRating` property. Now computes actual avg rating from 5 testimonials (5.0). Removed redundant second `<JsonLd>` injection — all business-level structured data now in a single JSON-LD block. Fallback to 4.8 placeholder when no testimonials exist.
+- **PR**: https://github.com/Marketing-Bull/hbotq/pull/37
 - **S-02** — Added individual `@type: Review` JSON-LD for all 5 testimonials rendered in `app/page.tsx` via `<JsonLd data={reviewSchema(...)} />`. Each Review includes author, quote, conditionLabel, and star rating. Previously only the helper function existed in `lib/seo/schemas.ts`; now the schemas are actually injected into the homepage DOM.
 - **PR**: https://github.com/Marketing-Bull/hbotq/pull/1

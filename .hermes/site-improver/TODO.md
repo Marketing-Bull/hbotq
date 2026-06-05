@@ -8,9 +8,11 @@
 ## 🟡 PENDING
 
 ### Category: Schema / Structured Data
-- [ ] **S-01** — Add `AggregateRating` schema site-wide
-  - Add `aggregateRating` to medicalBusinessSchema() with placeholder values (real ones from Google Business Profile when available)
-  - Rating: 4.8, reviewCount: needs actual count
+- [ ] **S-01** — Add `AggregateRating` schema site-wide ✅ DONE 2026-06-05
+  - Moved `aggregateRating` object into `medicalBusinessSchema()` as a nested property instead of separate JSON-LD block
+  - Computes avg rating from 5 testimonials (5.0 avg), falls back to 4.8 placeholder when no testimonials exist
+  - Removed redundant second `<JsonLd>` injection from `layout.tsx` — all business schema now in one block
+  - PR #37
 
 - [ ] **S-02** — Add `Review` individual review schemas ✅ DONE 2026-06-03
   - Map existing testimonials in `lib/data/testimonials.ts` to `@type: Review` JSON-LD
@@ -118,6 +120,7 @@
 ---
 
 ## 🟢 COMPLETED
+- **S-01** — AggregateRating schema — nested inside `medicalBusinessSchema()` in `lib/seo/schemas.ts`; removed redundant standalone JSON-LD from `layout.tsx` (2026-06-05, PR #37)
 - **S-02** — Review schema — `app/page.tsx` renders individual `@type: Review` JSON-LD for all 5 testimonials (2026-06-03, PR #1)
 - **SE-01** — Real page-specific OG images — `public/images/og/{homepage,conditions,treatment,physicians,contact}.jpg` (2026-05-31, PR #1)
 - **S-01** — AggregateRating schema — `lib/seo/schemas.ts` + `layout.tsx` (2026-05-29, PR #1)
