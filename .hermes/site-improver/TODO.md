@@ -77,9 +77,14 @@
   - Homepage hero currently has CTA buttons only
   - Add "Or call us directly at 718-925-3322" for phone-first visitors
 
-  - [ ] **C-02** — Sticky CTA bar improvement
-  - `StickyCta` exists — review if it shows phone number prominently enough
-  - Add click-to-call tel: link + "Book consultation" side by side
+  - [x] **C-02** — Sticky CTA bar improvement ✅ DONE 2026-06-06
+  - Previous `StickyCta` was mobile-only (`lg:hidden` bottom bar); desktop users had no persistent CTA
+  - Added floating vertical pill in bottom-right (desktop ≥lg) with `Call 718-925-3322` + `Book consultation` stacked buttons + ✕ dismiss
+  - Kept mobile bottom bar, added small ✕ dismiss there too
+  - localStorage dismiss persistence with 7-day re-show window (`hbotq:sticky_cta:dismissed_at`)
+  - Fires `dataLayer` `sticky_cta_dismiss` event on dismiss; phone clicks fire `outbound_click` with `location: sticky_cta_desktop`
+  - Hydration-safe: returns null until `useEffect` mounts
+  - PR #39
 
 - [ ] **C-03** — Consultation form honeypot field review
   - The `website` field in ConsultationForm looks like a honeypot — verify it's hidden with CSS and not in the tab order

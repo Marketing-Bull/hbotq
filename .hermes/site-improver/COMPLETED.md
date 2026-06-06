@@ -8,6 +8,12 @@ Format per entry:
 
 ---
 
+## 2026-06-06 — PR #39
+- **C-02** — Sticky CTA improvements. Replaced the mobile-only `StickyCta` (which was `lg:hidden`) with a dual-layout component: desktop (≥1024px) now renders a floating vertical pill in the bottom-right with `Call 718-925-3322` (primary, brand) and `Book consultation` (accent) stacked buttons, plus a small ✕ dismiss. Mobile keeps the existing two-button bottom bar with an added ✕ dismiss. Dismiss state persists in `localStorage` under `hbotq:sticky_cta:dismissed_at` with a 7-day re-show window. Fires a new `dataLayer` `sticky_cta_dismiss` event (with `location: mobile|desktop`) and the existing `outbound_click` event for phone clicks (`location: sticky_cta_desktop`). Hydration-safe: component returns `null` until `useEffect` mounts so the localStorage check doesn't cause SSR/CSR mismatch. Graceful fallback if localStorage is unavailable.
+- **PR**: https://github.com/Marketing-Bull/hbotq/pull/39
+
+---
+
 ## 2026-05-29 — PR #1
 - **S-01** — Added `aggregateRatingSchema()` using 5 testimonial ratings (5.0 avg) + site-wide injection in `layout.tsx`
 - **S-02** — Added `reviewSchema()` helper for individual patient review JSON-LD
