@@ -24,9 +24,6 @@ const STATIC_ROUTES: RouteConfig[] = [
     priority: 0.9,
     image: "/images/og/treatment.jpg",
   },
-  { path: "/privacy-policy/", priority: 0.3 },
-  { path: "/terms-of-service/", priority: 0.3 },
-  { path: "/accessibility/", priority: 0.3 },
 ];
 
 function toAbsoluteUrl(path: string): string {

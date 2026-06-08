@@ -20,9 +20,9 @@
 
 
 
-- [ ] **S-04** — Add `Physician` schema on physicians page
-  - Already has `physicianSchema()` in lib — verify each physician page calls it
-  - Add to `/physicians/` listing page too
+- [x] **S-04** — Physician schema on listing page ✅ DONE 2026-06-07 (verified)
+  - `app/physicians/page.tsx` already maps each `physicians` entry to a `<JsonLd data={physicianSchema(...)} />` block
+  - No code change required; just verified presence in audit
 
 ---
 
@@ -41,9 +41,13 @@
   - Check if `/public/robots.txt` exists — if not, create it
   - Should allow all, reference sitemap at `https://hbotq.com/sitemap.xml`
 
-- [ ] **SE-03** — Verify sitemap.xml is complete
-  - Has `/sitemap.ts` — check it covers ALL routes: homepage, conditions/[slug], treatment, physicians, contact-us, faqs
-  - Add condition dynamic routes if not already present
+- [x] **SE-03** — Sitemap image enrichment ✅ DONE 2026-06-07
+  - Audited existing `app/sitemap.ts`: covers all 10 static routes + 6 dynamic condition routes
+  - Added Google Image Sitemap support: each static route with an OG image (homepage, treatment, conditions, physicians, contact-us) and each condition page (using its `heroImage`) now emits an `<image:image>` block
+  - XML output now declares `xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"`
+  - Refactored to a `toAbsoluteUrl()` helper so absolute URLs are built consistently
+  - No routes missing; `/thank-you` and `/sample/*` correctly noIndex'd and excluded
+  - Part of PR #39
 
 - [ ] **SE-04** — Audit noIndex pages
   - Check for any pages that should be noIndex (e.g., thank-you, accessibility) — verify `noIndex: true` in metadata

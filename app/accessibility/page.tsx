@@ -8,6 +8,7 @@ export const metadata = buildMetadata({
   description:
     "HBOTQ’s ongoing commitment to making this website usable by everyone, including patients using assistive technology.",
   path: "/accessibility/",
+  noIndex: true,
 });
 
 export const dynamic = "force-static";
