@@ -8,6 +8,10 @@ Format per entry:
 
 ---
 
+## 2026-06-08 — PR #39 (updated)
+- **SE-04** — Comprehensive noIndex audit. Audited all 19 routes (every non-API page under `app/`) and tightened indexability: added `noIndex: true` to `/privacy-policy`, `/terms-of-service`, `/accessibility` (they were previously indexable and were diluting SEO equity away from the medical condition/marketing pages that drive conversions), and removed the three legal pages from `app/sitemap.ts` (sitemap entries contradict `noIndex` declarations, so they must be excluded together). The 8 indexable marketing/condition pages remain in the sitemap. Footer links to the legal pages are preserved, so internal PageRank still flows — they just don't compete in search results. `app/not-found.tsx` is auto-handled by Next.js. `app/api/consultation` is a POST API route with no HTML render.
+- **PR**: https://github.com/Marketing-Bull/hbotq/pull/39
+
 ## 2026-06-06 — PR #39
 - **C-02** — Sticky CTA improvements. Replaced the mobile-only `StickyCta` (which was `lg:hidden`) with a dual-layout component: desktop (≥1024px) now renders a floating vertical pill in the bottom-right with `Call 718-925-3322` (primary, brand) and `Book consultation` (accent) stacked buttons, plus a small ✕ dismiss. Mobile keeps the existing two-button bottom bar with an added ✕ dismiss. Dismiss state persists in `localStorage` under `hbotq:sticky_cta:dismissed_at` with a 7-day re-show window. Fires a new `dataLayer` `sticky_cta_dismiss` event (with `location: mobile|desktop`) and the existing `outbound_click` event for phone clicks (`location: sticky_cta_desktop`). Hydration-safe: component returns `null` until `useEffect` mounts so the localStorage check doesn't cause SSR/CSR mismatch. Graceful fallback if localStorage is unavailable.
 - **PR**: https://github.com/Marketing-Bull/hbotq/pull/39

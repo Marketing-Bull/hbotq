@@ -49,8 +49,15 @@
   - No routes missing; `/thank-you` and `/sample/*` correctly noIndex'd and excluded
   - Part of PR #39
 
-- [ ] **SE-04** — Audit noIndex pages
-  - Check for any pages that should be noIndex (e.g., thank-you, accessibility) — verify `noIndex: true` in metadata
+- [x] **SE-04** — Comprehensive noIndex audit ✅ DONE 2026-06-08
+  - Confirmed all 19 routes have correct indexability:
+    - Indexable (in sitemap): `/`, `/treatment/`, `/hyperbaric-therapy/`, `/conditions/`, `/condition/[slug]/` (valid only — notFound returns noIndex), `/physicians/`, `/faqs/`, `/contact-us/`
+    - noIndex (not in sitemap): `/thank-you/`, `/sample/non-healing-wounds/`, `/privacy-policy/` (new), `/terms-of-service/` (new), `/accessibility/` (new)
+    - Auto-handled: `/_not-found` (Next.js), `/api/consultation` (POST API, no HTML render)
+  - Added `noIndex: true` to `/privacy-policy`, `/terms-of-service`, `/accessibility` — these legal pages were previously indexable, diluting SEO equity from the medical marketing pages
+  - Removed the 3 legal pages from `app/sitemap.ts` — sitemap entries contradict noIndex, so they must be excluded together
+  - Footer links to all three legal pages still pass internal PageRank
+  - Part of PR #39 (also includes C-02)
 
 ---
 
@@ -131,6 +138,8 @@
 ## 🟢 COMPLETED
 - **S-01** — AggregateRating schema — nested inside `medicalBusinessSchema()` in `lib/seo/schemas.ts`; removed redundant standalone JSON-LD from `layout.tsx` (2026-06-05, PR #37)
 - **S-02** — Review schema — `app/page.tsx` renders individual `@type: Review` JSON-LD for all 5 testimonials (2026-06-03, PR #1)
+- **S-04** — Physician schema on `/physicians/` page — verified, no code change needed (2026-06-07)
+- **SE-04** — Comprehensive noIndex audit — added `noIndex: true` to `/privacy-policy`, `/terms-of-service`, `/accessibility` and removed them from `app/sitemap.ts`. All 19 routes audited and confirmed correct. Part of PR #39 (2026-06-08)
 - **SE-01** — Real page-specific OG images — `public/images/og/{homepage,conditions,treatment,physicians,contact}.jpg` (2026-05-31, PR #1)
 - **S-01** — AggregateRating schema — `lib/seo/schemas.ts` + `layout.tsx` (2026-05-29, PR #1)
 - **S-02** — Review schema helper — `lib/seo/schemas.ts` (2026-05-29, PR #1)
