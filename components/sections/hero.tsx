@@ -78,6 +78,10 @@ export function Hero({
             {primaryCta ? (
               <Link
                 href={primaryCta.href}
+                onClick={trackClick("cta_click", {
+                  location: `hero_${variant}`,
+                  cta_label: primaryCta.label,
+                })}
                 className="inline-flex items-center justify-center rounded-full bg-[var(--color-accent)] text-white px-7 py-3.5 font-semibold hover:bg-[var(--color-accent-hover)] transition-colors"
               >
                 {primaryCta.label}
@@ -86,6 +90,10 @@ export function Hero({
             {secondaryCta ? (
               <Link
                 href={secondaryCta.href}
+                onClick={trackClick("cta_click", {
+                  location: `hero_${variant}`,
+                  cta_label: secondaryCta.label,
+                })}
                 className="inline-flex items-center justify-center rounded-full border border-[var(--color-brand-500)] text-[var(--color-brand-500)] px-7 py-3.5 font-semibold hover:bg-[var(--color-brand-50)] transition-colors"
               >
                 {secondaryCta.label}

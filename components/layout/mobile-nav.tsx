@@ -79,7 +79,13 @@ export function MobileNav() {
               </a>
               <Link
                 href="/contact-us/"
-                onClick={() => setOpen(false)}
+                onClick={(e) => {
+                  trackClick("cta_click", {
+                    location: "mobile_nav",
+                    cta_label: "Book consultation",
+                  })(e);
+                  setOpen(false);
+                }}
                 className="inline-flex items-center justify-center rounded-full bg-[var(--color-accent)] text-white px-5 py-3 font-semibold"
               >
                 Book consultation

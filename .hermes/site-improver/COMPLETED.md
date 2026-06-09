@@ -8,6 +8,10 @@ Format per entry:
 
 ---
 
+## 2026-06-09 — PR #40
+- **T-01** — GTM verification + CTA click tracking. Verified `NEXT_PUBLIC_GTM_ID` is correctly read from `process.env` in `app/layout.tsx:49` and the `GTM` component no-ops cleanly when unset (so local dev with no GTM ID still works). Then closed the last tracking gap: every `/contact-us/` CTA button on the site now fires a `cta_click` dataLayer event with `location` (header, mobile_nav, sticky_cta, sticky_cta_desktop, phone_cta, cta_banner, hero_{variant}) and `cta_label` (e.g. "Book a free consultation") metadata. Components instrumented: `header.tsx`, `mobile-nav.tsx`, `sticky-cta.tsx` (mobile + desktop variants), `phone-cta.tsx`, `cta-banner.tsx`, `hero.tsx` (primary + secondary CTAs). Also added a generic `trackEvent()` helper to `lib/analytics/track.ts` and refactored `consultation-form.tsx` (form_submit) and `sticky-cta.tsx` (sticky_cta_dismiss) onto it to remove the duplicated `dataLayer.push` boilerplate. Combined with T-03 (tel:/mailto:), every outbound-conversion path on the site is now instrumented for GTM.
+- **PR**: https://github.com/Marketing-Bull/hbotq/pull/40
+
 ## 2026-06-08 — PR #39 (updated)
 - **SE-04** — Comprehensive noIndex audit. Audited all 19 routes (every non-API page under `app/`) and tightened indexability: added `noIndex: true` to `/privacy-policy`, `/terms-of-service`, `/accessibility` (they were previously indexable and were diluting SEO equity away from the medical condition/marketing pages that drive conversions), and removed the three legal pages from `app/sitemap.ts` (sitemap entries contradict `noIndex` declarations, so they must be excluded together). The 8 indexable marketing/condition pages remain in the sitemap. Footer links to the legal pages are preserved, so internal PageRank still flows — they just don't compete in search results. `app/not-found.tsx` is auto-handled by Next.js. `app/api/consultation` is a POST API route with no HTML render.
 - **PR**: https://github.com/Marketing-Bull/hbotq/pull/39

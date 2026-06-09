@@ -46,6 +46,10 @@ export function Header() {
           </a>
           <Link
             href="/contact-us/"
+            onClick={trackClick("cta_click", {
+              location: "header",
+              cta_label: "Book consultation",
+            })}
             className="inline-flex items-center justify-center rounded-full bg-[var(--color-accent)] text-white px-5 py-2.5 text-sm font-semibold hover:bg-[var(--color-accent-hover)] transition-colors"
           >
             Book consultation

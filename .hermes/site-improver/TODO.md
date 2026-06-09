@@ -62,12 +62,16 @@
 ---
 
 ### Category: Tracking / Analytics
-- [ ] **T-01** — Verify GTM is properly firing
-  - Check `NEXT_PUBLIC_GTM_ID` env var is set in Vercel (not in repo)
-  - Add GTM event tracking for: form submissions, CTA clicks, phone link clicks
+- [x] **T-01** — GTM verification + CTA click tracking ✅ DONE 2026-06-09
+  - `NEXT_PUBLIC_GTM_ID` env var correctly read in `app/layout.tsx:49`; GTM component no-ops cleanly when unset
+  - `lib/analytics/track.ts` extended with `cta_click` category (emits `cta_click` event) and `trackEvent()` helper for non-link events
+  - `consultation-form.tsx` refactored to use `trackEvent('form_submit', ...)` — same payload, no duplicated `dataLayer.push` boilerplate
+  - `sticky-cta.tsx` `trackDismiss` helper replaced with `trackEvent('sticky_cta_dismiss', ...)`
+  - All `/contact-us/` CTA buttons now fire `cta_click` with `location` and `cta_label` metadata: header, mobile_nav, sticky_cta (mobile), sticky_cta_desktop, phone_cta, cta_banner, hero_{variant} (primary + secondary)
+  - Combined with T-03 (tel:/mailto:), every outbound-conversion path on the site is now instrumented
 
-- [ ] **T-02** — Add form submission event to dataLayer
-  - In `ConsultationForm`, on successful submit: `dataLayer.push({ event: 'form_submit', form_name: source })`
+- [x] **T-02** — Form submission event to dataLayer ✅ DONE 2026-05-29
+  - In `ConsultationForm`, on successful submit: `trackEvent('form_submit', { form_name: source, form_condition })`
   - Track in GTM as a custom trigger
 
 - [ ] **T-03** — Add outbound link click tracking ✅ DONE 2026-06-04
@@ -146,4 +150,5 @@
 - **S-03** — MedicalCondition schema — `condition/[slug]/page.tsx` calls `<JsonLd data={medicalConditionSchema(c)} />` (2026-05-29, PR #1)
 - **T-02** — GTM form_submit event — `consultation-form.tsx` (2026-05-29, PR #1)
 - **SE-02** — robots.txt created — `public/robots.txt` (2026-05-29, PR #1)
+- **T-01** — GTM verification + CTA click tracking — every `/contact-us/` CTA button now fires `cta_click` with `location`/`cta_label`; `trackEvent()` helper added; `consultation-form.tsx` + `sticky-cta.tsx` refactored onto it (2026-06-09, this PR)
 

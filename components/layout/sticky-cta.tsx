@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { site } from "@/lib/data/site";
-import { trackClick } from "@/lib/analytics/track";
+import { trackClick, trackEvent } from "@/lib/analytics/track";
 
 const DISMISS_KEY = "hbotq:sticky_cta:dismissed_at";
 const DISMISS_DAYS = 7;
@@ -22,14 +22,6 @@ function isDismissed(): boolean {
   }
 }
 
-function trackDismiss(location: string) {
-  if (typeof window === "undefined" || !("dataLayer" in window)) return;
-  (window as { dataLayer: unknown[] }).dataLayer.push({
-    event: "sticky_cta_dismiss",
-    location,
-  });
-}
-
 export function StickyCta() {
   const [dismissed, setDismissed] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -45,7 +37,7 @@ export function StickyCta() {
     } catch {
       // localStorage may be unavailable (private mode, etc.) — fall through.
     }
-    trackDismiss(location);
+    trackEvent("sticky_cta_dismiss", { location });
     setDismissed(true);
   };
 
@@ -66,6 +58,10 @@ export function StickyCta() {
           </a>
           <Link
             href="/contact-us/"
+            onClick={trackClick("cta_click", {
+              location: "sticky_cta",
+              cta_label: "Book consultation",
+            })}
             className="inline-flex items-center justify-center rounded-full bg-[var(--color-accent)] text-white px-4 py-3 text-sm font-semibold"
           >
             Book consultation
@@ -106,6 +102,10 @@ export function StickyCta() {
         </a>
         <Link
           href="/contact-us/"
+          onClick={trackClick("cta_click", {
+            location: "sticky_cta_desktop",
+            cta_label: "Book consultation",
+          })}
           className="inline-flex items-center justify-center rounded-full bg-[var(--color-accent)] text-white px-5 py-3 text-sm font-semibold hover:bg-[var(--color-accent-hover)] transition-colors"
         >
           Book consultation

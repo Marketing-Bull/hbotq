@@ -29,6 +29,10 @@ export function PhoneCta() {
             </a>
             <Link
               href="/contact-us/"
+              onClick={trackClick("cta_click", {
+                location: "phone_cta",
+                cta_label: "Book a free consultation",
+              })}
               className="inline-flex items-center justify-center rounded-full bg-[var(--color-accent)] text-white px-7 py-3.5 font-semibold hover:bg-[var(--color-accent-hover)]"
             >
               Book a free consultation

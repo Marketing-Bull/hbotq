@@ -10,6 +10,7 @@ import {
   type ConsultationInput,
 } from "@/lib/validation/consultation";
 import { site } from "@/lib/data/site";
+import { trackEvent } from "@/lib/analytics/track";
 
 interface Props {
   source?: string;
@@ -74,13 +75,10 @@ export function ConsultationForm({
         return;
       }
       // Fire GTM conversion event
-      if (typeof window !== "undefined" && "dataLayer" in window) {
-        (window as { dataLayer: unknown[] }).dataLayer.push({
-          event: "form_submit",
-          form_name: source,
-          form_condition: data.condition ?? "",
-        });
-      }
+      trackEvent("form_submit", {
+        form_name: source,
+        form_condition: data.condition ?? "",
+      });
       router.push("/thank-you/");
     } catch {
       setFormError(`Something went wrong. Please call us at ${site.phone}.`);
