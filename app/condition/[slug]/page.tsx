@@ -19,9 +19,11 @@ import {
   medicalConditionSchema,
   breadcrumbSchema,
   faqPageSchema,
+  reviewSchema,
 } from "@/lib/seo/schemas";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { site } from "@/lib/data/site";
+import { testimonials } from "@/lib/data/testimonials";
 import type { ConsultationInput } from "@/lib/validation/consultation";
 
 type Params = { slug: string };
@@ -80,6 +82,17 @@ export default async function ConditionPage(props: {
         ])}
       />
       {faqs.length > 0 ? <JsonLd data={faqPageSchema(faqs)} /> : null}
+      {testimonials.map((t) => (
+        <JsonLd
+          key={t.id}
+          data={reviewSchema({
+            quote: t.quote,
+            author: t.author,
+            conditionLabel: t.conditionLabel,
+            rating: t.rating,
+          })}
+        />
+      ))}
 
       <Hero
         variant="condition"
