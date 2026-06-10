@@ -28,9 +28,11 @@ import {
   faqPageSchema,
   videoObjectSchema,
   medicalWebPageSchema,
+  reviewSchema,
 } from "@/lib/seo/schemas";
 import { getCitations } from "@/lib/data/citations";
 import { physicians } from "@/lib/data/physicians";
+import { testimonials } from "@/lib/data/testimonials";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { site } from "@/lib/data/site";
 import type { ConsultationInput } from "@/lib/validation/consultation";
@@ -102,6 +104,9 @@ export default async function ConditionPage(props: {
           citations,
         })}
       />
+      {testimonials.map((t) => (
+        <JsonLd key={t.id} data={reviewSchema(t)} />
+      ))}
 
       <Hero
         variant="condition"
