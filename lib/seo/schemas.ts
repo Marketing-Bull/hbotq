@@ -1,6 +1,6 @@
 import { site } from "@/lib/data/site";
 import { physicians } from "@/lib/data/physicians";
-import type { Condition, Faq } from "@/types/content";
+import type { Condition, Faq, Testimonial } from "@/types/content";
 
 export function medicalBusinessSchema() {
   const openingHoursSpecification = site.hours
@@ -129,6 +129,27 @@ export function medicalConditionSchema(c: Condition) {
       name: "Hyperbaric Oxygen Therapy",
       url: `${site.url}/treatment/`,
     },
+  };
+}
+
+export function reviewSchema(t: Testimonial) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Review",
+    "@id": `${site.url}/#review-${t.id}`,
+    itemReviewed: {
+      "@type": "MedicalBusiness",
+      "@id": `${site.url}/#business`,
+      name: site.legalName,
+    },
+    author: { "@type": "Person", name: t.author },
+    reviewRating: {
+      "@type": "Rating",
+      ratingValue: t.rating ?? 5,
+      bestRating: 5,
+      worstRating: 1,
+    },
+    reviewBody: t.quote,
   };
 }
 
