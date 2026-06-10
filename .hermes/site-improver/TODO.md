@@ -88,11 +88,12 @@
 ---
 
 ### Category: Conversion Optimization
-- [ ] **C-01** — Add phone number to hero section
-  - Homepage hero currently has CTA buttons only
-  - Add "Or call us directly at 718-925-3322" for phone-first visitors
+- [x] **C-01** — Add phone number to hero section ✅ DONE 2026-06-10 (verified)
+  - `components/sections/hero.tsx` lines 104–115 already render `Or call us directly: <tel link>` for the `home` and `lp` hero variants
+  - Both `/` (variant="home") and `/hyperbaric-therapy/` (variant="lp") get the phone fallback; phone click fires `trackClick("phone_call", { location: "hero" })` → GTM
+  - No code change required; just verified presence in audit
 
-  - [x] **C-02** — Sticky CTA bar improvement ✅ DONE 2026-06-06
+- [x] **C-02** — Sticky CTA bar improvement ✅ DONE 2026-06-06
   - Previous `StickyCta` was mobile-only (`lg:hidden` bottom bar); desktop users had no persistent CTA
   - Added floating vertical pill in bottom-right (desktop ≥lg) with `Call 718-925-3322` + `Book consultation` stacked buttons + ✕ dismiss
   - Kept mobile bottom bar, added small ✕ dismiss there too
@@ -109,9 +110,12 @@
   - `TrustBar` shows at top of every page — verify it has updated, accurate content [verify against actual services]
   - Add "Medicare Accepted" if that's a key trust signal
 
-- [ ] **C-05** — Testimonial carousel — add schema
-  - Testimonials are in DOM but not in JSON-LD
-  - Add AggregateRating + individual Review schemas using existing testimonial data
+- [x] **C-05** — Testimonial schema on pages ✅ DONE 2026-06-10
+  - The `TestimonialCarousel` component renders all 5 testimonials on three page types (`/`, `/hyperbaric-therapy/`, every `/condition/[slug]/`) but only the homepage was emitting matching `<JsonLd>` reviewSchema blocks
+  - Added the same `testimonials.map(t => <JsonLd data={reviewSchema(...)} />)` block to `app/hyperbaric-therapy/page.tsx` and `app/condition/[slug]/page.tsx`
+  - 27 lines added, no other code touched; build passes; all 8 carousel pages now emit 5 Review JSON-LD blocks; 4 non-carousel pages unchanged
+  - Mirrors the homepage pattern exactly (rather than per-condition filtering) because the carousel hard-codes all 5 reviews on every page — markup must reflect what the user actually sees per Google's review guidelines
+  - Closes C-05
 
 ---
 
@@ -140,6 +144,8 @@
 ---
 
 ## 🟢 COMPLETED
+- **C-05** — Review JSON-LD on every page that renders `<TestimonialCarousel/>` — added `testimonials.map(t => <JsonLd data={reviewSchema(...)} />)` to `app/hyperbaric-therapy/page.tsx` and `app/condition/[slug]/page.tsx`, matching the existing homepage pattern. 8 pages now emit 5 Review JSON-LD blocks each, plus the site-wide AggregateRating. 27 lines added. (2026-06-10, PR #39)
+- **C-01** — Phone number in hero — verified already present in `components/sections/hero.tsx` for `home` and `lp` variants; phone click tracked via GTM `phone_call` event. No code change needed. (2026-06-10, verified)
 - **S-01** — AggregateRating schema — nested inside `medicalBusinessSchema()` in `lib/seo/schemas.ts`; removed redundant standalone JSON-LD from `layout.tsx` (2026-06-05, PR #37)
 - **S-02** — Review schema — `app/page.tsx` renders individual `@type: Review` JSON-LD for all 5 testimonials (2026-06-03, PR #1)
 - **S-04** — Physician schema on `/physicians/` page — verified, no code change needed (2026-06-07)
