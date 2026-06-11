@@ -1,4 +1,5 @@
 import { Hero } from "@/components/sections/hero";
+import { TrustBar } from "@/components/sections/trust-bar";
 import { FaqSection } from "@/components/sections/faq-section";
 import { CtaBanner } from "@/components/sections/cta-banner";
 import { JsonLd } from "@/components/seo/json-ld";
@@ -27,6 +28,7 @@ export default function FaqsPage() {
         subtitle="Don't see your question? Call us at the number below — we're glad to talk it through."
         primaryCta={{ label: "Book a consultation", href: "/contact-us/" }}
       />
+      <TrustBar />
       <FaqSection
         heading="General questions"
         faqs={groups.general}

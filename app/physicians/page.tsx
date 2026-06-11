@@ -1,4 +1,5 @@
 import { Hero } from "@/components/sections/hero";
+import { TrustBar } from "@/components/sections/trust-bar";
 import { PhysiciansSection } from "@/components/sections/physicians-section";
 import { CtaBanner } from "@/components/sections/cta-banner";
 import { JsonLd } from "@/components/seo/json-ld";
@@ -36,6 +37,7 @@ export default function PhysiciansPage() {
         subtitle="Every HBOTQ patient is evaluated and supervised by board-certified physicians and wound-care specialists — not technicians or wellness consultants."
         primaryCta={{ label: "Book a consultation", href: "/contact-us/" }}
       />
+      <TrustBar />
       <PhysiciansSection
         heading="Meet the team"
         subtitle="Continuity matters in hyperbaric medicine. Most of our patients see the same care team from the first consultation through the final treatment."
