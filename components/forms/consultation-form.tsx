@@ -51,7 +51,8 @@ export function ConsultationForm({
   const onSubmit = handleSubmit(async (data) => {
     setFormError(null);
     try {
-      const res = await fetch("/api/consultation", {
+      // Trailing slash matches trailingSlash:true, avoiding a 308 redirect on POST.
+      const res = await fetch("/api/consultation/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
