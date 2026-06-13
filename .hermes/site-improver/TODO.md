@@ -134,9 +134,13 @@
   - Font loading: `app/layout.tsx` loads Inter + Fraunces via `next/font/google` with the default `display: swap` (no FOIT/CLS)
   - No code change required
 
-- [ ] **WD-03** — Add structured data error auditing to build
-  - Add a `scripts/validate-schema.ts` that runs as part of `pre-push` or as a CI check
-  - Verify all JSON-LD is valid and no missing fields
+- [x] **WD-03** — Add structured data error auditing to build ✅ DONE 2026-06-13
+  - Created `scripts/validate-schema.mjs` (592 lines) that walks `.next/server/app/**/*.html` after build, extracts every `<script type="application/ld+json">` block, and validates against schema.org rules
+  - Checks: required `@context`/`@type`; per-type required fields (MedicalBusiness, AggregateRating bounds, Review, Physician, MedicalCondition, FAQPage, BreadcrumbList); HTTP-only URLs in `url`/`sameAs`/`item`/`image`; `tel:`↔`telephone` cross-check; image paths resolve under `public/`
+  - Wired into `package.json`: `npm run validate:schema`, `npm run build:validate` (build + validate), `npm run validate` (alias)
+  - Also fixed `AggregateRating.ratingValue` to emit a Number (`Math.round(avg*10)/10`) instead of a string (`avg.toFixed(1)`) — Google Rich Results requires a Number; was producing `"5.0"`
+  - Current result: 80 JSON-LD blocks across 20 pages, 0 errors, 0 warnings
+  - PR #41 (updated)
 
 - [x] **WD-04** — Accessibility audit ✅ DONE 2026-06-11 (verified)
   - Skip link: `app/layout.tsx:61` renders `<a href="#main" className="skip-link">Skip to main content</a>` and `app/globals.css:115` defines `.skip-link` with `position: absolute; top: -40px` (off-screen) + `.skip-link:focus { top: 1rem; }` (slides in on focus). The `<main id="main">` target exists at `app/layout.tsx:66`. Visible on focus, hidden otherwise ✓
