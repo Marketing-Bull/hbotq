@@ -13,7 +13,9 @@ export function medicalBusinessSchema() {
     count > 0
       ? {
           "@type": "AggregateRating",
-          ratingValue: avg.toFixed(1),
+          // Google Rich Results requires ratingValue to be a Number,
+          // not a string — use Math.round so we never emit "5.0" with a decimal.
+          ratingValue: Math.round(avg * 10) / 10,
           reviewCount: count,
           bestRating: 5,
           worstRating: 1,
@@ -142,7 +144,8 @@ export function aggregateRatingSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "AggregateRating",
-    ratingValue: avg.toFixed(1),
+    // Google Rich Results requires ratingValue to be a Number, not a string.
+    ratingValue: Math.round(avg * 10) / 10,
     reviewCount: count,
     bestRating: 5,
     worstRating: 1,
