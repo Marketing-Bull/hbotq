@@ -8,13 +8,13 @@
 ## 🟡 PENDING
 
 ### Category: Schema / Structured Data
-- [ ] **S-01** — Add `AggregateRating` schema site-wide ✅ DONE 2026-06-05
+- [x] **S-01** — Add `AggregateRating` schema site-wide ✅ DONE 2026-06-05
   - Moved `aggregateRating` object into `medicalBusinessSchema()` as a nested property instead of separate JSON-LD block
   - Computes avg rating from 5 testimonials (5.0 avg), falls back to 4.8 placeholder when no testimonials exist
   - Removed redundant second `<JsonLd>` injection from `layout.tsx` — all business schema now in one block
   - PR #37
 
-- [ ] **S-02** — Add `Review` individual review schemas ✅ DONE 2026-06-03
+- [x] **S-02** — Add `Review` individual review schemas ✅ DONE 2026-06-03
   - Map existing testimonials in `lib/data/testimonials.ts` to `@type: Review` JSON-LD
   - Added `<JsonLd data={reviewSchema(...)} />` for all 5 testimonials in `app/page.tsx`
 
@@ -74,13 +74,13 @@
   - In `ConsultationForm`, on successful submit: `trackEvent('form_submit', { form_name: source, form_condition })`
   - Track in GTM as a custom trigger
 
-- [ ] **T-03** — Add outbound link click tracking ✅ DONE 2026-06-04
+- [x] **T-03** — Add outbound link click tracking ✅ DONE 2026-06-04
   - Added `lib/analytics/track.ts` with `trackClick()` helper → fires `dataLayer.push({ event: 'outbound_click', outbound_category, location })`
   - Applied to all `tel:` and `mailto:` links across: StickyCta, Hero, PhoneCta, CtaBanner, Header, Footer, MobileNav
   - GTM already loads via `afterInteractive` Script — no additional GTM setup needed
   - All tracking components marked `"use client"` to support onClick event handlers
 
-- [ ] **T-04** — Check Google Business Profile integration ✅ DONE 2026-06-02
+- [x] **T-04** — Check Google Business Profile integration ✅ DONE 2026-06-02
   - Footer has Facebook/Instagram but no Google Business Profile link ✅ NOW ADDED
   - Update social links to include Google Business Profile listing ✅
   - Add `sameAs` in schema if GBP profile URL is available ✅
