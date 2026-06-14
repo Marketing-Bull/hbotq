@@ -1,7 +1,53 @@
 import { site } from "@/lib/data/site";
 import { physicians } from "@/lib/data/physicians";
 import { testimonials } from "@/lib/data/testimonials";
+import { conditions } from "@/lib/data/conditions";
 import type { Condition, Faq } from "@/types/content";
+
+/**
+ * Build the LocalBusiness areaServed entry. We support the two shapes
+ * schema.org recommends: a `City` (most common for a single-location clinic)
+ * and a `State` for the broader catchment (we serve all of NY/NJ/CT for
+ * specialty indications like radiation injury and sudden hearing loss).
+ */
+function areaServedEntry() {
+  return [
+    {
+      "@type": "City",
+      name: "Woodside",
+      containedInPlace: {
+        "@type": "State",
+        name: "New York",
+      },
+    },
+    {
+      "@type": "State",
+      name: "New York",
+    },
+    {
+      "@type": "State",
+      name: "New Jersey",
+    },
+    {
+      "@type": "State",
+      name: "Connecticut",
+    },
+  ];
+}
+
+/**
+ * List the clinic's services as MedicalProcedure entries with the matching
+ * `/condition/[slug]/` URL. Mirrors the user-visible conditions index and
+ * surfaces each treatment in the Knowledge Panel / rich results.
+ */
+function availableServiceEntries() {
+  return conditions.map((c) => ({
+    "@type": "MedicalProcedure",
+    name: c.name,
+    url: `${site.url}/condition/${c.slug}/`,
+    procedureType: "Hyperbaric Oxygen Therapy",
+  }));
+}
 
 export function medicalBusinessSchema() {
   const count = testimonials.length;
@@ -48,8 +94,18 @@ export function medicalBusinessSchema() {
     name: site.legalName,
     alternateName: site.name,
     url: site.url,
+    logo: `${site.url}/favicon.ico`,
+    image: `${site.url}/images/og/homepage.jpg`,
     telephone: site.phoneE164,
     email: site.email,
+    // Pricing & payment — reinforces the TrustBar "Medicare & Major Insurers
+    // Accepted" copy in machine-readable form. `priceRange` is the standard
+    // LocalBusiness "$$" notation (no public price list; consultations are
+    // free per `site.ctas.book`).
+    priceRange: "$$",
+    currenciesAccepted: "USD",
+    paymentAccepted:
+      "Medicare, Medicaid, Major Insurers, Self-pay, Cash, Check, Credit Card",
     medicalSpecialty: ["Hyperbaric Medicine", "Wound Care"],
     address: {
       "@type": "PostalAddress",
@@ -65,6 +121,8 @@ export function medicalBusinessSchema() {
       longitude: site.geo.longitude,
     },
     openingHoursSpecification,
+    areaServed: areaServedEntry(),
+    availableService: availableServiceEntries(),
     sameAs: Object.values(site.social),
     aggregateRating,
     employee: physicians.map((p) => ({
