@@ -5,7 +5,43 @@
 
 ---
 
+## 🟢 NEXT (for the next nightly run, in priority order)
+
+The original PENDING list (S/SE/T/C/WD) is now fully worked through. The
+most impactful remaining items I've identified from a code audit (not
+already tracked elsewhere) are below, in the order this skill's priority
+guidance recommends (Schema > SEO Meta > Tracking > Conversion > Web Design):
+
+1. **T-06** — Primary nav click tracking in `components/layout/header.tsx`
+   and `components/layout/mobile-nav.tsx`. Every other CTA on the site
+   fires `cta_click` / `phone_call` / `outbound_click`; the primary nav
+   links (Home / Conditions / Treatment / Physicians / FAQ / Contact Us)
+   are silent. Adding `trackClick("cta_click", { location: "primary_nav", cta_label: item.label })`
+   to the `<Link>` renders closes the last funnel-attribution gap.
+
+2. **SE-06** — Add `WebSite` JSON-LD with `potentialAction: SearchAction`
+   (sitelinks search box). This is a single `<JsonLd>` block in
+   `app/layout.tsx` next to the existing `medicalBusinessSchema()` and
+   surfaces the Google sitelinks search box. Note: the site has no search
+   page yet, so this should be deferred until `/search/` is added, or
+   wired to `?s=…` query params on the home page.
+
+3. **C-06** — Add "As seen on" / press logos section. Trust bar mentions
+   "Board-Certified Physicians" and "Medicare Accepted" but lacks press
+   coverage or peer-credibility signals. If the practice has been cited
+   in any local news / medical journals, add a row of logos to the
+   `TrustBar` component or a sibling section.
+
+4. **WD-06** — Add `aria-current="page"` to active nav links in
+   `header.tsx`, `mobile-nav.tsx`, and `footer.tsx`. Screen-reader users
+   currently can't tell which page they're on; the active link is
+   identified only by color, which fails WCAG 2.4.4 (Link Purpose) and
+   2.4.8 (Location) on hover/focus.
+
+---
+
 ## 🟡 PENDING
+(nothing — see 🟢 NEXT below for the next-cycle work list)
 
 ### Category: Schema / Structured Data
 - [x] **S-01** — Add `AggregateRating` schema site-wide ✅ DONE 2026-06-05
@@ -23,6 +59,14 @@
 - [x] **S-04** — Physician schema on listing page ✅ DONE 2026-06-07 (verified)
   - `app/physicians/page.tsx` already maps each `physicians` entry to a `<JsonLd data={physicianSchema(...)} />` block
   - No code change required; just verified presence in audit
+
+- [x] **S-05** — Enrich `MedicalBusiness` schema with LocalBusiness-spec fields ✅ DONE 2026-06-14
+  - The site-wide `MedicalBusiness` JSON-LD in `lib/seo/schemas.ts → medicalBusinessSchema()` was missing six LocalBusiness fields the schema.org spec recommends and Google uses for the Knowledge Panel
+  - Added: `areaServed` (Woodside City + NY/NJ/CT States), `availableService` (6 `MedicalProcedure` entries, one per condition in `lib/data/conditions.ts`), `priceRange` (`$$`), `currenciesAccepted` (`USD`), `paymentAccepted` (Medicare, Medicaid, Major Insurers, Self-pay, Cash, Check, Credit Card — mirrors TrustBar copy in machine-readable form), `logo` (`/favicon.ico`), `image` (`/images/og/homepage.jpg`)
+  - `availableService` is data-driven from `lib/data/conditions.ts` — adding a new condition automatically updates the schema
+  - 58 lines added, 0 removed, single file
+  - `npm run build`: passes (20 routes); `npm run validate:schema`: 80 blocks / 0 errors / 0 warnings; new fields appear in all 19 MedicalBusiness blocks
+  - Part of PR #41 (rolled into the existing WD-03 PR since one was already open for this branch)
 
 ---
 
