@@ -12,27 +12,20 @@ most impactful remaining items I've identified from a code audit (not
 already tracked elsewhere) are below, in the order this skill's priority
 guidance recommends (Schema > SEO Meta > Tracking > Conversion > Web Design):
 
-1. **T-06** — Primary nav click tracking in `components/layout/header.tsx`
-   and `components/layout/mobile-nav.tsx`. Every other CTA on the site
-   fires `cta_click` / `phone_call` / `outbound_click`; the primary nav
-   links (Home / Conditions / Treatment / Physicians / FAQ / Contact Us)
-   are silent. Adding `trackClick("cta_click", { location: "primary_nav", cta_label: item.label })`
-   to the `<Link>` renders closes the last funnel-attribution gap.
-
-2. **SE-06** — Add `WebSite` JSON-LD with `potentialAction: SearchAction`
+1. **SE-06** — Add `WebSite` JSON-LD with `potentialAction: SearchAction`
    (sitelinks search box). This is a single `<JsonLd>` block in
    `app/layout.tsx` next to the existing `medicalBusinessSchema()` and
    surfaces the Google sitelinks search box. Note: the site has no search
    page yet, so this should be deferred until `/search/` is added, or
    wired to `?s=…` query params on the home page.
 
-3. **C-06** — Add "As seen on" / press logos section. Trust bar mentions
+2. **C-06** — Add "As seen on" / press logos section. Trust bar mentions
    "Board-Certified Physicians" and "Medicare Accepted" but lacks press
    coverage or peer-credibility signals. If the practice has been cited
    in any local news / medical journals, add a row of logos to the
-   `TrustBar` component or a sibling section.
+   the `TrustBar` component or a sibling section.
 
-4. **WD-06** — Add `aria-current="page"` to active nav links in
+3. **WD-06** — Add `aria-current="page"` to active nav links in
    `header.tsx`, `mobile-nav.tsx`, and `footer.tsx`. Screen-reader users
    currently can't tell which page they're on; the active link is
    identified only by color, which fails WCAG 2.4.4 (Link Purpose) and
@@ -106,6 +99,12 @@ guidance recommends (Schema > SEO Meta > Tracking > Conversion > Web Design):
 ---
 
 ### Category: Tracking / Analytics
+- [x] **T-06** — Primary nav click tracking ✅ DONE 2026-06-15
+  - The primary nav `<Link>`s in `components/layout/header.tsx` and `components/layout/mobile-nav.tsx` were the only outbound-internal links on the site that fired no dataLayer event — every CTA / phone / email link was already instrumented.
+  - Added `onClick={trackClick("cta_click", { location: "primary_nav", cta_label: item.label })}` to both desktop and mobile nav link maps. On mobile, the existing `setOpen(false)` is preserved alongside the tracker call so the panel still closes on tap.
+  - Closes the last funnel-attribution gap: with T-01, T-02, T-03, T-04, and T-06, every outbound-conversion path on the site (CTA buttons, phone, email, form submit, sticky-cta dismiss, AND primary nav) now emits a labeled `cta_click` / `phone_call` / `outbound_click` / `form_submit` event to GTM.
+  - Build passes; no schema changes; no other files touched.
+  - Part of PR #41 (rolled into the open PR for this branch).
 - [x] **T-01** — GTM verification + CTA click tracking ✅ DONE 2026-06-09
   - `NEXT_PUBLIC_GTM_ID` env var correctly read in `app/layout.tsx:49`; GTM component no-ops cleanly when unset
   - `lib/analytics/track.ts` extended with `cta_click` category (emits `cta_click` event) and `trackEvent()` helper for non-link events
@@ -199,6 +198,7 @@ guidance recommends (Schema > SEO Meta > Tracking > Conversion > Web Design):
 ---
 
 ## 🟢 COMPLETED
+- **T-06** — Primary nav click tracking. Added `onClick={trackClick("cta_click", { location: "primary_nav", cta_label: item.label })}` to the `<Link>` map in both `components/layout/header.tsx` (desktop nav) and `components/layout/mobile-nav.tsx` (mobile drawer nav). On mobile, the existing `setOpen(false)` panel-close behavior is preserved alongside the tracker call. The primary nav (`Treatment / Conditions / Physicians / FAQs / Contact`) was the last set of internal links on the site with no dataLayer event — combined with T-01 (CTA), T-02 (form submit), T-03 (tel/mailto), and T-04 (GBP), every outbound-conversion path on the site is now instrumented. (2026-06-15, PR #41 updated)
 - **C-05** — Review JSON-LD on every page that renders `<TestimonialCarousel/>` — added `testimonials.map(t => <JsonLd data={reviewSchema(...)} />)` to `app/hyperbaric-therapy/page.tsx` and `app/condition/[slug]/page.tsx`, matching the existing homepage pattern. 8 pages now emit 5 Review JSON-LD blocks each, plus the site-wide AggregateRating. 27 lines added. (2026-06-10, PR #39)
 - **C-01** — Phone number in hero — verified already present in `components/sections/hero.tsx` for `home` and `lp` variants; phone click tracked via GTM `phone_call` event. No code change needed. (2026-06-10, verified)
 - **S-01** — AggregateRating schema — nested inside `medicalBusinessSchema()` in `lib/seo/schemas.ts`; removed redundant standalone JSON-LD from `layout.tsx` (2026-06-05, PR #37)
