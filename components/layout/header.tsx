@@ -29,6 +29,10 @@ export function Header() {
             <Link
               key={item.href}
               href={item.href}
+              onClick={trackClick("cta_click", {
+                location: "primary_nav",
+                cta_label: item.label,
+              })}
               className="text-sm font-medium text-[var(--color-ink)] hover:text-[var(--color-brand-500)] transition-colors"
             >
               {item.label}

@@ -60,7 +60,13 @@ export function MobileNav() {
               <Link
                 key={item.href}
                 href={item.href}
-                onClick={() => setOpen(false)}
+                onClick={(e) => {
+                  trackClick("cta_click", {
+                    location: "primary_nav",
+                    cta_label: item.label,
+                  })(e);
+                  setOpen(false);
+                }}
                 className="py-3 text-lg font-medium border-b border-[var(--color-surface-border)]"
               >
                 {item.label}
