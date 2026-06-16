@@ -222,6 +222,69 @@ function validateAggregateRating(page, idx, type, ar) {
   }
 }
 
+function validateSearchAction(page, idx, type, sa, path) {
+  if (!isPlainObject(sa)) {
+    err(page, idx, type, `${path} must be an object with @type SearchAction`);
+    return;
+  }
+  if (sa["@type"] !== "SearchAction") {
+    err(page, idx, type, `${path} @type must be "SearchAction" (got ${JSON.stringify(sa["@type"])})`);
+  }
+  // target can be a string URL or an EntryPoint object. Google's docs accept both.
+  if (sa.target === undefined) {
+    err(page, idx, type, `${path} is missing required "target" field`);
+  } else if (typeof sa.target === "string") {
+    if (!isHttpUrl(sa.target)) {
+      err(page, idx, type, `${path}.target string must be an http(s) URL (got ${JSON.stringify(sa.target)})`);
+    }
+  } else if (isPlainObject(sa.target)) {
+    if (sa.target["@type"] !== undefined && sa.target["@type"] !== "EntryPoint") {
+      err(page, idx, type, `${path}.target.@type must be "EntryPoint" when present (got ${JSON.stringify(sa.target["@type"])})`);
+    }
+    validateString(page, idx, type, `${path}.target.urlTemplate`, sa.target.urlTemplate, { url: true });
+  } else {
+    err(page, idx, type, `${path}.target must be a string URL or EntryPoint object (got ${typeof sa.target})`);
+  }
+  // `query-input` must look like `required name=<placeholder>` per Google's
+  // docs, and the placeholder on the right of `=` must appear in urlTemplate.
+  const qi = sa["query-input"];
+  if (typeof qi !== "string" || !/^required name=[\w-]+$/.test(qi)) {
+    err(page, idx, type, `${path}["query-input"] must match /^required name=[\\w-]+$/ (got ${JSON.stringify(qi)})`);
+  } else {
+    const placeholder = qi.replace(/^required name=/, "");
+    if (isPlainObject(sa.target) && typeof sa.target.urlTemplate === "string" && !sa.target.urlTemplate.includes(`{${placeholder}}`)) {
+      err(page, idx, type, `${path}["query-input"] placeholder "{${placeholder}}" must appear in target.urlTemplate (${JSON.stringify(sa.target.urlTemplate)})`);
+    }
+  }
+}
+
+function validateWebSite(page, idx, block) {
+  validateString(page, idx, "WebSite", "name", block.name);
+  validateString(page, idx, "WebSite", "url", block.url, { url: true });
+  if (present(block.alternateName)) {
+    validateString(page, idx, "WebSite", "alternateName", block.alternateName);
+  }
+  if (present(block.inLanguage)) {
+    validateString(page, idx, "WebSite", "inLanguage", block.inLanguage);
+  }
+  if (present(block.publisher)) {
+    const pub = block.publisher;
+    if (!isPlainObject(pub) || !nonEmptyString(pub["@id"])) {
+      err(page, idx, "WebSite", `"publisher" must be an object with @id (the parent business)`);
+    }
+  }
+  if (present(block.potentialAction)) {
+    const pa = block.potentialAction;
+    if (Array.isArray(pa)) {
+      for (let i = 0; i < pa.length; i++) {
+        validateSearchAction(page, idx, "WebSite", pa[i], `potentialAction[${i}]`);
+      }
+    } else {
+      validateSearchAction(page, idx, "WebSite", pa, "potentialAction");
+    }
+  }
+}
+
 function validateRating(page, idx, type, r, path) {
   if (!isPlainObject(r)) {
     err(page, idx, type, `${path} must be an object with @type Rating`);
@@ -399,6 +462,7 @@ const TYPE_VALIDATORS = {
   FAQPage: validateFAQPage,
   BreadcrumbList: validateBreadcrumb,
   Review: validateReview,
+  WebSite: validateWebSite,
   // AggregateRating + Rating are nested inside other types; we still accept
   // them as top-level for future schema additions, and validate their fields.
   AggregateRating(page, idx, block) {

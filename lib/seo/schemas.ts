@@ -134,6 +134,39 @@ export function medicalBusinessSchema() {
   };
 }
 
+/**
+ * Site-wide WebSite schema with a sitelinks SearchAction. Adding this gives
+ * Google the data it needs to surface the "sitelinks search box" for the
+ * site (the search bar that appears under the first organic result for
+ * branded queries). The action's `target` points to the homepage with a
+ * `?s={search_term_string}` query param — currently no client-side search
+ * UI exists, so the link is informational and tells Google the intent
+ * pattern. If a real `/search/` route is added later, swap the target.
+ */
+export function webSiteSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${site.url}/#website`,
+    name: site.name,
+    alternateName: site.legalName,
+    url: site.url,
+    inLanguage: "en-US",
+    publisher: { "@id": `${site.url}/#business` },
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `${site.url}/?s={search_term_string}`,
+      },
+      // `query-input` is required by Google's docs for the SearchAction to
+      // be eligible for the sitelinks search box. The placeholder name on
+      // the left of the `=` must match the placeholder in urlTemplate.
+      "query-input": "required name=search_term_string",
+    },
+  };
+}
+
 export function physicianSchema(opts: {
   name: string;
   title: string;
