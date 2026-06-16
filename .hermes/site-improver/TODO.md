@@ -12,20 +12,13 @@ most impactful remaining items I've identified from a code audit (not
 already tracked elsewhere) are below, in the order this skill's priority
 guidance recommends (Schema > SEO Meta > Tracking > Conversion > Web Design):
 
-1. **SE-06** — Add `WebSite` JSON-LD with `potentialAction: SearchAction`
-   (sitelinks search box). This is a single `<JsonLd>` block in
-   `app/layout.tsx` next to the existing `medicalBusinessSchema()` and
-   surfaces the Google sitelinks search box. Note: the site has no search
-   page yet, so this should be deferred until `/search/` is added, or
-   wired to `?s=…` query params on the home page.
-
-2. **C-06** — Add "As seen on" / press logos section. Trust bar mentions
+1. **C-06** — Add "As seen on" / press logos section. Trust bar mentions
    "Board-Certified Physicians" and "Medicare Accepted" but lacks press
    coverage or peer-credibility signals. If the practice has been cited
    in any local news / medical journals, add a row of logos to the
    the `TrustBar` component or a sibling section.
 
-3. **WD-06** — Add `aria-current="page"` to active nav links in
+2. **WD-06** — Add `aria-current="page"` to active nav links in
    `header.tsx`, `mobile-nav.tsx`, and `footer.tsx`. Screen-reader users
    currently can't tell which page they're on; the active link is
    identified only by color, which fails WCAG 2.4.4 (Link Purpose) and
@@ -60,6 +53,16 @@ guidance recommends (Schema > SEO Meta > Tracking > Conversion > Web Design):
   - 58 lines added, 0 removed, single file
   - `npm run build`: passes (20 routes); `npm run validate:schema`: 80 blocks / 0 errors / 0 warnings; new fields appear in all 19 MedicalBusiness blocks
   - Part of PR #41 (rolled into the existing WD-03 PR since one was already open for this branch)
+
+- [x] **SE-06** — Add `WebSite` JSON-LD with `potentialAction: SearchAction` ✅ DONE 2026-06-16
+  - Added `webSiteSchema()` helper in `lib/seo/schemas.ts` returning a site-wide `WebSite` JSON-LD block with a `SearchAction` `potentialAction` (EntryPoint `urlTemplate: https://hbotq.com/?s={search_term_string}` and `query-input: required name=search_term_string`)
+  - The SearchAction gives Google the structured data it needs to surface the sitelinks search box for branded queries. The site has no `/search/` route today, so the target is wired to a `?s=…` query param on the homepage; the action remains valid per Google's docs even without a UI.
+  - Rendered site-wide via `<JsonLd data={webSiteSchema()} />` in `app/layout.tsx <head>`, next to the existing `medicalBusinessSchema()`
+  - Cross-linked the `WebSite.publisher` field to `MedicalBusiness.@id` (`#business`) so the Knowledge Panel can attribute the publisher of the site to the medical business entity
+  - Added a `validateWebSite` + `validateSearchAction` pair to `scripts/validate-schema.mjs` so the new block is deeply validated: enforces `SearchAction.target` is a string URL or `EntryPoint` object, `urlTemplate` is http(s), `query-input` matches `/^required name=[\w-]+$/`, the placeholder appears in the urlTemplate, and `WebSite.publisher` has an `@id`
+  - 99 lines added across 3 files: `lib/seo/schemas.ts` (33), `app/layout.tsx` (2), `scripts/validate-schema.mjs` (64)
+  - `npm run build`: passes (20 routes); `npm run validate:schema`: **99 blocks / 0 errors / 0 warnings** (19 WebSite, 19 MedicalBusiness, 40 Review, 7 FAQPage, 6 MedicalCondition, 6 BreadcrumbList, 2 Physician)
+  - Part of PR #41 (rolled into the existing open PR for this branch — SKILL.md guidance: skip PR creation when one is already open for the branch)
 
 ---
 
