@@ -1,11 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { footerNav } from "@/lib/data/nav";
 import { site } from "@/lib/data/site";
 import { trackClick } from "@/lib/analytics/track";
+import { isNavItemActive } from "@/lib/utils/nav";
 
 export function Footer() {
+  const pathname = usePathname() || "/";
   return (
     <footer className="bg-[var(--color-brand-800)] text-[var(--color-sand-100)]">
       <div className="container-page py-16 lg:py-20">
@@ -13,6 +16,7 @@ export function Footer() {
           <div>
             <Link
               href="/"
+              aria-current={pathname === "/" ? "page" : undefined}
               className="inline-flex items-center gap-2 font-display text-xl font-semibold text-white"
             >
               <span className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-[var(--color-accent)] text-white text-sm font-bold">
@@ -83,9 +87,9 @@ export function Footer() {
             </div>
           </div>
 
-          <FooterColumn title="Explore" links={footerNav.explore} />
-          <FooterColumn title="Conditions" links={footerNav.conditions} />
-          <FooterColumn title="Visit" links={footerNav.legal} />
+          <FooterColumn title="Explore" links={footerNav.explore} pathname={pathname} />
+          <FooterColumn title="Conditions" links={footerNav.conditions} pathname={pathname} />
+          <FooterColumn title="Visit" links={footerNav.legal} pathname={pathname} />
         </div>
 
         <div className="mt-12 pt-8 border-t border-[var(--color-brand-700)] flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-xs text-[var(--color-sand-300)]">
@@ -105,9 +109,11 @@ export function Footer() {
 function FooterColumn({
   title,
   links,
+  pathname,
 }: {
   title: string;
   links: readonly { label: string; href: string }[];
+  pathname: string;
 }) {
   return (
     <div>
@@ -115,16 +121,24 @@ function FooterColumn({
         {title}
       </h3>
       <ul className="mt-4 space-y-2">
-        {links.map((l) => (
-          <li key={l.href}>
-            <Link
-              href={l.href}
-              className="text-sm text-[var(--color-sand-300)] hover:text-white"
-            >
-              {l.label}
-            </Link>
-          </li>
-        ))}
+        {links.map((l) => {
+          const active = isNavItemActive(l.href, pathname);
+          return (
+            <li key={l.href}>
+              <Link
+                href={l.href}
+                aria-current={active ? "page" : undefined}
+                className={
+                  active
+                    ? "text-sm font-semibold text-white"
+                    : "text-sm text-[var(--color-sand-300)] hover:text-white"
+                }
+              >
+                {l.label}
+              </Link>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

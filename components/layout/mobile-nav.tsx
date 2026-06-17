@@ -2,12 +2,15 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { primaryNav } from "@/lib/data/nav";
 import { site } from "@/lib/data/site";
 import { trackClick } from "@/lib/analytics/track";
+import { isNavItemActive } from "@/lib/utils/nav";
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname() || "/";
 
   useEffect(() => {
     document.documentElement.style.overflow = open ? "hidden" : "";
@@ -56,22 +59,30 @@ export function MobileNav() {
             className="container-page py-8 flex flex-col gap-2"
             aria-label="Mobile"
           >
-            {primaryNav.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={(e) => {
-                  trackClick("cta_click", {
-                    location: "primary_nav",
-                    cta_label: item.label,
-                  })(e);
-                  setOpen(false);
-                }}
-                className="py-3 text-lg font-medium border-b border-[var(--color-surface-border)]"
-              >
-                {item.label}
-              </Link>
-            ))}
+            {primaryNav.map((item) => {
+              const active = isNavItemActive(item.href, pathname);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={(e) => {
+                    trackClick("cta_click", {
+                      location: "primary_nav",
+                      cta_label: item.label,
+                    })(e);
+                    setOpen(false);
+                  }}
+                  aria-current={active ? "page" : undefined}
+                  className={
+                    active
+                      ? "py-3 text-lg font-semibold border-b-2 border-[var(--color-brand-500)] text-[var(--color-brand-500)]"
+                      : "py-3 text-lg font-medium border-b border-[var(--color-surface-border)]"
+                  }
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
             <div className="mt-6 flex flex-col gap-3">
               <a
                 href={`tel:${site.phoneE164}`}

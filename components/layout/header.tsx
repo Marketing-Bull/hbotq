@@ -1,17 +1,21 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { primaryNav } from "@/lib/data/nav";
 import { site } from "@/lib/data/site";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { trackClick } from "@/lib/analytics/track";
+import { isNavItemActive } from "@/lib/utils/nav";
 
 export function Header() {
+  const pathname = usePathname() || "/";
   return (
     <header className="sticky top-0 z-40 border-b border-[var(--color-surface-border)] bg-white/95 backdrop-blur">
       <div className="container-page flex items-center justify-between h-16 lg:h-20">
         <Link
           href="/"
+          aria-current={pathname === "/" ? "page" : undefined}
           className="flex items-center gap-2 font-display text-xl font-semibold text-[var(--color-brand-500)]"
           aria-label="HBOTQ home"
         >
@@ -25,19 +29,27 @@ export function Header() {
           className="hidden lg:flex items-center gap-8"
           aria-label="Primary"
         >
-          {primaryNav.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={trackClick("cta_click", {
-                location: "primary_nav",
-                cta_label: item.label,
-              })}
-              className="text-sm font-medium text-[var(--color-ink)] hover:text-[var(--color-brand-500)] transition-colors"
-            >
-              {item.label}
-            </Link>
-          ))}
+          {primaryNav.map((item) => {
+            const active = isNavItemActive(item.href, pathname);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={trackClick("cta_click", {
+                  location: "primary_nav",
+                  cta_label: item.label,
+                })}
+                aria-current={active ? "page" : undefined}
+                className={
+                  active
+                    ? "text-sm font-semibold text-[var(--color-brand-500)] border-b-2 border-[var(--color-brand-500)] pb-0.5 -mb-0.5"
+                    : "text-sm font-medium text-[var(--color-ink)] hover:text-[var(--color-brand-500)] transition-colors"
+                }
+              >
+                {item.label}
+              </Link>
+            );
+          })}
         </nav>
 
         <div className="hidden lg:flex items-center gap-3">
