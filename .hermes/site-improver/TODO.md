@@ -7,22 +7,17 @@
 
 ## 🟢 NEXT (for the next nightly run, in priority order)
 
-The original PENDING list (S/SE/T/C/WD) is now fully worked through. The
-most impactful remaining items I've identified from a code audit (not
-already tracked elsewhere) are below, in the order this skill's priority
-guidance recommends (Schema > SEO Meta > Tracking > Conversion > Web Design):
+WD-06 is now done. The remaining item from the last code audit is:
 
-1. **C-06** — Add "As seen on" / press logos section. Trust bar mentions
+1. **C-06** — Add "As seen on" / press logos section. TrustBar mentions
    "Board-Certified Physicians" and "Medicare Accepted" but lacks press
    coverage or peer-credibility signals. If the practice has been cited
    in any local news / medical journals, add a row of logos to the
-   the `TrustBar` component or a sibling section.
-
-2. **WD-06** — Add `aria-current="page"` to active nav links in
-   `header.tsx`, `mobile-nav.tsx`, and `footer.tsx`. Screen-reader users
-   currently can't tell which page they're on; the active link is
-   identified only by color, which fails WCAG 2.4.4 (Link Purpose) and
-   2.4.8 (Location) on hover/focus.
+   `TrustBar` component or a sibling section. **Note**: this item
+   requires real, third-party-verifiable press logos — fabricating
+   logos for outlets that haven't actually cited the practice would
+   be a credibility violation. Skip if no real press assets exist;
+   revisit if the practice picks up coverage.
 
 ---
 
@@ -198,9 +193,19 @@ guidance recommends (Schema > SEO Meta > Tracking > Conversion > Web Design):
   - Audited all 7 `<Image>` tags across `app/` and `components/` — all have `alt=` attributes (no missing alt). Tags found in: `app/sample/non-healing-wounds/page.tsx` (4), `components/cards/physician-card.tsx` (1, uses `alt={p.name}`), `components/sections/hero.tsx` (1, uses `alt={imageAlt}`), `components/sections/what-is-hbot.tsx` (1, hard-coded alt)
   - No code change required
 
+- [x] **WD-06** — `aria-current="page"` on active nav links ✅ DONE 2026-06-17
+  - New `lib/utils/nav.ts → isNavItemActive(href, pathname)` helper. Homepage link matches exact `/`; other links match exact-or-prefix-with-slash so `/treatment/` also lights for any future `/treatment/[slug]/` nested route. `/conditions/` does NOT light on `/condition/[slug]/` (different segment, not a child) — prefix boundary is `/`.
+  - Wired into `components/layout/header.tsx` (desktop primary nav + HBOTQ home logo), `components/layout/mobile-nav.tsx` (slide-in nav, setOpen(false) preserved), and `components/layout/footer.tsx` (all three columns + HBOTQ home logo).
+  - Visual reinforcement on top of the ARIA: active desktop nav link = brand-color semibold + 2px brand underline; active mobile link = brand-color semibold + 2px brand bottom border; active footer link = white semibold (over the brand-800 background).
+  - Verified rendered HTML: homepage shows 2 active (both home links); top-level pages show 2 (header nav + footer nav); condition detail pages show 1 (footer Conditions column only — no primary nav item points to a `/condition/[slug]/` URL).
+  - 4 files changed, 124 insertions(+), 42 deletions(-)
+  - `npm run build`: passes (20 routes); `npm run validate:schema`: 99 blocks / 0 errors / 0 warnings
+  - Part of PR #41 (rolled into the open PR for this branch — SKILL.md guidance: skip PR creation when one is already open for the branch)
+
 ---
 
 ## 🟢 COMPLETED
+- **WD-06** — `aria-current="page"` on active nav links. Added a new `lib/utils/nav.ts → isNavItemActive(href, pathname)` helper (homepage link matches exact `/`; other links match exact-or-prefix-with-slash so `/treatment/` also lights for future `/treatment/[slug]/` nested routes; `/conditions/` does NOT light on `/condition/[slug]/` because that's a different segment, not a child). Wired it into `components/layout/header.tsx` (desktop primary nav + HBOTQ home logo), `components/layout/mobile-nav.tsx` (slide-in nav, setOpen(false) close behavior preserved), and `components/layout/footer.tsx` (all three columns + HBOTQ logo). Active state is reinforced visually too: desktop nav gets brand-color semibold with a 2px brand underline; mobile nav gets brand-color semibold with a brand 2px bottom border; footer columns get white semibold over the brand-800 background. Verified rendered HTML on every page: homepage shows 2 active (both home links); top-level pages show 2 (header nav + footer nav); condition detail pages show 1 (footer Conditions column only — no primary nav item points to a `/condition/[slug]/` URL). 4 files changed, 124 insertions(+), 42 deletions(-). `npm run build`: passes (20 routes); `npm run validate:schema`: 99 blocks / 0 errors / 0 warnings. Closes WCAG 2.4.4 (Link Purpose) and 2.4.8 (Location). (2026-06-17, PR #41 updated)
 - **T-06** — Primary nav click tracking. Added `onClick={trackClick("cta_click", { location: "primary_nav", cta_label: item.label })}` to the `<Link>` map in both `components/layout/header.tsx` (desktop nav) and `components/layout/mobile-nav.tsx` (mobile drawer nav). On mobile, the existing `setOpen(false)` panel-close behavior is preserved alongside the tracker call. The primary nav (`Treatment / Conditions / Physicians / FAQs / Contact`) was the last set of internal links on the site with no dataLayer event — combined with T-01 (CTA), T-02 (form submit), T-03 (tel/mailto), and T-04 (GBP), every outbound-conversion path on the site is now instrumented. (2026-06-15, PR #41 updated)
 - **C-05** — Review JSON-LD on every page that renders `<TestimonialCarousel/>` — added `testimonials.map(t => <JsonLd data={reviewSchema(...)} />)` to `app/hyperbaric-therapy/page.tsx` and `app/condition/[slug]/page.tsx`, matching the existing homepage pattern. 8 pages now emit 5 Review JSON-LD blocks each, plus the site-wide AggregateRating. 27 lines added. (2026-06-10, PR #39)
 - **C-01** — Phone number in hero — verified already present in `components/sections/hero.tsx` for `home` and `lp` variants; phone click tracked via GTM `phone_call` event. No code change needed. (2026-06-10, verified)
