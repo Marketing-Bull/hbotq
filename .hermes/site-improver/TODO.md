@@ -7,7 +7,7 @@
 
 ## 🟢 NEXT (for the next nightly run, in priority order)
 
-WD-06 is now done. The remaining item from the last code audit is:
+T-07 is now done. The remaining items in priority order are:
 
 1. **C-06** — Add "As seen on" / press logos section. TrustBar mentions
    "Board-Certified Physicians" and "Medicare Accepted" but lacks press
@@ -18,6 +18,14 @@ WD-06 is now done. The remaining item from the last code audit is:
    logos for outlets that haven't actually cited the practice would
    be a credibility violation. Skip if no real press assets exist;
    revisit if the practice picks up coverage.
+
+2. **T-05** — Scroll-depth / engagement tracking. No scroll-depth
+   or time-on-page events fire today. Worth adding a `scroll_depth`
+   dataLayer event at 25/50/75/100% thresholds (cheap to wire into
+   `lib/analytics/track.ts` as a `useEffect` helper consumed by
+   `app/layout.tsx`). Lower priority than T-07 (which fixes a
+   real attribution bug) but more useful than C-06 until real
+   press assets exist.
 
 ---
 
@@ -103,6 +111,15 @@ WD-06 is now done. The remaining item from the last code audit is:
   - Closes the last funnel-attribution gap: with T-01, T-02, T-03, T-04, and T-06, every outbound-conversion path on the site (CTA buttons, phone, email, form submit, sticky-cta dismiss, AND primary nav) now emits a labeled `cta_click` / `phone_call` / `outbound_click` / `form_submit` event to GTM.
   - Build passes; no schema changes; no other files touched.
   - Part of PR #41 (rolled into the open PR for this branch).
+
+- [x] **T-07** — Fire `phone_call` (not `cta_click`) for `tel:` hero CTAs ✅ DONE 2026-06-18
+  - The secondary CTA on every `/condition/[slug]/` page is `Call 718-925-3322` with a `tel:` href, but the Hero component always rendered it as a Next.js `<Link>` and always fired `cta_click` (a generic engagement event, not a phone-call conversion). That miscategorizes phone-call conversions in GTM and obscures the real attribution.
+  - New `ctaElement()` helper in `components/sections/hero.tsx`: `tel:` href → plain `<a>` + `trackClick("phone_call", ...)`; `mailto:` → plain `<a>` + `trackClick("mailto", ...)`; internal route → `<Link>` + `trackClick("cta_click", ...)` (unchanged).
+  - Also added `hero_slot: "primary" | "secondary"` to the dataLayer payload so a single `location: "hero_<variant>"` can be split into the two slots when reading GTM funnels.
+  - 1 file, 75 insertions(+), 20 deletions(-); no other files touched.
+  - Verified rendered HTML: `/condition/non-healing-wounds/` now emits `<a href="tel:...">Call 718-925-3322</a>` (plain `<a>`, not `<Link>`); home/hero/lp/page variants unchanged for non-`tel:` CTAs.
+  - `npm run build`: passes (20 routes); `npm run validate:schema`: 99 blocks / 0 errors / 0 warnings (no schema changes; tracking/HTML-only).
+  - Part of PR #41 (rolled into the open PR for this branch — SKILL.md guidance: skip PR creation when one is already open for the branch).
 - [x] **T-01** — GTM verification + CTA click tracking ✅ DONE 2026-06-09
   - `NEXT_PUBLIC_GTM_ID` env var correctly read in `app/layout.tsx:49`; GTM component no-ops cleanly when unset
   - `lib/analytics/track.ts` extended with `cta_click` category (emits `cta_click` event) and `trackEvent()` helper for non-link events
