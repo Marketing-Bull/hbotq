@@ -7,7 +7,7 @@
 
 ## 🟢 NEXT (for the next nightly run, in priority order)
 
-T-07 is now done. The remaining items in priority order are:
+T-05 is now done. The remaining items in priority order are:
 
 1. **C-06** — Add "As seen on" / press logos section. TrustBar mentions
    "Board-Certified Physicians" and "Medicare Accepted" but lacks press
@@ -18,14 +18,6 @@ T-07 is now done. The remaining items in priority order are:
    logos for outlets that haven't actually cited the practice would
    be a credibility violation. Skip if no real press assets exist;
    revisit if the practice picks up coverage.
-
-2. **T-05** — Scroll-depth / engagement tracking. No scroll-depth
-   or time-on-page events fire today. Worth adding a `scroll_depth`
-   dataLayer event at 25/50/75/100% thresholds (cheap to wire into
-   `lib/analytics/track.ts` as a `useEffect` helper consumed by
-   `app/layout.tsx`). Lower priority than T-07 (which fixes a
-   real attribution bug) but more useful than C-06 until real
-   press assets exist.
 
 ---
 
@@ -119,6 +111,17 @@ T-07 is now done. The remaining items in priority order are:
   - 1 file, 75 insertions(+), 20 deletions(-); no other files touched.
   - Verified rendered HTML: `/condition/non-healing-wounds/` now emits `<a href="tel:...">Call 718-925-3322</a>` (plain `<a>`, not `<Link>`); home/hero/lp/page variants unchanged for non-`tel:` CTAs.
   - `npm run build`: passes (20 routes); `npm run validate:schema`: 99 blocks / 0 errors / 0 warnings (no schema changes; tracking/HTML-only).
+  - Part of PR #41 (rolled into the open PR for this branch — SKILL.md guidance: skip PR creation when one is already open for the branch).
+- [x] **T-05** — Scroll-depth / engagement tracking ✅ DONE 2026-06-19
+  - No scroll-depth or time-on-page events were firing before this change. Added a new `components/analytics/scroll-depth.tsx` component (mounted once in the root `app/layout.tsx` so it covers every route) that listens to `window.scroll` and fires a `scroll_depth` dataLayer event at the 25 / 50 / 75 / 100% thresholds. The fired set is reset on every pathname change via `usePathname()` so client-side navigations get fresh thresholds.
+  - Scroll handling is throttled with `requestAnimationFrame` (at most one `scrollY` read per frame, regardless of how many `scroll` events the browser fires). The listener is registered with `{ passive: true }` so it never blocks scroll.
+  - Initial check runs once on mount so a user who lands already-scrolled (browser scroll restoration, hash-link navigation) still gets the threshold that corresponds to the restored position.
+  - Event payload: `{ event: "scroll_depth", percent: <25|50|75|100>, page: <pathname> }` — `page` lets GA4 funnels segment scroll engagement by route.
+  - Renders no DOM (`return null`), is a client component (`"use client"`), and no-ops on the server — safe to mount in the root layout.
+  - Reuses the existing `trackEvent()` helper from `lib/analytics/track.ts` so the dataLayer.push boilerplate stays in one place.
+  - 2 files, 82 insertions(+), 0 deletions(-); no schema changes.
+  - `npm run build`: passes (20 routes); `npm run validate:schema`: 99 blocks / 0 errors / 0 warnings.
+  - Verified compiled bundle: `.next/static/chunks/*.js` contains `scroll_depth",{percent:t,page:e||"/"}` — confirms the dataLayer payload shape is what we expect.
   - Part of PR #41 (rolled into the open PR for this branch — SKILL.md guidance: skip PR creation when one is already open for the branch).
 - [x] **T-01** — GTM verification + CTA click tracking ✅ DONE 2026-06-09
   - `NEXT_PUBLIC_GTM_ID` env var correctly read in `app/layout.tsx:49`; GTM component no-ops cleanly when unset
@@ -222,6 +225,7 @@ T-07 is now done. The remaining items in priority order are:
 ---
 
 ## 🟢 COMPLETED
+- **T-05** — Scroll-depth / engagement tracking. New `components/analytics/scroll-depth.tsx` (mounted once in the root `app/layout.tsx`) listens to `window.scroll` (passive, rAF-throttled to one `scrollY` read per frame) and fires a `scroll_depth` dataLayer event at the 25 / 50 / 75 / 100% thresholds. Each threshold fires at most once per page view; the fired set is reset on every pathname change via `usePathname()` so client-side navigations get fresh thresholds. Initial check runs once on mount so a user who lands already-scrolled (browser scroll restoration, hash-link navigation) still gets the matching threshold. Event payload: `{ event: "scroll_depth", percent: <25|50|75|100>, page: <pathname> }` — `page` lets GA4 funnels segment scroll engagement by route. Component renders no DOM (`return null`), is a client component (`"use client"`), and no-ops on the server — safe to mount in the root layout. Reuses the existing `trackEvent()` helper from `lib/analytics/track.ts` so the dataLayer.push boilerplate stays in one place. 2 files changed, 82 insertions(+), 0 deletions(-); no schema changes. `npm run build`: passes (20 routes); `npm run validate:schema`: 99 blocks / 0 errors / 0 warnings. Verified compiled bundle: `.next/static/chunks/*.js` contains `scroll_depth",{percent:t,page:e||"/"}` — confirms the dataLayer payload shape is what we expect. (2026-06-19, PR #41 updated)
 - **WD-06** — `aria-current="page"` on active nav links. Added a new `lib/utils/nav.ts → isNavItemActive(href, pathname)` helper (homepage link matches exact `/`; other links match exact-or-prefix-with-slash so `/treatment/` also lights for future `/treatment/[slug]/` nested routes; `/conditions/` does NOT light on `/condition/[slug]/` because that's a different segment, not a child). Wired it into `components/layout/header.tsx` (desktop primary nav + HBOTQ home logo), `components/layout/mobile-nav.tsx` (slide-in nav, setOpen(false) close behavior preserved), and `components/layout/footer.tsx` (all three columns + HBOTQ logo). Active state is reinforced visually too: desktop nav gets brand-color semibold with a 2px brand underline; mobile nav gets brand-color semibold with a brand 2px bottom border; footer columns get white semibold over the brand-800 background. Verified rendered HTML on every page: homepage shows 2 active (both home links); top-level pages show 2 (header nav + footer nav); condition detail pages show 1 (footer Conditions column only — no primary nav item points to a `/condition/[slug]/` URL). 4 files changed, 124 insertions(+), 42 deletions(-). `npm run build`: passes (20 routes); `npm run validate:schema`: 99 blocks / 0 errors / 0 warnings. Closes WCAG 2.4.4 (Link Purpose) and 2.4.8 (Location). (2026-06-17, PR #41 updated)
 - **T-06** — Primary nav click tracking. Added `onClick={trackClick("cta_click", { location: "primary_nav", cta_label: item.label })}` to the `<Link>` map in both `components/layout/header.tsx` (desktop nav) and `components/layout/mobile-nav.tsx` (mobile drawer nav). On mobile, the existing `setOpen(false)` panel-close behavior is preserved alongside the tracker call. The primary nav (`Treatment / Conditions / Physicians / FAQs / Contact`) was the last set of internal links on the site with no dataLayer event — combined with T-01 (CTA), T-02 (form submit), T-03 (tel/mailto), and T-04 (GBP), every outbound-conversion path on the site is now instrumented. (2026-06-15, PR #41 updated)
 - **C-05** — Review JSON-LD on every page that renders `<TestimonialCarousel/>` — added `testimonials.map(t => <JsonLd data={reviewSchema(...)} />)` to `app/hyperbaric-therapy/page.tsx` and `app/condition/[slug]/page.tsx`, matching the existing homepage pattern. 8 pages now emit 5 Review JSON-LD blocks each, plus the site-wide AggregateRating. 27 lines added. (2026-06-10, PR #39)
