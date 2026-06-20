@@ -7,7 +7,7 @@
 
 ## 🟢 NEXT (for the next nightly run, in priority order)
 
-T-05 is now done. The remaining items in priority order are:
+T-05 and T-08 are now done. The remaining items in priority order are:
 
 1. **C-06** — Add "As seen on" / press logos section. TrustBar mentions
    "Board-Certified Physicians" and "Medicare Accepted" but lacks press
@@ -16,8 +16,13 @@ T-05 is now done. The remaining items in priority order are:
    `TrustBar` component or a sibling section. **Note**: this item
    requires real, third-party-verifiable press logos — fabricating
    logos for outlets that haven't actually cited the practice would
-   be a credibility violation. Skip if no real press assets exist;
-   revisit if the practice picks up coverage.
+   be a credibility violation. **Deferred on 2026-06-20**: searched
+   the repo (`grep -r press|featured in|as seen on|news|media` against
+   `app/`, `components/`, `lib/`, `public/`) — zero matches. The press
+   assets directory does not exist (`public/images/press/` is absent).
+   No real, third-party-verifiable press logos are available to render
+   without fabrication. Revisit if/when the practice picks up coverage
+   the practice can point to.
 
 ---
 
@@ -146,6 +151,12 @@ T-05 is now done. The remaining items in priority order are:
   - Update social links to include Google Business Profile listing ✅
   - Add `sameAs` in schema if GBP profile URL is available ✅
 
+- [x] **T-08** — MapHours phone/email link tracking ✅ DONE 2026-06-20
+  - T-03 (PR #1, 2026-06-04) explicitly enumerated the components it instrumented: "StickyCta, Hero, PhoneCta, CtaBanner, Header, Footer, MobileNav" — but missed the `MapHours` section on `/contact-us/`, which renders the phone (`tel:`) and email (`mailto:`) CTA pair below the consultation form. The two most prominent phone/email CTAs on the contact page were firing no dataLayer event.
+  - Added `onClick={trackClick("phone_call", { location: "map_hours" })}` to the `tel:` anchor and `onClick={trackClick("mailto", { location: "map_hours" })}` to the `mailto:` anchor in `components/sections/map-hours.tsx`. The component was a server component; converted to `"use client"` so the handlers wire up (matches the convention every other instrumented component on the site already follows).
+  - Single-file change, 5 insertions(+), 0 deletions(-). `npm run build`: passes (20 routes); `npm run validate:schema`: 99 blocks / 0 errors / 0 warnings (no schema changes). Verified the literal `map_hours` location string is present in the compiled client bundle (`grep -r map_hours .next/static/` returns 2 hits: one per handler), confirming the dataLayer payload is wired.
+  - Closes the last `tel:`/`mailto:` tracking gap on the site. Combined with T-01, T-02, T-03, T-04, T-06, T-07, and T-08, every `tel:` and `mailto:` link across Header, MobileNav, StickyCta (mobile + desktop), Hero, PhoneCta, CtaBanner, Footer, and now MapHours fires a labeled `phone_call` or `mailto` event to GTM.
+
 ---
 
 ### Category: Conversion Optimization
@@ -225,6 +236,7 @@ T-05 is now done. The remaining items in priority order are:
 ---
 
 ## 🟢 COMPLETED
+- **T-08** — MapHours phone/email link tracking. T-03 (PR #1, 2026-06-04) explicitly enumerated the components it instrumented for outbound-click tracking — StickyCta, Hero, PhoneCta, CtaBanner, Header, Footer, MobileNav — but missed the MapHours section on /contact-us/, which renders the phone (tel:) and email (mailto:) CTA pair below the consultation form. Those two CTAs were the most prominent phone/email links on the contact page and were firing no dataLayer event, leaving the highest-intent conversion moment on the site untracked. Added `onClick={trackClick('phone_call', { location: 'map_hours' })}` to the tel: anchor and `onClick={trackClick('mailto', { location: 'map_hours' })}` to the mailto: anchor in components/sections/map-hours.tsx. The component was a server component; converted to "use client" so the onClick handlers wire up (matches the convention every other instrumented component on the site already follows). Single-file change, 5 insertions(+), 0 deletions(-); no schema changes. `npm run build`: passes (20 routes); `npm run validate:schema`: 99 blocks / 0 errors / 0 warnings. Verified the literal map_hours location string appears twice in the compiled client bundle (grep -r map_hours .next/static/chunks/ → 2 hits in 0-4yn0jtfv2uy.js, one per handler), confirming both dataLayer payloads are wired. Verified rendered HTML on /contact-us/ still emits <a href="tel:+171****3322">718-925-3322</a> and <a href="mailto:hello@hbotq.com">hello@hbotq.com</a> with the expected hrefs. Closes the last tel:/mailto: tracking gap on the site — every phone/email link across Header, MobileNav, StickyCta (mobile + desktop), Hero, PhoneCta, CtaBanner, Footer, and MapHours now fires a labeled phone_call or mailto event to GTM. (2026-06-20, PR #41 updated)
 - **T-05** — Scroll-depth / engagement tracking. New `components/analytics/scroll-depth.tsx` (mounted once in the root `app/layout.tsx`) listens to `window.scroll` (passive, rAF-throttled to one `scrollY` read per frame) and fires a `scroll_depth` dataLayer event at the 25 / 50 / 75 / 100% thresholds. Each threshold fires at most once per page view; the fired set is reset on every pathname change via `usePathname()` so client-side navigations get fresh thresholds. Initial check runs once on mount so a user who lands already-scrolled (browser scroll restoration, hash-link navigation) still gets the matching threshold. Event payload: `{ event: "scroll_depth", percent: <25|50|75|100>, page: <pathname> }` — `page` lets GA4 funnels segment scroll engagement by route. Component renders no DOM (`return null`), is a client component (`"use client"`), and no-ops on the server — safe to mount in the root layout. Reuses the existing `trackEvent()` helper from `lib/analytics/track.ts` so the dataLayer.push boilerplate stays in one place. 2 files changed, 82 insertions(+), 0 deletions(-); no schema changes. `npm run build`: passes (20 routes); `npm run validate:schema`: 99 blocks / 0 errors / 0 warnings. Verified compiled bundle: `.next/static/chunks/*.js` contains `scroll_depth",{percent:t,page:e||"/"}` — confirms the dataLayer payload shape is what we expect. (2026-06-19, PR #41 updated)
 - **WD-06** — `aria-current="page"` on active nav links. Added a new `lib/utils/nav.ts → isNavItemActive(href, pathname)` helper (homepage link matches exact `/`; other links match exact-or-prefix-with-slash so `/treatment/` also lights for future `/treatment/[slug]/` nested routes; `/conditions/` does NOT light on `/condition/[slug]/` because that's a different segment, not a child). Wired it into `components/layout/header.tsx` (desktop primary nav + HBOTQ home logo), `components/layout/mobile-nav.tsx` (slide-in nav, setOpen(false) close behavior preserved), and `components/layout/footer.tsx` (all three columns + HBOTQ logo). Active state is reinforced visually too: desktop nav gets brand-color semibold with a 2px brand underline; mobile nav gets brand-color semibold with a brand 2px bottom border; footer columns get white semibold over the brand-800 background. Verified rendered HTML on every page: homepage shows 2 active (both home links); top-level pages show 2 (header nav + footer nav); condition detail pages show 1 (footer Conditions column only — no primary nav item points to a `/condition/[slug]/` URL). 4 files changed, 124 insertions(+), 42 deletions(-). `npm run build`: passes (20 routes); `npm run validate:schema`: 99 blocks / 0 errors / 0 warnings. Closes WCAG 2.4.4 (Link Purpose) and 2.4.8 (Location). (2026-06-17, PR #41 updated)
 - **T-06** — Primary nav click tracking. Added `onClick={trackClick("cta_click", { location: "primary_nav", cta_label: item.label })}` to the `<Link>` map in both `components/layout/header.tsx` (desktop nav) and `components/layout/mobile-nav.tsx` (mobile drawer nav). On mobile, the existing `setOpen(false)` panel-close behavior is preserved alongside the tracker call. The primary nav (`Treatment / Conditions / Physicians / FAQs / Contact`) was the last set of internal links on the site with no dataLayer event — combined with T-01 (CTA), T-02 (form submit), T-03 (tel/mailto), and T-04 (GBP), every outbound-conversion path on the site is now instrumented. (2026-06-15, PR #41 updated)
