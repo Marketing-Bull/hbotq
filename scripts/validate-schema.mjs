@@ -343,6 +343,13 @@ function validateMedicalBusiness(page, idx, block) {
       if (e.medicalSpecialty !== undefined && !Array.isArray(e.medicalSpecialty)) {
         err(page, idx, "MedicalBusiness", `employee[${i}].medicalSpecialty must be an array`);
       }
+      // Inline `employee` Physician entries MUST carry a `worksFor: { @id }`
+      // back-link to the parent MedicalBusiness entity so Google can resolve
+      // the inverse relationship. Without it, the Physician is dangling in
+      // the Knowledge Graph and the business->people mapping is incomplete.
+      if (!isPlainObject(e.worksFor) || !nonEmptyString(e.worksFor["@id"])) {
+        err(page, idx, "MedicalBusiness", `employee[${i}] is missing worksFor.{@id} — inline Physicians must cross-link back to the business entity`);
+      }
     }
   }
 }
@@ -353,11 +360,20 @@ function validatePhysician(page, idx, block) {
   if (block.medicalSpecialty !== undefined && !Array.isArray(block.medicalSpecialty)) {
     err(page, idx, "Physician", `"medicalSpecialty" must be an array`);
   }
-  if (block.worksFor !== undefined) {
-    const wf = block.worksFor;
-    if (!isPlainObject(wf) || !nonEmptyString(wf["@id"])) {
-      err(page, idx, "Physician", `"worksFor" must be an object with @id (the parent business)`);
-    }
+  // worksFor is required on standalone Physician blocks — it ties the
+  // physician entity to the business entity so Google can render the
+  // relationship in the Knowledge Panel.
+  if (!isPlainObject(block.worksFor) || !nonEmptyString(block.worksFor["@id"])) {
+    err(page, idx, "Physician", `missing worksFor.{@id} — Physician entities must cross-link to the parent business`);
+  }
+  // image is a Google-recommended (not schema-required) field on Physician
+  // entities. Warn when it's missing so the gap is visible, but don't fail
+  // the build — some legitimate Physician entries (historical staff,
+  // inherited data) may not have a headshot on file yet.
+  if (!nonEmptyString(block.image)) {
+    warn(page, idx, "Physician", `missing "image" — Google's rich-results docs recommend a headshot URL for each Physician entity`);
+  } else if (!isHttpUrl(block.image)) {
+    err(page, idx, "Physician", `"image" must be an http(s) URL (got: ${JSON.stringify(block.image)})`);
   }
 }
 

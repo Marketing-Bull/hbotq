@@ -125,11 +125,17 @@ export function medicalBusinessSchema() {
     availableService: availableServiceEntries(),
     sameAs: Object.values(site.social),
     aggregateRating,
+    // Inline `employee` Physician entries appear in the MedicalBusiness
+    // block on every page (19 blocks). They MUST carry a `worksFor: { @id }`
+    // back-link to the business entity so Google can resolve the inverse
+    // relationship (the standalone Physician blocks on /physicians/ already
+    // carry this — the inline entries were missing it).
     employee: physicians.map((p) => ({
       "@type": "Physician",
       name: p.name,
       jobTitle: p.title,
       medicalSpecialty: p.specialties,
+      worksFor: { "@id": `${site.url}/#business` },
     })),
   };
 }
@@ -171,6 +177,14 @@ export function physicianSchema(opts: {
   name: string;
   title: string;
   specialties: readonly string[];
+  /**
+   * Absolute path (under `public/`) to the physician's headshot. The
+   * validator emits a warning when this is missing, but it's not strictly
+   * required by schema.org. We surface it because Google's rich-results
+   * docs specifically call out `image` as a recommended field on
+   * `Physician` entities and the data is already in `lib/data/physicians.ts`.
+   */
+  image?: string;
 }) {
   return {
     "@context": "https://schema.org",
@@ -179,6 +193,9 @@ export function physicianSchema(opts: {
     jobTitle: opts.title,
     medicalSpecialty: opts.specialties,
     worksFor: { "@id": `${site.url}/#business` },
+    ...(opts.image
+      ? { image: `${site.url}${opts.image.startsWith("/") ? opts.image : `/${opts.image}`}` }
+      : {}),
   };
 }
 

@@ -27,6 +27,7 @@ export default function PhysiciansPage() {
             name: p.name,
             title: p.title,
             specialties: p.specialties,
+            image: p.image,
           })}
         />
       ))}
