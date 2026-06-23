@@ -7,7 +7,7 @@ import { TestimonialCarousel } from "@/components/sections/testimonial-carousel"
 import { ConsultationForm } from "@/components/forms/consultation-form";
 import { CtaBanner } from "@/components/sections/cta-banner";
 import { JsonLd } from "@/components/seo/json-ld";
-import { reviewSchema } from "@/lib/seo/schemas";
+import { breadcrumbSchema, reviewSchema } from "@/lib/seo/schemas";
 import { testimonials } from "@/lib/data/testimonials";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { site } from "@/lib/data/site";
@@ -35,6 +35,12 @@ export default function HyperbaricTherapyPage() {
           })}
         />
       ))}
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", url: `${site.url}/` },
+          { name: "Hyperbaric Therapy", url: `${site.url}/hyperbaric-therapy/` },
+        ])}
+      />
       <Hero
         variant="lp"
         eyebrow="Hyperbaric Oxygen Therapy · Queens, NY"

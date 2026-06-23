@@ -3,6 +3,9 @@ import { TrustBar } from "@/components/sections/trust-bar";
 import { ConditionsGrid } from "@/components/sections/conditions-grid";
 import { PhysiciansSection } from "@/components/sections/physicians-section";
 import { CtaBanner } from "@/components/sections/cta-banner";
+import { JsonLd } from "@/components/seo/json-ld";
+import { breadcrumbSchema } from "@/lib/seo/schemas";
+import { site } from "@/lib/data/site";
 import { buildMetadata } from "@/lib/seo/metadata";
 
 export const metadata = buildMetadata({
@@ -22,6 +25,12 @@ export const dynamic = "force-static";
 export default function ConditionsPage() {
   return (
     <>
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", url: `${site.url}/` },
+          { name: "Conditions", url: `${site.url}/conditions/` },
+        ])}
+      />
       <Hero
         variant="page"
         eyebrow="What We Treat"

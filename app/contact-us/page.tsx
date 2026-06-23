@@ -1,6 +1,9 @@
 import { Hero } from "@/components/sections/hero";
 import { MapHours } from "@/components/sections/map-hours";
 import { ConsultationForm } from "@/components/forms/consultation-form";
+import { JsonLd } from "@/components/seo/json-ld";
+import { breadcrumbSchema } from "@/lib/seo/schemas";
+import { site } from "@/lib/data/site";
 import { buildMetadata } from "@/lib/seo/metadata";
 
 export const metadata = buildMetadata({
@@ -20,6 +23,12 @@ export const dynamic = "force-static";
 export default function ContactPage() {
   return (
     <>
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", url: `${site.url}/` },
+          { name: "Contact Us", url: `${site.url}/contact-us/` },
+        ])}
+      />
       <Hero
         variant="page"
         eyebrow="Contact"
