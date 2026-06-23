@@ -7,25 +7,9 @@
 
 ## 🟢 NEXT (for the next nightly run, in priority order)
 
-|T-05 and T-08 are now done. The remaining items in priority order are:
+|C-06 was the last deferred item — it requires real press coverage the practice doesn't yet have. The remaining TODO is functionally exhausted of safe, non-fabricating items; any future high-impact work will come from new audit findings. Last shipped: S-07 (BreadcrumbList on all index pages).
 
-1. **C-06** — Add "As seen on" / press logos section. TrustBar mentions
-   "Board-Certified Physicians" and "Medicare Accepted" but lacks press
-   coverage or peer-credibility signals. If the practice has been cited
-   in any local news / medical journals, add a row of logos to the
-   `TrustBar` component or a sibling section. **Note**: this item
-   requires real, third-party-verifiable press logos — fabricating
-   logos for outlets that haven't actually cited the practice would
-   be a credibility violation. **Deferred on 2026-06-20**: searched
-   the repo (`grep -r press|featured in|as seen on|news|media` against
-   `app/`, `components/`, `lib/`, `public/`) — zero matches. The press
-   assets directory does not exist (`public/images/press/` is absent).
-   No real, third-party-verifiable press logos are available to render
-   without fabrication. Revisit if/when the practice picks up coverage
-   the practice can point to.
-
-2. **S-06** — Physician schema `image` + `worksFor` cross-link on inline employee entries. ✅ DONE 2026-06-21
-   - See long-form description below in the Schema category checklist.
+1. **S-07** — Add BreadcrumbList JSON-LD to all 6 index-level pages. ✅ DONE 2026-06-22 — see Schema category checklist.
 
 ---
 
@@ -83,6 +67,14 @@
   - 99 lines added across 3 files: `lib/seo/schemas.ts` (33), `app/layout.tsx` (2), `scripts/validate-schema.mjs` (64)
   - `npm run build`: passes (20 routes); `npm run validate:schema`: **99 blocks / 0 errors / 0 warnings** (19 WebSite, 19 MedicalBusiness, 40 Review, 7 FAQPage, 6 MedicalCondition, 6 BreadcrumbList, 2 Physician)
   - Part of PR #41 (rolled into the existing open PR for this branch — SKILL.md guidance: skip PR creation when one is already open for the branch)
+
+- [x] **S-07** — BreadcrumbList JSON-LD on all 6 index-level pages ✅ DONE 2026-06-22
+  - Six top-level pages (`/conditions/`, `/treatment/`, `/contact-us/`, `/physicians/`, `/faqs/`, `/hyperbaric-therapy/`) were emitting MedicalBusiness, WebSite, FAQPage (where applicable), and Physician (where applicable) JSON-LD blocks but no `BreadcrumbList`. The dynamic `/condition/[slug]/` routes were the only ones with breadcrumbs — Google Search Central documents `BreadcrumbList` as one of the structured data types Google uses to render the breadcrumb trail in search results, so missing breadcrumbs on index pages cost the site the rich-snippet visual on the highest-traffic routes.
+  - Each index page now emits a 2-item `BreadcrumbList` (Home → {PageName}) via `<JsonLd data={breadcrumbSchema([...])}/>` directly above the existing schemas. Reuses the existing `breadcrumbSchema()` helper that `/condition/[slug]/` was already using — no schema-side changes required, just three new imports per page (`JsonLd`, `breadcrumbSchema`, `site`).
+  - 6 files touched: `app/conditions/page.tsx`, `app/treatment/page.tsx`, `app/contact-us/page.tsx`, `app/physicians/page.tsx`, `app/faqs/page.tsx`, `app/hyperbaric-therapy/page.tsx`. 30 insertions(+), 0 deletions(-). No changes to `lib/seo/schemas.ts` — the existing `breadcrumbSchema()` helper already passes the validator's `validateBreadcrumb` check (zero errors / zero warnings).
+  - `npm run build`: passes (20 routes); `npm run validate:schema`: **105 blocks / 0 errors / 0 warnings** — BreadcrumbList count rose from 6 (only on `/condition/[slug]/`) to 12 (now on the 6 index pages too). Breakdown: Review 40, WebSite 19, MedicalBusiness 19, BreadcrumbList 12, FAQPage 7, MedicalCondition 6, Physician 2.
+  - Verified rendered HTML on `/conditions/`: `"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://hbotq.com/"},{"@type":"ListItem","position":2,"name":"Conditions","item":"https://hbotq.com/conditions/"}]` — matches the BreadcrumbList spec (positions contiguous starting at 1; both `item` URLs are http(s); both `name` fields populated).
+  - Part of PR #41 (rolled into the existing open PR for this branch — SKILL.md guidance: skip PR creation when one is already open for the branch).
 
 ---
 
@@ -274,4 +266,5 @@
 - **T-02** — GTM form_submit event — `consultation-form.tsx` (2026-05-29, PR #1)
 - **SE-02** — robots.txt created — `public/robots.txt` (2026-05-29, PR #1)
 - **T-01** — GTM verification + CTA click tracking — every `/contact-us/` CTA button now fires `cta_click` with `location`/`cta_label`; `trackEvent()` helper added; `consultation-form.tsx` + `sticky-cta.tsx` refactored onto it (2026-06-09, this PR)
+- **S-07** — BreadcrumbList JSON-LD on all 6 index-level pages (`/conditions/`, `/treatment/`, `/contact-us/`, `/physicians/`, `/faqs/`, `/hyperbaric-therapy/`). Each emits a 2-item `BreadcrumbList` (Home → {PageName}) reusing the existing `breadcrumbSchema()` helper that `/condition/[slug]/` was already using. 6 files touched, 30 insertions(+), 0 deletions(-). `npm run build`: passes (20 routes); `npm run validate:schema`: **105 blocks / 0 errors / 0 warnings** — BreadcrumbList count rose from 6 to 12. Part of PR #41 (rolled into the existing open PR for this branch — SKILL.md guidance: skip PR creation when one is already open for the branch). (2026-06-22, PR #41 updated)
 
