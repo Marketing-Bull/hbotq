@@ -32,6 +32,12 @@ import { fileURLToPath } from "node:url";
 const PROJECT_ROOT = resolve(fileURLToPath(import.meta.url), "../..");
 const BUILD_DIR = join(PROJECT_ROOT, ".next", "server", "app");
 const SCHEMA_ORG = "https://schema.org";
+// Mirror of `lib/data/site.ts → site` for validator-only purposes
+// (the .mjs script can't import the @/... TS path alias). Kept in
+// sync manually; the only field currently used is `url`.
+const SITE = {
+  url: "https://hbotq.com",
+};
 
 const args = new Set(process.argv.slice(2));
 const VERBOSE = args.has("--verbose") || args.has("-v");
@@ -465,6 +471,23 @@ function validateReview(page, idx, block) {
     } else {
       validateString(page, idx, "Review", "itemReviewed.name", ir.name);
       if (present(ir.url)) validateString(page, idx, "Review", "itemReviewed.url", ir.url, { url: true });
+      // `@id` cross-link to the MedicalBusiness entity is recommended by
+      // Google's review-markup guidelines: it lets the Knowledge Graph
+      // resolve the Review back to the practice it describes. Required to
+      // match the S-08 contract (lib/seo/schemas.ts reviewSchema() always
+      // emits @id: ${site.url}/#business). WARN-only (not error) so that
+      // hand-edited Review blocks without a cross-link still pass — but
+      // the gap is surfaced in the validator output.
+      if (present(ir["@id"])) {
+        validateString(page, idx, "Review", "itemReviewed.@id", ir["@id"], { url: true });
+      } else {
+        warn(
+          page,
+          idx,
+          "Review",
+          `"itemReviewed" should include "@id" cross-link to the MedicalBusiness entity (e.g. ${SITE.url}/#business) so the Knowledge Graph can resolve the review back to the practice`,
+        );
+      }
     }
   } else {
     err(page, idx, "Review", `missing required "itemReviewed"`);

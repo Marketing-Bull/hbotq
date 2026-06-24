@@ -277,8 +277,15 @@ export function reviewSchema(
       name: opts.author,
     },
     reviewBody: opts.quote,
+    // Cross-link to the same `#business` entity the MedicalBusiness,
+    // WebSite, and Physician blocks all use — completes the inverse-
+    // link loop so the Knowledge Graph can resolve each Review back
+    // to the practice it describes. Mirrors the S-06 fix (Physician
+    // `worksFor: { @id: #business }`) and S-05 (`availableService`
+    // already uses absolute URLs into the same graph).
     itemReviewed: {
       "@type": "MedicalBusiness",
+      "@id": `${site.url}/#business`,
       name: site.legalName,
       url: site.url,
     },
