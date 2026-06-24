@@ -1,13 +1,13 @@
 # HBOTQ Site Improvement TODO — Priority Order
 
 ## 🔴 IN PROGRESS
-(Nothing — start of cycle)
+(nothing — start of cycle)
 
 ---
 
 ## 🟢 NEXT (for the next nightly run, in priority order)
 
-|C-06 was the last deferred item — it requires real press coverage the practice doesn't yet have. The remaining TODO is functionally exhausted of safe, non-fabricating items; any future high-impact work will come from new audit findings. Last shipped: S-07 (BreadcrumbList on all index pages).
+C-06 was the last deferred item — it requires real press coverage the practice doesn't yet have. S-08 closed the last safe Schema gap. The remaining TODO is functionally exhausted of safe, non-fabricating items; any future high-impact work will come from new audit findings. Last shipped: S-08 (Review→Business @id cross-link on all 40 Review blocks).
 
 1. **S-07** — Add BreadcrumbList JSON-LD to all 6 index-level pages. ✅ DONE 2026-06-22 — see Schema category checklist.
 
@@ -74,6 +74,13 @@
   - 6 files touched: `app/conditions/page.tsx`, `app/treatment/page.tsx`, `app/contact-us/page.tsx`, `app/physicians/page.tsx`, `app/faqs/page.tsx`, `app/hyperbaric-therapy/page.tsx`. 30 insertions(+), 0 deletions(-). No changes to `lib/seo/schemas.ts` — the existing `breadcrumbSchema()` helper already passes the validator's `validateBreadcrumb` check (zero errors / zero warnings).
   - `npm run build`: passes (20 routes); `npm run validate:schema`: **105 blocks / 0 errors / 0 warnings** — BreadcrumbList count rose from 6 (only on `/condition/[slug]/`) to 12 (now on the 6 index pages too). Breakdown: Review 40, WebSite 19, MedicalBusiness 19, BreadcrumbList 12, FAQPage 7, MedicalCondition 6, Physician 2.
   - Verified rendered HTML on `/conditions/`: `"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://hbotq.com/"},{"@type":"ListItem","position":2,"name":"Conditions","item":"https://hbotq.com/conditions/"}]` — matches the BreadcrumbList spec (positions contiguous starting at 1; both `item` URLs are http(s); both `name` fields populated).
+  - Part of PR #41 (rolled into the existing open PR for this branch — SKILL.md guidance: skip PR creation when one is already open for the branch).
+
+- [x] **S-08** — Review `itemReviewed` `@id` cross-link to `#business` ✅ DONE 2026-06-24
+  - The 40 `Review` JSON-LD blocks across the site (5 per page × 8 carousel pages) had `itemReviewed: { @type: "MedicalBusiness", name, url }` but **no `@id`**. The MedicalBusiness entity carries `@id: ${site.url}/#business`, and the Physician + WebSite + AggregateRating sub-blocks all resolve to that same anchor — but each individual Review was a dangling node that Google's Knowledge Graph couldn't link back to the practice it described. Google's review-markup guidelines specifically call out the inverse link as recommended; without it, rich-result eligibility for the review stars is weaker than it could be.
+  - Fix in `lib/seo/schemas.ts → reviewSchema()`: added `"@id": \`${site.url}/#business\`` to `itemReviewed` so every emitted Review now points at the same anchor the MedicalBusiness, Physician `worksFor`, and WebSite `publisher` already use. The cross-link is emitted unconditionally (not optional) — matching the S-06 pattern of always-emit-the-link for inline Physician entries.
+  - Validator in `scripts/validate-schema.mjs → validateReview()`: added an `itemReviewed.@id` check that calls `validateString(..., { url: true })` when present, and a new `warn()` (not `err()` — matches the S-06 Physician-image convention of WARN-not-ERROR for Google-recommended fields) when the field is missing. The warning message includes the canonical `${SITE.url}/#business` target so devs know what to add. Also added a `SITE` constant at the top of the script (mirror of `lib/data/site.ts → site`, since the `.mjs` file can't import the `@/...` TS path alias).
+  - 2 files changed, 30 insertions(+), 0 deletions(-). No schema-graph or render changes other than the new `@id` field. `npm run build`: passes (20 routes); `npm run validate:schema`: **105 blocks / 0 errors / 0 warnings** — all 40 Review blocks now pass the new rule. Verified rendered HTML on `/`: all 5 homepage Reviews now carry `"itemReviewed":{"@type":"MedicalBusiness","@id":"https://hbotq.com/#business","name":"Hyperbaric Medicine and Wound Treatment Center of Queens","url":"https://hbotq.com"}` — and the per-page @id count rose from 4 (1 MedicalBusiness + 1 WebSite publisher + 2 inline Physicians) to 9 (adds 5 Review itemReviewed).
   - Part of PR #41 (rolled into the existing open PR for this branch — SKILL.md guidance: skip PR creation when one is already open for the branch).
 
 ---
