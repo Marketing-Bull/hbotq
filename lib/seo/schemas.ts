@@ -125,6 +125,25 @@ export function medicalBusinessSchema() {
     availableService: availableServiceEntries(),
     sameAs: Object.values(site.social),
     aggregateRating,
+    // ContactPoint — schema.org `core` property on Organization (inherited by
+    // MedicalBusiness / LocalBusiness). Google's Local Business docs treat the
+    // `telephone` + `email` at the business level as duplicative of an
+    // explicit `contactPoint`, and the Knowledge Panel can render the contact
+    // type / hours / language directly. Reuses values already on the page
+    // (footer + MapHours section + sticky CTA), so no new fabrication —
+    // `contactType: "customer service"` matches the practice's actual front-
+    // desk flow (intake, bookings, general inquiries); `availableLanguage`
+    // is the site's only published language; `hoursAvailable` reuses the
+    // same `OpeningHoursSpecification[]` already derived from `site.hours`.
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "customer service",
+      telephone: site.phoneE164,
+      email: site.email,
+      url: `${site.url}/contact-us/`,
+      availableLanguage: ["English"],
+      hoursAvailable: openingHoursSpecification,
+    },
     // Inline `employee` Physician entries appear in the MedicalBusiness
     // block on every page (19 blocks). They MUST carry a `worksFor: { @id }`
     // back-link to the business entity so Google can resolve the inverse

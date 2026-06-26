@@ -309,6 +309,74 @@ function validateRating(page, idx, type, r, path) {
   }
 }
 
+function validateContactPoint(page, idx, type, cp) {
+  if (!isPlainObject(cp)) return;
+  if (cp["@type"] !== "ContactPoint") {
+    err(page, idx, type, `contactPoint.@type must be "ContactPoint" (got ${JSON.stringify(cp["@type"])})`);
+    return;
+  }
+  // contactType is the canonical identifying field on ContactPoint per
+  // schema.org — required so Google knows whether this is a sales line,
+  // support line, reservations, etc. The site uses "customer service" since
+  // the practice's contact flow is the front desk (intake, bookings, info).
+  validateString(page, idx, type, "contactPoint.contactType", cp.contactType);
+  // telephone, email, url are individually recommended; warn if all three
+  // are missing (the contact point would then carry no contact info), but
+  // tolerate partial (Google's docs treat any of the three as sufficient).
+  const hasPhone = nonEmptyString(cp.telephone);
+  const hasEmail = nonEmptyString(cp.email);
+  const hasUrl = nonEmptyString(cp.url);
+  if (hasPhone) {
+    validateString(page, idx, type, "contactPoint.telephone", cp.telephone);
+    if (!/^[+\d][\d\s\-().]{5,}$/.test(cp.telephone)) {
+      warn(page, idx, type, `contactPoint.telephone does not look like a phone number: ${JSON.stringify(cp.telephone)}`);
+    }
+  }
+  if (hasEmail) {
+    validateString(page, idx, type, "contactPoint.email", cp.email);
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cp.email)) {
+      warn(page, idx, type, `contactPoint.email does not look like an email address: ${JSON.stringify(cp.email)}`);
+    }
+  }
+  if (hasUrl) {
+    validateString(page, idx, type, "contactPoint.url", cp.url, { url: true });
+  }
+  if (!hasPhone && !hasEmail && !hasUrl) {
+    warn(page, idx, type, `contactPoint has no contact info (telephone/email/url all missing)`);
+  }
+  // availableLanguage, when present, must be string or string[].
+  if (present(cp.availableLanguage)) {
+    const al = cp.availableLanguage;
+    if (typeof al === "string") {
+      // ok — single language code
+    } else if (Array.isArray(al) && al.every((v) => typeof v === "string" && v.length > 0)) {
+      // ok — array of strings
+    } else {
+      err(page, idx, type, `contactPoint.availableLanguage must be a string or string[] (got ${JSON.stringify(al)})`);
+    }
+  }
+  // hoursAvailable, when present, must be an array of OpeningHoursSpecification.
+  if (present(cp.hoursAvailable)) {
+    if (!Array.isArray(cp.hoursAvailable)) {
+      err(page, idx, type, `contactPoint.hoursAvailable must be an array of OpeningHoursSpecification (got ${typeof cp.hoursAvailable})`);
+    } else {
+      for (let i = 0; i < cp.hoursAvailable.length; i++) {
+        const h = cp.hoursAvailable[i];
+        if (!isPlainObject(h)) {
+          err(page, idx, type, `contactPoint.hoursAvailable[${i}] must be an object`);
+          continue;
+        }
+        if (h["@type"] !== "OpeningHoursSpecification") {
+          err(page, idx, type, `contactPoint.hoursAvailable[${i}] @type must be "OpeningHoursSpecification" (got ${JSON.stringify(h["@type"])})`);
+        }
+        validateString(page, idx, type, `contactPoint.hoursAvailable[${i}].dayOfWeek`, h.dayOfWeek);
+        validateString(page, idx, type, `contactPoint.hoursAvailable[${i}].opens`, h.opens);
+        validateString(page, idx, type, `contactPoint.hoursAvailable[${i}].closes`, h.closes);
+      }
+    }
+  }
+}
+
 function validateMedicalBusiness(page, idx, block) {
   validateString(page, idx, "MedicalBusiness", "name", block.name);
   validateString(page, idx, "MedicalBusiness", "url", block.url, { url: true });
@@ -337,6 +405,9 @@ function validateMedicalBusiness(page, idx, block) {
   }
   if (present(block.aggregateRating)) {
     validateAggregateRating(page, idx, "MedicalBusiness", block.aggregateRating);
+  }
+  if (present(block.contactPoint)) {
+    validateContactPoint(page, idx, "MedicalBusiness", block.contactPoint);
   }
   if (Array.isArray(block.employee)) {
     for (let i = 0; i < block.employee.length; i++) {
