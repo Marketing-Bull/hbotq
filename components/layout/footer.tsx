@@ -55,6 +55,10 @@ export function Footer() {
                 href={site.social.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={trackClick("external", {
+                  location: "footer",
+                  outbound_target: "facebook",
+                })}
                 aria-label="Follow us on Facebook"
                 className="text-[var(--color-sand-300)] hover:text-white transition-colors"
               >
@@ -66,6 +70,10 @@ export function Footer() {
                 href={site.social.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={trackClick("external", {
+                  location: "footer",
+                  outbound_target: "instagram",
+                })}
                 aria-label="Follow us on Instagram"
                 className="text-[var(--color-sand-300)] hover:text-white transition-colors"
               >
@@ -77,6 +85,10 @@ export function Footer() {
                 href={site.social.googleBusinessProfile}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={trackClick("external", {
+                  location: "footer",
+                  outbound_target: "google_business_profile",
+                })}
                 aria-label="View us on Google Business Profile"
                 className="text-[var(--color-sand-300)] hover:text-white transition-colors"
               >
