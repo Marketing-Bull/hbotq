@@ -1,10 +1,17 @@
+"use client";
+
 import Link from "next/link";
 import type { Condition } from "@/types/content";
+import { trackClick } from "@/lib/analytics/track";
 
 export function ConditionCard({ condition }: { condition: Condition }) {
   return (
     <Link
       href={`/condition/${condition.slug}/`}
+      onClick={trackClick("cta_click", {
+        location: "conditions_grid",
+        cta_label: condition.name,
+      })}
       className="group block rounded-2xl border border-[var(--color-surface-border)] bg-white p-6 hover:border-[var(--color-brand-300)] hover:shadow-sm transition-all"
     >
       <div className="flex items-center justify-between gap-3">
