@@ -7,14 +7,22 @@
 
 ## 🟢 NEXT (for the next nightly run, in priority order)
 
-T-11 (2026-06-29) closed the last conversion-funnel tracking gap on the consultation form: the form fired `form_submit` on success (T-02) but had no upstream events, so GA4 funnels could see "user submitted" but not "user saw the form" or "user started filling it out" or "which fields they completed before submitting". With T-11, three new dataLayer events make the consultation form's full funnel measurable: `form_view` (form scrolled into view), `form_start` (first field focus), and `form_field_complete` (blur with non-empty value, per tracked field). Combined with T-02's `form_submit`, the four events give GA4 a complete view → start → field complete → submit funnel with per-field drop-off. Last shipped: T-11 (consultation-form funnel tracking).
+**Cycle state (2026-07-02):** The original priority list (10 items: SE-01, SE-03, SE-04, SE-05, T-01, T-03, T-04, C-01, C-02, C-05) is **fully drained** — all are marked `[x]` in the checklists below with completion notes. T-11 (2026-07-01) closed the last formal TODO item. The 36 items tracked in this file (S-01 → S-09, SE-01 → SE-06, T-01 → T-11, C-01 → C-05, WD-01 → WD-06) are all shipped and rolled into PR #41.
 
-1. **T-11** — Add `form_view` / `form_start` / `form_field_complete` to the consultation form. ✅ DONE 2026-06-29 — see Tracking category checklist.
+1. **T-12** — 404 page CTA + page-view tracking. ✅ DONE 2026-07-02 — see Tracking category checklist. Last shipped: T-12.
+
+**Future audit-driven candidates** (no `[ ]` items; these are leads for the next cycle's audit, not commitments):
+- **T-13** — `404 → CTA` recovery funnel: GTM-side: configure a funnel trigger that pairs `not_found_view` with `404_page/cta_click` events to measure "of users who hit a broken page, how many clicked a recovery CTA". No code change required once T-12 is in place.
+- **S-10** — `MedicalClinic` (more specific than `MedicalBusiness`) — Google treats `MedicalClinic` as a more specialized type with its own Knowledge Panel treatment. Currently the site uses `MedicalBusiness` per S-01. Worth measuring: does switching type to `MedicalClinic` change rich-result eligibility?
+- **SE-07** — Per-condition `MedicalCondition` JSON-LD already exists (S-03). Add `drug`, `naturalProvenance`, `pathophysiology`, `possibleTreatment` from the existing condition data where available — Google's `MedicalCondition` docs list these as recommended for medical-info rich results.
+- **WD-07** — `prefers-reduced-motion` is honored in `globals.css` and the sample page's animations, but no centralized `useReducedMotion` hook. Worth adding a `components/motion/reduced-motion.ts` helper so future motion components can opt in consistently.
+- **C-06** — "As seen on" / press logos (deferred 2026-06-20; only revisit if real press coverage exists).
+- **T-13+** — Track copy-to-clipboard for the email `hello@hbotq.com` (currently no copy affordance); track FAQ accordions expand/collapse; track outbound clicks to condition source pages (radiation injury, sudden hearing loss, etc. — useful for measuring "how many users go look up the underlying medical evidence").
 
 ---
 
 ## 🟡 PENDING
-(nothing — see 🟢 NEXT below for the next-cycle work list)
+(nothing — every item in the formal checklists below is done; see 🟢 NEXT for future candidates and audit leads)
 
 ### Category: Schema / Structured Data
 - [x] **S-01** — Add `AggregateRating` schema site-wide ✅ DONE 2026-06-05
@@ -212,6 +220,19 @@ T-11 (2026-06-29) closed the last conversion-funnel tracking gap on the consulta
   - With T-11, the consultation form's full funnel is now measurable: view → start → field complete → submit. Combined with T-02, T-05, and T-01 through T-10, every meaningful user interaction on the site — scroll depth, link clicks (internal / tel / mailto / external), form submission, and now the entire form funnel — fires a labeled dataLayer event to GTM. No GTM config change required.
   - **PR**: https://github.com/Marketing-Bull/hbotq/pull/41 (rolled into the existing open PR for this branch — SKILL.md guidance: skip PR creation when one is already open for the branch)
   - **Note on file state**: The prior 2026-06-29 run left the T-11 docs in a malformed layout (a duplicate T-10 sub-bullet and an embedded T-11 description inside T-10's PENDING entry, plus a mislabeled `## 2026-06-28 — PR #41 (updated with T-10)` block that actually describes T-11). This run adds the clean `[x] T-11` line above; the malformed historical text is left in place for the next run to clean up. The T-11 work itself is correctly implemented in `components/forms/consultation-form.tsx` and verified by build / validator / bundle-grep.
+
+- [x] **T-12** — 404 page CTA + page-view tracking ✅ DONE 2026-07-02
+  - Fresh audit (2026-07-02) found that `app/not-found.tsx` — the page that renders for every unknown URL (e.g. `/condition/garbage/`, typos in shared links, expired ad UTM paths) — was firing **zero dataLayer events**. The page renders three high-intent recovery CTAs (`Back to home` → `/`, `Conditions we treat` → `/conditions/`, `Call 718-925-3322` → `tel:`), but each was a plain anchor with no onClick handler. Combined with no page-view event, GA4 funnels couldn't see "user hit a broken page" at all — making 404 traffic invisible in dashboards and making it impossible to measure "of users who hit 404, how many recovered via CTA".
+  - Four new dataLayer events close the gap, all reusing the existing `trackClick()` and `trackEvent()` helpers from `lib/analytics/track.ts` (same ones T-01–T-11 use):
+    - **`not_found_view`** — fires once on mount via `useEffect`, with `page_location: window.location.pathname`. Captures the top of the funnel ("user hit a broken page"). Single-fire per page-view (the `useEffect` deps array is `[]`); SSR-safe (only runs client-side).
+    - **`cta_click`** (location: `404_page`, cta_label: `back_to_home`) — on the internal "Back to home" Link.
+    - **`cta_click`** (location: `404_page`, cta_label: `view_conditions`) — on the internal "Conditions we treat" Link.
+    - **`phone_call`** (location: `404_page`, cta_label: `call_cta`) — on the `tel:` anchor.
+  - Fix in `app/not-found.tsx`: added `"use client"` (was a server component); added `useEffect` import; added `trackClick` + `trackEvent` imports from `@/lib/analytics/track`; added a `useEffect` that fires `not_found_view` on mount; added `onClick={trackClick(...)}` handlers to all three CTAs. The CTA hrefs, copy, and styles are unchanged — the dataLayer events fire alongside Next.js's default link behavior, matching the convention every other instrumented component on the site already follows (T-01, T-03, T-06, T-08, T-09, T-10).
+  - 1 file changed, 25 insertions(+), 1 deletion(-). No schema changes (tracking/HTML-only). No new dependencies.
+  - `npm run build`: passes (20 routes, 0 TypeScript errors). `npm run validate:schema`: **105 blocks / 0 errors / 0 warnings** (unchanged — no schema changes). Verified compiled JS bundle (`.next/static/chunks/09p_zz58rj6~j.js`) contains all four dataLayer payloads: `not_found_view`, `trackClick("cta_click",{location:"404_page",cta_label:"back_to_home"})`, `trackClick("cta_click",{location:"404_page",cta_label:"view_conditions"})`, and `trackClick("phone_call",{location:"404_page",cta_label:"call_cta"})` — confirming the GTM wiring is correct.
+  - Closes the last untracked recovery surface on the site. Combined with T-01 through T-11, every meaningful user interaction on the site — scroll depth, link clicks (internal / tel / mailto / external / 404-recovery), form submission, form funnel, and now 404 page-view + recovery CTAs — fires a labeled dataLayer event to GTM. No GTM config change required (the new event names will surface in GTM's built-in `dataLayer` debug view automatically).
+  - **PR**: https://github.com/Marketing-Bull/hbotq/pull/41 (rolled into the existing open PR for this branch — SKILL.md guidance: skip PR creation when one is already open for the branch)
 
 ---
 
