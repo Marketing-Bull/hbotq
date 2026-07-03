@@ -225,6 +225,17 @@ export function medicalConditionSchema(c: Condition) {
     name: c.name,
     description: c.summary,
     url: `${site.url}/condition/${c.slug}/`,
+    // `pathophysiology` is a Google-recommended `MedicalCondition` property
+    // (https://schema.org/MedicalCondition): "The underlying mechanism that
+    // causes the disease or condition." Our `c.howHbotHelps` is authored at
+    // the page level as the pathophysiology explanation for each condition
+    // (e.g. for radiation injury: "Radiation can leave tissue with reduced
+    // blood supply and oxygen for years..."), so we surface the same text
+    // in structured form. Google docs list `pathophysiology` as a recommended
+    // field for medical-info rich results; surfacing it in JSON-LD gives the
+    // Knowledge Graph the same explanation the patient reads on the page,
+    // without fabricating new clinical content.
+    pathophysiology: c.howHbotHelps,
     possibleTreatment: {
       "@type": "MedicalTherapy",
       name: "Hyperbaric Oxygen Therapy",

@@ -458,13 +458,20 @@ function validateMedicalCondition(page, idx, block) {
   validateString(page, idx, "MedicalCondition", "name", block.name);
   validateString(page, idx, "MedicalCondition", "description", block.description);
   validateString(page, idx, "MedicalCondition", "url", block.url, { url: true });
+  // `pathophysiology` is a Google-recommended `MedicalCondition` property
+  // (https://schema.org/MedicalCondition) — "The underlying mechanism that
+  // causes the disease or condition." If present, must be a non-empty
+  // string. We surface it site-wide for all 6 condition pages, sourced
+  // from `c.howHbotHelps`, so every block has it and the rule is required,
+  // not optional.
+  validateString(page, idx, "MedicalCondition", "pathophysiology", block.pathophysiology);
   if (present(block.possibleTreatment)) {
     const pt = block.possibleTreatment;
     if (!isPlainObject(pt)) {
       err(page, idx, "MedicalCondition", `"possibleTreatment" must be an object`);
     } else {
       if (pt["@type"] !== "MedicalTherapy") {
-        err(page, idx, "MedicalCondition", `possibleTreatment @type must be "MedicalTherapy" (got ${JSON.stringify(pt["@type"])})`);
+        err(page, idx, "MedicalCondition", `possibleTreatment @type must be "MedicalTherapy" (got ${JSON.stringify(pt["@type"])}`);
       }
       validateString(page, idx, "MedicalCondition", "possibleTreatment.name", pt.name);
       if (present(pt.url)) validateString(page, idx, "MedicalCondition", "possibleTreatment.url", pt.url, { url: true });
