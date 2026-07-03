@@ -3,6 +3,16 @@
 Format per entry:
 - **Date**: YYYY-MM-DD
 - **Item**: TODO code (e.g., S-01)
+- **Description**: 1–3 sentences
+- **PR**: https://github.com/Marketing-Bull/hbotq/pull/NN (or "rolled into PR #41" when applicable)
+
+---
+
+## 2026-07-03 — PR #41 (updated)
+- **SE-07** — Add `pathophysiology` to `MedicalCondition` JSON-LD. The per-condition `MedicalCondition` schema (S-03, rendered on all 6 `/condition/[slug]/` pages) was missing the `pathophysiology` field — a Google-recommended `MedicalCondition` property (https://schema.org/MedicalCondition) defined as "The underlying mechanism that causes the disease or condition." Added `pathophysiology: c.howHbotHelps` to `medicalConditionSchema()` in `lib/seo/schemas.ts`, sourcing the text from the same `howHbotHelps` field already authored on each condition (e.g. for non-healing wounds: "Chronic wounds stall when the surrounding tissue is starved of oxygen..."). Surfacing the same text in structured form gives the Knowledge Graph the same explanation the patient reads on the page without fabricating new clinical content. Validator updated: `validateMedicalCondition` now requires a non-empty `pathophysiology` string; all 6 condition blocks pass. 2 files changed, 19 insertions(+), 1 deletion(-). `npm run build`: passes (20 routes); `npm run validate:schema`: **105 blocks / 0 errors / 0 warnings** — MedicalCondition count still 6; all 6 now carry the new field. Verified all 6 rendered HTML files (one per condition slug) carry the `"pathophysiology"` key. Follow-ups deferred until editorial can supply new data: also add `code` (ICD-10) and `expectedPrognosis` per Google's `MedicalCondition` docs.
+- **PR**: https://github.com/Marketing-Bull/hbotq/pull/41 (rolled into the existing open PR for this branch — SKILL.md guidance: skip PR creation when one is already open for the branch)
+
+## 2026-07-02 — PR #41 (updated)
 - **Description**: What was done
 - **PR**: Link to PR or 'not yet merged' if still open
 

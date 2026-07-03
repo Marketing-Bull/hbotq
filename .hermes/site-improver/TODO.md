@@ -7,17 +7,18 @@
 
 ## 🟢 NEXT (for the next nightly run, in priority order)
 
-**Cycle state (2026-07-02):** The original priority list (10 items: SE-01, SE-03, SE-04, SE-05, T-01, T-03, T-04, C-01, C-02, C-05) is **fully drained** — all are marked `[x]` in the checklists below with completion notes. T-11 (2026-07-01) closed the last formal TODO item. The 36 items tracked in this file (S-01 → S-09, SE-01 → SE-06, T-01 → T-11, C-01 → C-05, WD-01 → WD-06) are all shipped and rolled into PR #41.
+**Cycle state (2026-07-03):** The original priority list (10 items: SE-01, SE-03, SE-04, SE-05, T-01, T-03, T-04, C-01, C-02, C-05) is **fully drained** — all are marked `[x]` in the checklists below with completion notes. T-12 (2026-07-02) closed the last formal TODO item. The 36 items tracked in this file (S-01 → S-09, SE-01 → SE-06, T-01 → T-11, C-01 → C-05, WD-01 → WD-06) are all shipped and rolled into PR #41.
 
 1. **T-12** — 404 page CTA + page-view tracking. ✅ DONE 2026-07-02 — see Tracking category checklist. Last shipped: T-12.
+2. **SE-07** — `pathophysiology` on MedicalCondition JSON-LD. ✅ DONE 2026-07-03 — see SEO Meta category checklist. Last shipped: SE-07.
 
 **Future audit-driven candidates** (no `[ ]` items; these are leads for the next cycle's audit, not commitments):
 - **T-13** — `404 → CTA` recovery funnel: GTM-side: configure a funnel trigger that pairs `not_found_view` with `404_page/cta_click` events to measure "of users who hit a broken page, how many clicked a recovery CTA". No code change required once T-12 is in place.
 - **S-10** — `MedicalClinic` (more specific than `MedicalBusiness`) — Google treats `MedicalClinic` as a more specialized type with its own Knowledge Panel treatment. Currently the site uses `MedicalBusiness` per S-01. Worth measuring: does switching type to `MedicalClinic` change rich-result eligibility?
-- **SE-07** — Per-condition `MedicalCondition` JSON-LD already exists (S-03). Add `drug`, `naturalProvenance`, `pathophysiology`, `possibleTreatment` from the existing condition data where available — Google's `MedicalCondition` docs list these as recommended for medical-info rich results.
 - **WD-07** — `prefers-reduced-motion` is honored in `globals.css` and the sample page's animations, but no centralized `useReducedMotion` hook. Worth adding a `components/motion/reduced-motion.ts` helper so future motion components can opt in consistently.
 - **C-06** — "As seen on" / press logos (deferred 2026-06-20; only revisit if real press coverage exists).
 - **T-13+** — Track copy-to-clipboard for the email `hello@hbotq.com` (currently no copy affordance); track FAQ accordions expand/collapse; track outbound clicks to condition source pages (radiation injury, sudden hearing loss, etc. — useful for measuring "how many users go look up the underlying medical evidence").
+- **SE-07+** — Consider also adding `code` (ICD-10) and `expectedPrognosis` per Google's `MedicalCondition` docs. Would require new authored data on each condition (ICD-10 codes, prognosis phrasing) — defer until editorial can supply it.
 
 ---
 
@@ -132,6 +133,18 @@
   - Removed the 3 legal pages from `app/sitemap.ts` — sitemap entries contradict noIndex, so they must be excluded together
   - Footer links to all three legal pages still pass internal PageRank
   - Part of PR #39 (also includes C-02)
+
+- [x] **SE-07** — Add `pathophysiology` to `MedicalCondition` JSON-LD ✅ DONE 2026-07-03
+  - The per-condition `MedicalCondition` JSON-LD (S-03, rendered on all 6 `/condition/[slug]/` pages) carried `name`, `description`, `url`, and `possibleTreatment`, but was missing the `pathophysiology` field — a Google-recommended `MedicalCondition` property (https://schema.org/MedicalCondition) defined as "The underlying mechanism that causes the disease or condition." Google's medical-info rich results docs list `pathophysiology` as recommended; surfacing it gives the Knowledge Graph the same explanation the patient reads on the page.
+  - Fix in `lib/seo/schemas.ts → medicalConditionSchema(c)`: added `pathophysiology: c.howHbotHelps`. The `c.howHbotHelps` field is already authored at the page level as the pathophysiology explanation for each condition (e.g. for radiation injury: "Radiation can leave tissue with reduced blood supply and oxygen for years..."; for non-healing wounds: "Chronic wounds stall when the surrounding tissue is starved of oxygen..."). Surfacing the same text in structured form avoids fabricating new clinical content — the JSON-LD just mirrors the existing page copy.
+  - Fix in `scripts/validate-schema.mjs → validateMedicalCondition()`: added `validateString(page, idx, "MedicalCondition", "pathophysiology", block.pathophysiology)`. The existing `validateString` helper errors on missing or non-string values, so any future regression that drops the field will fail the validator. All 6 condition blocks pass.
+  - 2 files changed, 19 insertions(+), 1 deletion(-). No call-site changes (`medicalConditionSchema(condition)` was already passing the full `condition` object). No new dependencies. No schema-graph or render changes other than the new field.
+  - `npm run build`: passes (20 routes, 0 TypeScript errors). `npm run validate:schema`: **105 blocks / 0 errors / 0 warnings** — MedicalCondition count still 6; all 6 now carry the new `pathophysiology` field.
+  - Verified rendered HTML on `/condition/non-healing-wounds/`: `"pathophysiology":"Chronic wounds stall when the surrounding tissue is starved of oxygen. Inside the hyperbaric chamber..."` — matches the user-visible `howHbotHelps` copy verbatim.
+  - Verified rendered HTML on `/condition/radiation-tissue-damage/`: `"pathophysiology":"Radiation can leave tissue with reduced blood supply and oxygen for years..."` — same pattern.
+  - Verified all 6 condition pages now carry the field: `grep -c '"pathophysiology"' .next/server/app/condition/*.html` returns 1 for each of `chronic-pain`, `diabetic-lower-extremity-wounds`, `non-healing-wounds`, `post-covid`, `radiation-tissue-damage`, `sudden-hearing-loss`.
+  - Deferred follow-up (deferred — requires new authored data): also adding `code` (ICD-10) and `expectedPrognosis` per Google's `MedicalCondition` docs. Both would need new editorial content on each condition; defer until editorial can supply it.
+  - **PR**: https://github.com/Marketing-Bull/hbotq/pull/41 (rolled into the existing open PR for this branch — SKILL.md guidance: skip PR creation when one is already open for the branch)
 
 ---
 
