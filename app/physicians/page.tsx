@@ -1,11 +1,6 @@
 import { Hero } from "@/components/sections/hero";
-import { TrustBar } from "@/components/sections/trust-bar";
 import { PhysiciansSection } from "@/components/sections/physicians-section";
 import { CtaBanner } from "@/components/sections/cta-banner";
-import { JsonLd } from "@/components/seo/json-ld";
-import { breadcrumbSchema, physicianSchema } from "@/lib/seo/schemas";
-import { physicians } from "@/lib/data/physicians";
-import { site } from "@/lib/data/site";
 import { buildMetadata } from "@/lib/seo/metadata";
 
 export const metadata = buildMetadata({
@@ -21,23 +16,6 @@ export const dynamic = "force-static";
 export default function PhysiciansPage() {
   return (
     <>
-      {physicians.map((p) => (
-        <JsonLd
-          key={p.slug}
-          data={physicianSchema({
-            name: p.name,
-            title: p.title,
-            specialties: p.specialties,
-            image: p.image,
-          })}
-        />
-      ))}
-      <JsonLd
-        data={breadcrumbSchema([
-          { name: "Home", url: `${site.url}/` },
-          { name: "Physicians", url: `${site.url}/physicians/` },
-        ])}
-      />
       <Hero
         variant="page"
         eyebrow="Our Care Team"
@@ -45,7 +23,6 @@ export default function PhysiciansPage() {
         subtitle="Every HBOTQ patient is evaluated and supervised by board-certified physicians and wound-care specialists — not technicians or wellness consultants."
         primaryCta={{ label: "Book a consultation", href: "/contact-us/" }}
       />
-      <TrustBar />
       <PhysiciansSection
         heading="Meet the team"
         subtitle="Continuity matters in hyperbaric medicine. Most of our patients see the same care team from the first consultation through the final treatment."

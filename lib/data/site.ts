@@ -30,8 +30,10 @@ export const site = {
     { day: "Sunday", open: null, close: null },
   ],
   social: {
-    facebook: "https://www.facebook.com/hbotq",
-    instagram: "https://www.instagram.com/hbotq",
+    facebook: "https://www.facebook.com/hyperbaricqueens",
+    instagram: "https://www.instagram.com/queenshyperbarics/",
+    youtube: "https://www.youtube.com/@hyperbaricoxygentherapyque5418",
+    tiktok: "https://www.tiktok.com/@hyperbaricqueens",
     googleBusinessProfile:
       "https://www.google.com/maps/place/?api=1&query=Hyperbaric+Medicine+and+Wound+Treatment+Center+of+Queens+Woodside+NY",
   },

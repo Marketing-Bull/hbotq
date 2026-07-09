@@ -1,8 +1,6 @@
-"use client";
-
 import Link from "next/link";
 import { site } from "@/lib/data/site";
-import { trackClick } from "@/lib/analytics/track";
+import { ReassuranceLine } from "@/components/sections/reassurance-line";
 
 export function PhoneCta() {
   return (
@@ -22,22 +20,18 @@ export function PhoneCta() {
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <a
               href={`tel:${site.phoneE164}`}
-              onClick={trackClick("phone_call", { location: "phone_cta" })}
               className="inline-flex items-center justify-center rounded-full bg-[var(--color-brand-500)] text-white px-7 py-3.5 font-semibold hover:bg-[var(--color-brand-600)]"
             >
               Call {site.phone}
             </a>
             <Link
               href="/contact-us/"
-              onClick={trackClick("cta_click", {
-                location: "phone_cta",
-                cta_label: "Book a free consultation",
-              })}
               className="inline-flex items-center justify-center rounded-full bg-[var(--color-accent)] text-white px-7 py-3.5 font-semibold hover:bg-[var(--color-accent-hover)]"
             >
               Book a free consultation
             </Link>
           </div>
+          <ReassuranceLine className="mt-6" />
         </div>
       </div>
     </section>

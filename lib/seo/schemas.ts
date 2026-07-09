@@ -244,6 +244,94 @@ export function medicalConditionSchema(c: Condition) {
   };
 }
 
+export function videoObjectSchema(v: {
+  id: string;
+  title: string;
+  description: string;
+  uploadDate: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    name: v.title,
+    description: v.description,
+    thumbnailUrl: [
+      `https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`,
+      `https://i.ytimg.com/vi/${v.id}/maxresdefault.jpg`,
+    ],
+    uploadDate: v.uploadDate,
+    embedUrl: `https://www.youtube-nocookie.com/embed/${v.id}`,
+    contentUrl: `https://www.youtube.com/watch?v=${v.id}`,
+    publisher: {
+      "@type": "Organization",
+      name: site.name,
+      url: site.url,
+    },
+  };
+}
+
+export function articleSchema(opts: {
+  title: string;
+  description: string;
+  path: string;
+  datePublished: string;
+  dateModified: string;
+  author: { name: string; title: string };
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "MedicalScholarlyArticle",
+    headline: opts.title,
+    description: opts.description,
+    url: `${site.url}${opts.path}`,
+    mainEntityOfPage: `${site.url}${opts.path}`,
+    datePublished: opts.datePublished,
+    dateModified: opts.dateModified,
+    author: {
+      "@type": "Physician",
+      name: opts.author.name,
+      jobTitle: opts.author.title,
+    },
+    reviewedBy: {
+      "@type": "Physician",
+      name: opts.author.name,
+      jobTitle: opts.author.title,
+    },
+    publisher: { "@id": `${site.url}/#business` },
+  };
+}
+
+export function medicalWebPageSchema(opts: {
+  name: string;
+  description: string;
+  path: string;
+  lastReviewed: string;
+  reviewer: { name: string; title: string };
+  citations?: { label: string; url: string }[];
+}) {
+  const schema: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "MedicalWebPage",
+    name: opts.name,
+    description: opts.description,
+    url: `${site.url}${opts.path}`,
+    lastReviewed: opts.lastReviewed,
+    reviewedBy: {
+      "@type": "Physician",
+      name: opts.reviewer.name,
+      jobTitle: opts.reviewer.title,
+    },
+    publisher: { "@id": `${site.url}/#business` },
+  };
+  if (opts.citations?.length)
+    schema.citation = opts.citations.map((c) => ({
+      "@type": "CreativeWork",
+      name: c.label,
+      url: c.url,
+    }));
+  return schema;
+}
+
 export function faqPageSchema(items: Faq[]) {
   return {
     "@context": "https://schema.org",

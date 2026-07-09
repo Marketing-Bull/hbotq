@@ -1,18 +1,11 @@
-"use client";
-
 import Link from "next/link";
 import type { Condition } from "@/types/content";
-import { trackClick } from "@/lib/analytics/track";
 
 export function ConditionCard({ condition }: { condition: Condition }) {
   return (
     <Link
       href={`/condition/${condition.slug}/`}
-      onClick={trackClick("cta_click", {
-        location: "conditions_grid",
-        cta_label: condition.name,
-      })}
-      className="group block rounded-2xl border border-[var(--color-surface-border)] bg-white p-6 hover:border-[var(--color-brand-300)] hover:shadow-sm transition-all"
+      className="group block rounded-2xl border border-[var(--color-surface-border)] bg-white p-6 transition-all duration-200 hover:-translate-y-1 hover:border-[var(--color-brand-300)] hover:shadow-lg"
     >
       <div className="flex items-center justify-between gap-3">
         <h3 className="font-display text-xl font-semibold text-[var(--color-ink)] group-hover:text-[var(--color-brand-500)]">
@@ -31,8 +24,14 @@ export function ConditionCard({ condition }: { condition: Condition }) {
       <p className="mt-3 text-sm text-[var(--color-ink-muted)] leading-relaxed">
         {condition.summary}
       </p>
-      <p className="mt-4 text-sm font-semibold text-[var(--color-brand-500)] group-hover:underline">
-        Learn more →
+      <p className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--color-brand-500)]">
+        Learn more
+        <span
+          aria-hidden
+          className="transition-transform duration-200 group-hover:translate-x-1"
+        >
+          →
+        </span>
       </p>
     </Link>
   );

@@ -10,20 +10,31 @@ import { CtaBanner } from "@/components/sections/cta-banner";
 import { JsonLd } from "@/components/seo/json-ld";
 import { ConditionCard } from "@/components/cards/condition-card";
 import {
+  MedicalReviewer,
+  LAST_MEDICALLY_REVIEWED_ISO,
+} from "@/components/seo/medical-reviewer";
+import { VideoEmbed } from "@/components/media/video-embed";
+import { TikTokEmbed } from "@/components/media/tiktok-embed";
+import {
   conditions,
   getCondition,
   relatedConditions,
 } from "@/lib/data/conditions";
+import { getConditionVideo, getConditionTikTok } from "@/lib/data/videos";
 import { getFaqsByIds } from "@/lib/data/faqs";
 import {
   medicalConditionSchema,
   breadcrumbSchema,
   faqPageSchema,
+  videoObjectSchema,
+  medicalWebPageSchema,
   reviewSchema,
 } from "@/lib/seo/schemas";
+import { getCitations } from "@/lib/data/citations";
+import { physicians } from "@/lib/data/physicians";
+import { testimonials } from "@/lib/data/testimonials";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { site } from "@/lib/data/site";
-import { testimonials } from "@/lib/data/testimonials";
 import type { ConsultationInput } from "@/lib/validation/consultation";
 
 type Params = { slug: string };
@@ -51,10 +62,6 @@ export async function generateMetadata(props: { params: Promise<Params> }) {
     description: condition.metaDescription,
     path: `/condition/${condition.slug}/`,
     image: condition.heroImage,
-    geo: {
-      region: "NY-US",
-      placename: "Woodside, Queens",
-    },
   });
 }
 
@@ -67,6 +74,10 @@ export default async function ConditionPage(props: {
 
   const related = relatedConditions(slug);
   const faqs = condition.faqIds ? getFaqsByIds(condition.faqIds) : [];
+  const video = getConditionVideo(slug);
+  const tiktok = getConditionTikTok(slug);
+  const citations = getCitations(slug);
+  const reviewer = physicians[0];
 
   return (
     <>
@@ -82,17 +93,18 @@ export default async function ConditionPage(props: {
         ])}
       />
       {faqs.length > 0 ? <JsonLd data={faqPageSchema(faqs)} /> : null}
-      {testimonials.map((t) => (
-        <JsonLd
-          key={t.id}
-          data={reviewSchema({
-            quote: t.quote,
-            author: t.author,
-            conditionLabel: t.conditionLabel,
-            rating: t.rating,
-          })}
-        />
-      ))}
+      {video ? <JsonLd data={videoObjectSchema(video)} /> : null}
+      <JsonLd
+        data={medicalWebPageSchema({
+          name: condition.metaTitle,
+          description: condition.metaDescription,
+          path: `/condition/${condition.slug}/`,
+          lastReviewed: LAST_MEDICALLY_REVIEWED_ISO,
+          reviewer: { name: reviewer.name, title: reviewer.title },
+          citations,
+        })}
+      />
+      <JsonLd data={testimonials.map(reviewSchema)} />
 
       <Hero
         variant="condition"
@@ -119,11 +131,44 @@ export default async function ConditionPage(props: {
           <h2 className="mt-3 font-display text-3xl lg:text-4xl font-semibold">
             {condition.name} & hyperbaric oxygen
           </h2>
+          <div className="mt-6">
+            <MedicalReviewer />
+          </div>
           <p className="mt-6 text-lg text-[var(--color-ink-muted)] leading-relaxed">
             {condition.howHbotHelps}
           </p>
         </div>
       </section>
+
+      {video || tiktok ? (
+        <section className="section bg-[var(--color-sand-100)]">
+          <div className="container-page max-w-4xl">
+            <p className="text-sm font-semibold uppercase tracking-[0.15em] text-[var(--color-brand-500)]">
+              Watch
+            </p>
+            <h2 className="mt-3 font-display text-2xl lg:text-3xl font-semibold">
+              {condition.shortName} & HBOT, explained
+            </h2>
+            <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-start">
+              {video ? (
+                <VideoEmbed
+                  id={video.id}
+                  title={video.title}
+                  caption={video.description}
+                />
+              ) : null}
+              {tiktok ? (
+                <div className="lg:w-[300px]">
+                  <TikTokEmbed id={tiktok.id} label={tiktok.label} />
+                  <p className="mt-3 text-center text-sm text-[var(--color-ink-muted)]">
+                    A quick look, from our TikTok
+                  </p>
+                </div>
+              ) : null}
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       {condition.sections.map((s, idx) => (
         <section
@@ -213,6 +258,50 @@ export default async function ConditionPage(props: {
           heading={`${condition.shortName} — common questions`}
           faqs={faqs}
         />
+      ) : null}
+
+      {citations.length ? (
+        <section className="section bg-[var(--color-sand-100)]">
+          <div className="container-page max-w-4xl">
+            <h2 className="font-display text-2xl lg:text-3xl font-semibold">
+              Sources &amp; further reading
+            </h2>
+            <p className="mt-3 text-[var(--color-ink-muted)]">
+              This page is informational and reviewed by our medical team. For
+              the underlying evidence, see:
+            </p>
+            <ul className="mt-6 space-y-3">
+              {citations.map((c) => (
+                <li key={c.url} className="flex items-start gap-3">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    aria-hidden
+                    className="mt-0.5 shrink-0 text-[var(--color-brand-500)]"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path
+                      d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  <a
+                    href={c.url}
+                    target="_blank"
+                    rel="noopener noreferrer nofollow"
+                    className="text-[var(--color-ink)] hover:text-[var(--color-brand-500)] hover:underline"
+                  >
+                    {c.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
       ) : null}
 
       {related.length ? (

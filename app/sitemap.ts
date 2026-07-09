@@ -1,58 +1,76 @@
 import type { MetadataRoute } from "next";
 import { site } from "@/lib/data/site";
 import { conditions } from "@/lib/data/conditions";
+import { locations } from "@/lib/data/locations";
+import { wellnessUses } from "@/lib/data/wellness";
+import { articles } from "@/lib/data/articles";
+import { physicians } from "@/lib/data/physicians";
+import { conditionLps } from "@/lib/data/lps";
 
-type RouteConfig = {
-  path: string;
-  priority: number;
-  image?: string;
-};
-
-const STATIC_ROUTES: RouteConfig[] = [
-  { path: "/", priority: 1.0, image: "/images/og/homepage.jpg" },
-  { path: "/treatment/", priority: 0.9, image: "/images/og/treatment.jpg" },
-  { path: "/conditions/", priority: 0.9, image: "/images/og/conditions.jpg" },
-  {
-    path: "/physicians/",
-    priority: 0.7,
-    image: "/images/og/physicians.jpg",
-  },
+const STATIC_ROUTES: { path: string; priority: number }[] = [
+  { path: "/", priority: 1.0 },
+  { path: "/treatment/", priority: 0.9 },
+  { path: "/conditions/", priority: 0.9 },
+  { path: "/locations/", priority: 0.8 },
+  { path: "/wellness/", priority: 0.7 },
+  { path: "/resources/", priority: 0.7 },
+  { path: "/videos/", priority: 0.6 },
+  { path: "/physicians/", priority: 0.7 },
   { path: "/faqs/", priority: 0.7 },
-  { path: "/contact-us/", priority: 0.8, image: "/images/og/contact.jpg" },
-  {
-    path: "/hyperbaric-therapy/",
-    priority: 0.9,
-    image: "/images/og/treatment.jpg",
-  },
+  { path: "/contact-us/", priority: 0.8 },
+  { path: "/privacy-policy/", priority: 0.3 },
+  { path: "/terms-of-service/", priority: 0.3 },
+  { path: "/accessibility/", priority: 0.3 },
 ];
-
-function toAbsoluteUrl(path: string): string {
-  if (path.startsWith("http://") || path.startsWith("https://")) return path;
-  return `${site.url}${path.startsWith("/") ? path : `/${path}`}`;
-}
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
+  const staticEntries = STATIC_ROUTES.map((r) => ({
+    url: `${site.url}${r.path}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: r.priority,
+  }));
+  const conditionEntries = conditions.map((c) => ({
+    url: `${site.url}/condition/${c.slug}/`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.85,
+  }));
+  const locationEntries = locations.map((l) => ({
+    url: `${site.url}/locations/${l.slug}/`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.75,
+  }));
+  const wellnessEntries = wellnessUses.map((w) => ({
+    url: `${site.url}/wellness/${w.slug}/`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.6,
+  }));
+  const articleEntries = articles.map((a) => ({
+    url: `${site.url}/resources/${a.slug}/`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.6,
+  }));
+  const physicianEntries = physicians.map((p) => ({
+    url: `${site.url}/physicians/${p.slug}/`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.6,
+  }));
+  // lp/ pages are intentionally excluded from the sitemap —
+  // they're ad landing pages and should not compete with condition pages in organic.
+  void conditionLps; // import kept for type safety; not used in sitemap
 
-  const staticEntries: MetadataRoute.Sitemap[number][] = STATIC_ROUTES.map(
-    (r) => ({
-      url: toAbsoluteUrl(r.path),
-      lastModified: now,
-      changeFrequency: "monthly" as const,
-      priority: r.priority,
-      ...(r.image ? { images: [toAbsoluteUrl(r.image)] } : {}),
-    }),
-  );
-
-  const conditionEntries: MetadataRoute.Sitemap[number][] = conditions.map(
-    (c) => ({
-      url: toAbsoluteUrl(`/condition/${c.slug}/`),
-      lastModified: now,
-      changeFrequency: "monthly" as const,
-      priority: 0.85,
-      images: [toAbsoluteUrl(c.heroImage)],
-    }),
-  );
-
-  return [...staticEntries, ...conditionEntries];
+  return [
+    ...staticEntries,
+    ...conditionEntries,
+    ...locationEntries,
+    ...wellnessEntries,
+    ...articleEntries,
+    ...physicianEntries,
+  ];
 }

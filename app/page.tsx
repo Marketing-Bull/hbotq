@@ -16,15 +16,11 @@ import { testimonials } from "@/lib/data/testimonials";
 import { buildMetadata } from "@/lib/seo/metadata";
 
 export const metadata = buildMetadata({
-  title: "Hyperbaric Oxygen Therapy in Queens, NY",
+  title: "Hyperbaric Oxygen Therapy in Queens & NYC",
   description:
-    "HBOTQ in Woodside, Queens offers hyperbaric oxygen therapy for non-healing wounds, diabetic ulcers, radiation injury, sudden hearing loss, post-COVID, and chronic pain. Physician-led care, Medicare and most insurers accepted.",
+    "HBOTQ in Woodside, Queens offers hyperbaric oxygen therapy for patients across NYC — non-healing wounds, diabetic ulcers, radiation injury, sudden hearing loss, post-COVID, and chronic pain. Physician-led care, Medicare and most insurers accepted.",
   path: "/",
   image: "/images/og/homepage.jpg",
-  geo: {
-    region: "NY-US",
-    placename: "Woodside, Queens",
-  },
 });
 
 export const dynamic = "force-static";
@@ -33,7 +29,7 @@ export default function HomePage() {
   return (
     <>
       {testimonials.map((t) => (
-        <JsonLd key={t.id} data={reviewSchema({ quote: t.quote, author: t.author, conditionLabel: t.conditionLabel, rating: t.rating })} />
+        <JsonLd key={t.id} data={reviewSchema(t)} />
       ))}
       <Hero
         eyebrow="Hyperbaric Medicine in Queens"
@@ -44,6 +40,11 @@ export default function HomePage() {
         image="/images/hero/patient-in-chamber.jpg"
         imageAlt="A patient relaxing inside a hard-shell hyperbaric oxygen chamber at HBOTQ"
         priority
+        highlights={[
+          "FDA-approved indications",
+          "Board-certified physicians",
+          "Medicare & major insurers accepted",
+        ]}
       />
       <TrustBar />
       <ConditionsGrid />

@@ -1,5 +1,18 @@
 import Image from "next/image";
+import Link from "next/link";
 import type { Physician } from "@/types/content";
+
+const PROFILE_LABELS: { match: string; label: string }[] = [
+  { match: "healthgrades.com", label: "Healthgrades" },
+  { match: "zocdoc.com", label: "Zocdoc" },
+  { match: "doximity.com", label: "Doximity" },
+  { match: "vitals.com", label: "Vitals" },
+  { match: "cms.gov", label: "Medicare (CMS)" },
+];
+
+function profileLabel(url: string): string {
+  return PROFILE_LABELS.find((p) => url.includes(p.match))?.label ?? "Profile";
+}
 
 export function PhysicianCard({ p }: { p: Physician }) {
   const initials = p.name
@@ -27,7 +40,14 @@ export function PhysicianCard({ p }: { p: Physician }) {
           </div>
         )}
         <div>
-          <h3 className="font-display text-xl font-semibold">{p.name}</h3>
+          <h3 className="font-display text-xl font-semibold">
+            <Link
+              href={`/physicians/${p.slug}/`}
+              className="hover:text-[var(--color-brand-500)]"
+            >
+              {p.name}
+            </Link>
+          </h3>
           <p className="text-sm text-[var(--color-brand-500)] font-semibold mt-0.5">
             {p.title}
           </p>
@@ -49,6 +69,35 @@ export function PhysicianCard({ p }: { p: Physician }) {
               {s}
             </span>
           ))}
+        </div>
+      ) : null}
+      <div className="mt-5">
+        <Link
+          href={`/physicians/${p.slug}/`}
+          className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--color-brand-500)] hover:underline"
+        >
+          View full profile
+          <span aria-hidden>→</span>
+        </Link>
+      </div>
+      {p.sameAs?.length ? (
+        <div className="mt-5 border-t border-[var(--color-surface-border)] pt-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--color-ink-muted)]">
+            Verified profiles
+          </p>
+          <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1.5">
+            {p.sameAs.map((url) => (
+              <a
+                key={url}
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm font-medium text-[var(--color-brand-500)] hover:underline"
+              >
+                {profileLabel(url)}
+              </a>
+            ))}
+          </div>
         </div>
       ) : null}
     </article>

@@ -364,8 +364,28 @@ export function ConsultationForm({
         disabled={isSubmitting}
         className="mt-6 w-full sm:w-auto inline-flex items-center justify-center rounded-full bg-[var(--color-accent)] text-white px-7 py-3.5 font-semibold hover:bg-[var(--color-accent-hover)] disabled:opacity-60"
       >
-        {isSubmitting ? "Sending…" : "Request consultation"}
+        {isSubmitting ? "Sending…" : "Request my free consultation"}
       </button>
+
+      <p className="mt-4 flex items-start gap-2 text-xs text-[var(--color-ink-muted)]">
+        <svg
+          width="15"
+          height="15"
+          viewBox="0 0 24 24"
+          aria-hidden
+          className="mt-px shrink-0 text-[var(--color-brand-500)]"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
+          <rect x="4" y="10" width="16" height="10" rx="2" />
+          <path d="M8 10V7a4 4 0 1 1 8 0v3" strokeLinecap="round" />
+        </svg>
+        <span>
+          We respond within one business day. Your information is kept private —
+          no spam, ever — and there&apos;s no obligation.
+        </span>
+      </p>
     </form>
   );
 }

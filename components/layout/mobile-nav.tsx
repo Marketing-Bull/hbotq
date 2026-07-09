@@ -2,15 +2,12 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
 import { primaryNav } from "@/lib/data/nav";
 import { site } from "@/lib/data/site";
-import { trackClick } from "@/lib/analytics/track";
-import { isNavItemActive } from "@/lib/utils/nav";
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);
-  const pathname = usePathname() || "/";
+  const [expanded, setExpanded] = useState<string | null>(null);
 
   useEffect(() => {
     document.documentElement.style.overflow = open ? "hidden" : "";
@@ -18,6 +15,11 @@ export function MobileNav() {
       document.documentElement.style.overflow = "";
     };
   }, [open]);
+
+  const close = () => {
+    setOpen(false);
+    setExpanded(null);
+  };
 
   return (
     <div className="lg:hidden">
@@ -51,7 +53,7 @@ export function MobileNav() {
 
       {open ? (
         <div
-          className="fixed inset-0 top-16 z-40 bg-white"
+          className="fixed inset-0 top-16 z-40 bg-white overflow-y-auto"
           role="dialog"
           aria-modal="true"
         >
@@ -59,50 +61,89 @@ export function MobileNav() {
             className="container-page py-8 flex flex-col gap-2"
             aria-label="Mobile"
           >
-            {primaryNav.map((item) => {
-              const active = isNavItemActive(item.href, pathname);
-              return (
+            {primaryNav.map((item) =>
+              "children" in item ? (
+                <div
+                  key={item.href}
+                  className="border-b border-[var(--color-surface-border)]"
+                >
+                  <button
+                    type="button"
+                    aria-expanded={expanded === item.href}
+                    aria-controls={`submenu-${item.label.toLowerCase()}`}
+                    onClick={() =>
+                      setExpanded((cur) =>
+                        cur === item.href ? null : item.href,
+                      )
+                    }
+                    className="w-full flex items-center justify-between py-3 text-lg font-medium text-[var(--color-ink)]"
+                  >
+                    {item.label}
+                    <svg
+                      className={`w-4 h-4 opacity-60 transition-transform ${
+                        expanded === item.href ? "rotate-180" : ""
+                      }`}
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      aria-hidden
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </button>
+                  {expanded === item.href ? (
+                    <ul
+                      id={`submenu-${item.label.toLowerCase()}`}
+                      className="pb-3"
+                    >
+                      <li>
+                        <Link
+                          href={item.href}
+                          onClick={close}
+                          className="block py-2 pl-4 text-base font-semibold text-[var(--color-brand-500)]"
+                        >
+                          View all conditions →
+                        </Link>
+                      </li>
+                      {item.children.map((child) => (
+                        <li key={child.href}>
+                          <Link
+                            href={child.href}
+                            onClick={close}
+                            className="block py-2 pl-4 text-base text-[var(--color-ink-muted)] hover:text-[var(--color-brand-500)]"
+                          >
+                            {child.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
+                </div>
+              ) : (
                 <Link
                   key={item.href}
                   href={item.href}
-                  onClick={(e) => {
-                    trackClick("cta_click", {
-                      location: "primary_nav",
-                      cta_label: item.label,
-                    })(e);
-                    setOpen(false);
-                  }}
-                  aria-current={active ? "page" : undefined}
-                  className={
-                    active
-                      ? "py-3 text-lg font-semibold border-b-2 border-[var(--color-brand-500)] text-[var(--color-brand-500)]"
-                      : "py-3 text-lg font-medium border-b border-[var(--color-surface-border)]"
-                  }
+                  onClick={close}
+                  className="py-3 text-lg font-medium border-b border-[var(--color-surface-border)]"
                 >
                   {item.label}
                 </Link>
-              );
-            })}
+              ),
+            )}
             <div className="mt-6 flex flex-col gap-3">
               <a
                 href={`tel:${site.phoneE164}`}
-                onClick={(e) => {
-                  trackClick("phone_call", { location: "mobile_nav" });
-                  setOpen(false);
-                }}
                 className="inline-flex items-center justify-center rounded-full bg-[var(--color-brand-500)] text-white px-5 py-3 font-semibold"
+                onClick={close}
               >
                 Call {site.phone}
               </a>
               <Link
                 href="/contact-us/"
-                onClick={(e) => {
-                  trackClick("cta_click", {
-                    location: "mobile_nav",
-                    cta_label: "Book consultation",
-                  })(e);
-                  setOpen(false);
-                }}
+                onClick={close}
                 className="inline-flex items-center justify-center rounded-full bg-[var(--color-accent)] text-white px-5 py-3 font-semibold"
               >
                 Book consultation

@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh repo *)",
+      "Bash(gh org *)",
+      "Bash(git init *)",
+      "Bash(git remote *)",
+      "Bash(git pull *)",
+      "WebSearch",
+      "Bash(printf '.claude/\\\\n')",
+      "Bash(git checkout *)",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(gh pr create --repo Marketing-Bull/hbotq --base main --head feature/condition-seo-pages --title 'Add Refractory Osteomyelitis + Severe Anemia condition pages' --body ' *)",
+      "Bash(gh issue comment 2 --repo Marketing-Bull/hbotq --body 'Done — both pages written, wired, and building green. PR: https://github.com/Marketing-Bull/hbotq/pull/3 *)",
+      "Bash(git fetch *)"
+    ]
+  }
+}

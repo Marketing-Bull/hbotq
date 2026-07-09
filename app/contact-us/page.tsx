@@ -1,9 +1,6 @@
 import { Hero } from "@/components/sections/hero";
 import { MapHours } from "@/components/sections/map-hours";
 import { ConsultationForm } from "@/components/forms/consultation-form";
-import { JsonLd } from "@/components/seo/json-ld";
-import { breadcrumbSchema } from "@/lib/seo/schemas";
-import { site } from "@/lib/data/site";
 import { buildMetadata } from "@/lib/seo/metadata";
 
 export const metadata = buildMetadata({
@@ -12,10 +9,6 @@ export const metadata = buildMetadata({
     "Book a free hyperbaric oxygen therapy consultation at HBOTQ in Woodside, Queens. Call 718-925-3322 or use the form — most messages get a same-day response.",
   path: "/contact-us/",
   image: "/images/og/contact.jpg",
-  geo: {
-    region: "NY-US",
-    placename: "Woodside, Queens",
-  },
 });
 
 export const dynamic = "force-static";
@@ -23,12 +16,6 @@ export const dynamic = "force-static";
 export default function ContactPage() {
   return (
     <>
-      <JsonLd
-        data={breadcrumbSchema([
-          { name: "Home", url: `${site.url}/` },
-          { name: "Contact Us", url: `${site.url}/contact-us/` },
-        ])}
-      />
       <Hero
         variant="page"
         eyebrow="Contact"

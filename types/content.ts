@@ -30,6 +30,52 @@ export interface Condition {
   relatedSlugs: ConditionSlug[];
 }
 
+export interface Article {
+  slug: string;
+  title: string;
+  metaTitle: string;
+  metaDescription: string;
+  excerpt: string;
+  datePublished: string;
+  dateModified: string;
+  authorSlug: string;
+  readMinutes: number;
+  keyTakeaways: string[];
+  sections: ConditionSection[];
+  relatedConditionSlugs?: ConditionSlug[];
+}
+
+export interface WellnessUse {
+  slug: string;
+  name: string;
+  shortName: string;
+  metaTitle: string;
+  metaDescription: string;
+  summary: string;
+  intro: string;
+  sections: ConditionSection[];
+  benefits: string[];
+  honestNote: string;
+  tiktokIds: string[];
+}
+
+export interface Location {
+  slug: string;
+  area: string;
+  shortName: string;
+  metaTitle: string;
+  metaDescription: string;
+  summary: string;
+  intro: string;
+  gettingHere: {
+    transit: string;
+    driving: string;
+    parking: string;
+  };
+  neighborhoods: string[];
+  whyTravel: string;
+}
+
 export interface Faq {
   id: string;
   category: "general" | "treatment" | "conditions" | "logistics";
@@ -43,8 +89,20 @@ export interface Physician {
   title: string;
   credentials: string[];
   specialties: string[];
+  /** Short bio used on cards and meta descriptions. */
   bio: string;
+  /** Longer, multi-paragraph bio for the detail page. */
+  bioLong?: string[];
+  /** Quick-scan credential highlights. */
+  highlights?: string[];
   image?: string;
+  education?: string[];
+  affiliations?: string[];
+  languages?: string[];
+  /** Public NPI number — only populate if verified via the NPPES registry. */
+  npi?: string;
+  /** Verified external profile URLs (Healthgrades, NPI, LinkedIn, etc.). */
+  sameAs?: string[];
 }
 
 export interface Testimonial {
