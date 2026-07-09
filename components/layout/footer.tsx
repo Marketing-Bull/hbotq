@@ -140,6 +140,10 @@ function FooterColumn({
               <Link
                 href={l.href}
                 aria-current={active ? "page" : undefined}
+                onClick={trackClick("cta_click", {
+                  location: "footer_nav",
+                  cta_label: l.label,
+                })}
                 className={
                   active
                     ? "text-sm font-semibold text-white"
