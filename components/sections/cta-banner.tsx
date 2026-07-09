@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { site } from "@/lib/data/site";
 import { ReassuranceLine } from "@/components/sections/reassurance-line";
+import { BlobsDark } from "@/components/ui/background-blobs";
 
 export function CtaBanner({
   heading = "Ready to find out if HBOT can help?",
@@ -10,8 +11,16 @@ export function CtaBanner({
   subtitle?: string;
 } = {}) {
   return (
-    <section className="section bg-[var(--color-brand-700)] text-white">
-      <div className="container-page text-center">
+    <section
+      className="section relative overflow-hidden text-white"
+      style={{
+        background:
+          "linear-gradient(135deg, var(--color-brand-900) 0%, var(--color-brand-700) 60%, var(--color-brand-800) 100%)",
+      }}
+    >
+      <BlobsDark />
+
+      <div className="container-page relative z-10 text-center">
         <h2 className="font-display text-3xl lg:text-4xl font-semibold text-white">
           {heading}
         </h2>
@@ -21,13 +30,13 @@ export function CtaBanner({
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Link
             href="/contact-us/"
-            className="inline-flex items-center justify-center rounded-full bg-[var(--color-accent)] text-white px-7 py-3.5 font-semibold hover:bg-[var(--color-accent-hover)]"
+            className="inline-flex items-center justify-center rounded-full bg-[var(--color-accent)] text-white px-7 py-3.5 font-semibold hover:bg-[var(--color-accent-hover)] shadow-lg shadow-[var(--color-accent)]/30 transition-colors"
           >
             Book a free consultation
           </Link>
           <a
             href={`tel:${site.phoneE164}`}
-            className="inline-flex items-center justify-center rounded-full border border-white/40 text-white px-7 py-3.5 font-semibold hover:bg-white/10"
+            className="inline-flex items-center justify-center rounded-full border border-white/30 text-white px-7 py-3.5 font-semibold hover:bg-white/10 transition-colors backdrop-blur-sm"
           >
             Call {site.phone}
           </a>

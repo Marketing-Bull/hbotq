@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { site } from "@/lib/data/site";
+import { BlobsHero } from "@/components/ui/background-blobs";
 
 type HeroVariant = "home" | "condition" | "lp" | "page";
 
@@ -36,15 +37,23 @@ export function Hero({
 
   return (
     <section
-      className="relative bg-[var(--color-sand-100)] overflow-hidden"
+      className="relative overflow-hidden"
+      style={{
+        background: isHome
+          ? "linear-gradient(135deg, var(--color-brand-900) 0%, var(--color-brand-700) 45%, var(--color-brand-800) 100%)"
+          : "linear-gradient(135deg, var(--color-brand-800) 0%, var(--color-brand-600) 100%)",
+      }}
       aria-labelledby="hero-title"
     >
+      <BlobsHero />
+
+      {/* Light-ray sweep across top */}
       <div
         aria-hidden
-        className="absolute inset-0 opacity-[0.06] pointer-events-none"
+        className="absolute top-0 left-0 w-full h-full pointer-events-none"
         style={{
-          backgroundImage:
-            "radial-gradient(circle at 20% 20%, var(--color-brand-500) 0, transparent 40%), radial-gradient(circle at 80% 60%, var(--color-accent) 0, transparent 35%)",
+          background:
+            "linear-gradient(105deg, rgba(255,255,255,0.04) 0%, transparent 40%, rgba(255,255,255,0.02) 60%, transparent 100%)",
         }}
       />
       <div
@@ -54,13 +63,13 @@ export function Hero({
       >
         <div className={hasImage ? "max-w-xl" : "max-w-3xl"}>
           {eyebrow ? (
-            <p className="text-sm font-semibold uppercase tracking-[0.15em] text-[var(--color-brand-500)] mb-4">
+            <p className="text-sm font-semibold uppercase tracking-[0.15em] text-[var(--color-brand-200)] mb-4">
               {eyebrow}
             </p>
           ) : null}
           <h1
             id="hero-title"
-            className={`font-display font-semibold text-[var(--color-ink)] ${
+            className={`font-display font-semibold text-white ${ 
               isHome
                 ? "text-4xl sm:text-5xl lg:text-6xl"
                 : "text-3xl sm:text-4xl lg:text-5xl"
@@ -69,7 +78,7 @@ export function Hero({
             {title}
           </h1>
           {subtitle ? (
-            <p className="mt-6 text-lg lg:text-xl text-[var(--color-ink-muted)] max-w-2xl">
+            <p className="mt-6 text-lg lg:text-xl text-[var(--color-brand-100)] max-w-2xl opacity-90">
               {subtitle}
             </p>
           ) : null}
@@ -78,7 +87,7 @@ export function Hero({
             {primaryCta ? (
               <Link
                 href={primaryCta.href}
-                className="inline-flex items-center justify-center rounded-full bg-[var(--color-accent)] text-white px-7 py-3.5 font-semibold hover:bg-[var(--color-accent-hover)] transition-colors"
+                className="inline-flex items-center justify-center rounded-full bg-[var(--color-accent)] text-white px-7 py-3.5 font-semibold hover:bg-[var(--color-accent-hover)] transition-colors shadow-lg shadow-[var(--color-accent)]/30"
               >
                 {primaryCta.label}
               </Link>
@@ -86,7 +95,7 @@ export function Hero({
             {secondaryCta ? (
               <Link
                 href={secondaryCta.href}
-                className="inline-flex items-center justify-center rounded-full border border-[var(--color-brand-500)] text-[var(--color-brand-500)] px-7 py-3.5 font-semibold hover:bg-[var(--color-brand-50)] transition-colors"
+                className="inline-flex items-center justify-center rounded-full border border-white/30 text-white px-7 py-3.5 font-semibold hover:bg-white/10 transition-colors backdrop-blur-sm"
               >
                 {secondaryCta.label}
               </Link>
@@ -94,11 +103,11 @@ export function Hero({
           </div>
 
           {isHome || isLp ? (
-            <p className="mt-6 text-sm text-[var(--color-ink-muted)]">
+            <p className="mt-6 text-sm text-[var(--color-brand-100)] opacity-75">
               Or call us directly:{" "}
               <a
                 href={`tel:${site.phoneE164}`}
-                className="text-[var(--color-brand-500)] font-semibold hover:underline"
+                className="text-white font-semibold hover:underline opacity-100"
               >
                 {site.phone}
               </a>
@@ -110,14 +119,14 @@ export function Hero({
               {highlights.map((h) => (
                 <li
                   key={h}
-                  className="flex items-center gap-2 text-sm font-medium text-[var(--color-ink)]"
+                  className="flex items-center gap-2 text-sm font-medium text-white/80"
                 >
                   <svg
                     width="18"
                     height="18"
                     viewBox="0 0 24 24"
                     aria-hidden
-                    className="shrink-0 text-[var(--color-brand-500)]"
+                    className="shrink-0 text-[var(--color-brand-300)]"
                   >
                     <path
                       d="M5 12l4 4L19 7"
@@ -137,7 +146,7 @@ export function Hero({
 
         {hasImage ? (
           <div className="mt-12 lg:mt-0 lg:justify-self-end w-full">
-            <div className="relative aspect-[4/3] lg:aspect-[5/4] w-full max-w-xl rounded-2xl overflow-hidden shadow-lg ring-1 ring-[var(--color-surface-border)]">
+            <div className="relative aspect-[4/3] lg:aspect-[5/4] w-full max-w-xl rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/10">
               <Image
                 src={image!}
                 alt={imageAlt}
@@ -146,9 +155,29 @@ export function Hero({
                 sizes="(min-width: 1024px) 40vw, 100vw"
                 className="object-cover"
               />
+              {/* Subtle inner glow overlay on image */}
+              <div
+                aria-hidden
+                className="absolute inset-0 rounded-2xl"
+                style={{
+                  boxShadow: "inset 0 0 60px rgba(0,0,0,0.3)",
+                }}
+              />
             </div>
           </div>
         ) : null}
+      </div>
+
+      {/* Wave divider — transitions hero into next section */}
+      <div aria-hidden className="wave-divider -mb-px">
+        <svg
+          viewBox="0 0 1440 48"
+          preserveAspectRatio="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-full h-12 fill-white"
+        >
+          <path d="M0,32 C360,0 1080,64 1440,24 L1440,48 L0,48 Z" />
+        </svg>
       </div>
     </section>
   );
