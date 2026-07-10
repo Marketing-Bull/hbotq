@@ -5,7 +5,7 @@ import { TrustBar } from "@/components/sections/trust-bar";
 import { CtaBanner } from "@/components/sections/cta-banner";
 import { JsonLd } from "@/components/seo/json-ld";
 import { physicians } from "@/lib/data/physicians";
-import { physicianSchema, breadcrumbSchema } from "@/lib/seo/schemas";
+import { medicalBusinessSchema, physicianSchema, breadcrumbSchema } from "@/lib/seo/schemas";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { site } from "@/lib/data/site";
 
@@ -68,6 +68,7 @@ export default async function PhysicianDetailPage(props: {
 
   return (
     <>
+      <JsonLd data={medicalBusinessSchema()} />
       <JsonLd data={physicianSchema(p)} />
       <JsonLd
         data={breadcrumbSchema([

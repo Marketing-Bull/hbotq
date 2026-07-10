@@ -4,7 +4,7 @@ import { TrustBar } from "@/components/sections/trust-bar";
 import { CtaBanner } from "@/components/sections/cta-banner";
 import { JsonLd } from "@/components/seo/json-ld";
 import { articles } from "@/lib/data/articles";
-import { breadcrumbSchema } from "@/lib/seo/schemas";
+import { medicalBusinessSchema, breadcrumbSchema } from "@/lib/seo/schemas";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { site } from "@/lib/data/site";
 
@@ -20,6 +20,7 @@ export const dynamic = "force-static";
 export default function ResourcesPage() {
   return (
     <>
+      <JsonLd data={medicalBusinessSchema()} />
       <JsonLd
         data={breadcrumbSchema([
           { name: "Home", url: `${site.url}/` },

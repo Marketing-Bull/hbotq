@@ -13,8 +13,9 @@ import {
   TIKTOK_PROFILE_URL,
 } from "@/lib/data/videos";
 import { getCondition } from "@/lib/data/conditions";
-import { videoObjectSchema } from "@/lib/seo/schemas";
+import { medicalBusinessSchema, breadcrumbSchema, videoObjectSchema } from "@/lib/seo/schemas";
 import { buildMetadata } from "@/lib/seo/metadata";
+import { site } from "@/lib/data/site";
 
 export const metadata = buildMetadata({
   title: "Video Library — Hyperbaric Oxygen Therapy Explained",
@@ -28,6 +29,13 @@ export const dynamic = "force-static";
 export default function VideosPage() {
   return (
     <>
+      <JsonLd data={medicalBusinessSchema()} />
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", url: `${site.url}/` },
+          { name: "Video Library", url: `${site.url}/videos/` },
+        ])}
+      />
       {videos.map((v) => (
         <JsonLd key={v.id} data={videoObjectSchema(v)} />
       ))}
