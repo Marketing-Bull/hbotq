@@ -104,7 +104,9 @@ export default async function ConditionPage(props: {
           citations,
         })}
       />
-      <JsonLd data={testimonials.map(reviewSchema)} />
+      {testimonials.map((t) => (
+        <JsonLd key={t.author} data={reviewSchema(t)} />
+      ))}
 
       <Hero
         variant="condition"
