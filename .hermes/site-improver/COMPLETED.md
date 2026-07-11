@@ -8,6 +8,10 @@ Format per entry:
 
 ---
 
+## 2026-07-11 — PR #41 (updated with S-11)
+
+- **S-11** — Fixed array JSON-LD emit on all 8 condition pages. `app/condition/[slug]/page.tsx` was passing `testimonials.map(reviewSchema)` (an array) as the `data` prop to a single `<JsonLd>` component. This produced a top-level JSON array in the `<script type="application/ld+json">` block — invalid markup per Google's Structured Data requirements (`block is not a JSON object`). All 8 condition pages were failing the schema validator with this error (8 errors total). Fix: changed to `{testimonials.map((t) => <JsonLd key={t.author} data={reviewSchema(t)} />)}` so each of the 5 Review blocks emits its own `<script>` block. 1 file, 3 insertions, 1 deletion. Build passes; `npm run validate:schema` now: **0 errors** (down from 8), 35 VideoObject warnings (pre-existing, no deep validator for that type). Per-condition pages now emit 12 schema blocks each. **PR**: https://github.com/Marketing-Bull/hbotq/pull/41
+
 ## 2026-07-10 — PR #41 (updated with S-10)
 
 - **S-10** — MedicalBusiness schema added to 6 new post-merge route families (`/wellness/`, `/wellness/[slug]/`, `/resources/`, `/resources/[slug]/`, `/physicians/[slug]/`, `/videos/`). Codebase audit found these routes — added by the main-branch expansion (2026-07-08/09) — were emitting entity-specific schemas (`physicianSchema`, `articleSchema`, `videoObjectSchema`) and `breadcrumbSchema` but missing the `medicalBusinessSchema()` anchor block. Without the `MedicalBusiness` block on each page, Google's Knowledge Graph cannot resolve `Physician.worksFor`, `WebSite.publisher`, or `Review.itemReviewed` cross-links on those pages — the Physician and Article entities render as dangling nodes. Fix: added `<JsonLd data={medicalBusinessSchema()} />` to all 6 route files; also added `breadcrumbSchema` to `/videos/` (was the only marketing page missing it). 6 files, 19 insertions. Build passes; MedicalBusiness confirmed in rendered HTML on all new route families. **PR**: https://github.com/Marketing-Bull/hbotq/pull/41
