@@ -572,6 +572,147 @@ function validateReview(page, idx, block) {
   }
 }
 
+// ---------- VideoObject validator ----------
+// Per Google's Video structured data docs:
+// Required: name, description, thumbnailUrl, uploadDate
+// Recommended: embedUrl or contentUrl (one required for indexing eligibility),
+//              duration (ISO 8601), publisher (Organization cross-link)
+//
+// thumbnailUrl may be a string or an array of strings — both are valid per
+// Google's docs (they encourage multiple resolutions for the thumbnail).
+//
+// uploadDate must be ISO 8601 date (YYYY-MM-DD or full datetime).
+
+function validateVideoObject(page, idx, block) {
+  // Required fields (Google marks these as Required for Video rich results)
+  validateString(page, idx, "VideoObject", "name", block.name);
+  validateString(page, idx, "VideoObject", "description", block.description);
+
+  // thumbnailUrl: string or string[] — require at least one valid URL
+  if (!present(block.thumbnailUrl)) {
+    err(page, idx, "VideoObject", `missing required "thumbnailUrl"`);
+  } else {
+    const urls = Array.isArray(block.thumbnailUrl)
+      ? block.thumbnailUrl
+      : [block.thumbnailUrl];
+    if (urls.length === 0) {
+      err(page, idx, "VideoObject", `"thumbnailUrl" array must not be empty`);
+    }
+    for (const u of urls) {
+      if (!isHttpUrl(u)) {
+        err(
+          page,
+          idx,
+          "VideoObject",
+          `"thumbnailUrl" value "${u}" is not a valid http(s) URL`,
+        );
+      }
+    }
+  }
+
+  // uploadDate: required ISO 8601 date/datetime string
+  if (!present(block.uploadDate)) {
+    err(page, idx, "VideoObject", `missing required "uploadDate"`);
+  } else if (typeof block.uploadDate !== "string") {
+    err(
+      page,
+      idx,
+      "VideoObject",
+      `"uploadDate" must be a string (ISO 8601 date), got ${typeof block.uploadDate}`,
+    );
+  } else if (!/^\d{4}-\d{2}-\d{2}(T[\d:.Z+-]+)?$/.test(block.uploadDate)) {
+    err(
+      page,
+      idx,
+      "VideoObject",
+      `"uploadDate" "${block.uploadDate}" does not match ISO 8601 (YYYY-MM-DD or full datetime)`,
+    );
+  }
+
+  // embedUrl / contentUrl: at least one recommended for video indexing
+  const hasEmbed = present(block.embedUrl) && isHttpUrl(block.embedUrl);
+  const hasContent = present(block.contentUrl) && isHttpUrl(block.contentUrl);
+  if (!hasEmbed && !hasContent) {
+    warn(
+      page,
+      idx,
+      "VideoObject",
+      `"embedUrl" or "contentUrl" should be provided — Google requires at least one for video indexing eligibility`,
+    );
+  }
+  if (present(block.embedUrl) && !isHttpUrl(block.embedUrl)) {
+    err(
+      page,
+      idx,
+      "VideoObject",
+      `"embedUrl" "${block.embedUrl}" is not a valid http(s) URL`,
+    );
+  }
+  if (present(block.contentUrl) && !isHttpUrl(block.contentUrl)) {
+    err(
+      page,
+      idx,
+      "VideoObject",
+      `"contentUrl" "${block.contentUrl}" is not a valid http(s) URL`,
+    );
+  }
+
+  // duration: optional but recommended (ISO 8601 duration format PT#M#S)
+  if (present(block.duration)) {
+    if (typeof block.duration !== "string") {
+      err(
+        page,
+        idx,
+        "VideoObject",
+        `"duration" must be a string (ISO 8601 duration, e.g. "PT5M30S"), got ${typeof block.duration}`,
+      );
+    } else if (!/^PT[\d.]+[HMS]/.test(block.duration)) {
+      warn(
+        page,
+        idx,
+        "VideoObject",
+        `"duration" "${block.duration}" does not look like a valid ISO 8601 duration (expected PT#M#S format)`,
+      );
+    }
+  } else {
+    warn(
+      page,
+      idx,
+      "VideoObject",
+      `"duration" is recommended by Google's video structured data docs — add it for richer search results`,
+    );
+  }
+
+  // publisher: recommended — Organization cross-link back to the business
+  if (present(block.publisher)) {
+    if (!isPlainObject(block.publisher)) {
+      err(page, idx, "VideoObject", `"publisher" must be an object`);
+    } else {
+      if (block.publisher["@type"] !== "Organization") {
+        warn(
+          page,
+          idx,
+          "VideoObject",
+          `"publisher.@type" should be "Organization" (got "${block.publisher["@type"]}")`,
+        );
+      }
+      validateString(page, idx, "VideoObject", "publisher.name", block.publisher.name);
+      if (present(block.publisher.url)) {
+        validateString(page, idx, "VideoObject", "publisher.url", block.publisher.url, {
+          url: true,
+        });
+      }
+    }
+  } else {
+    warn(
+      page,
+      idx,
+      "VideoObject",
+      `"publisher" is recommended — add an Organization reference so Google can associate the video with your practice`,
+    );
+  }
+}
+
 const TYPE_VALIDATORS = {
   MedicalBusiness: validateMedicalBusiness,
   Physician: validatePhysician,
@@ -580,6 +721,7 @@ const TYPE_VALIDATORS = {
   BreadcrumbList: validateBreadcrumb,
   Review: validateReview,
   WebSite: validateWebSite,
+  VideoObject: validateVideoObject,
   // AggregateRating + Rating are nested inside other types; we still accept
   // them as top-level for future schema additions, and validate their fields.
   AggregateRating(page, idx, block) {
