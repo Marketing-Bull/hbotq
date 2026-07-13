@@ -8,7 +8,11 @@ Format per entry:
 
 ---
 
-## 2026-07-11 — PR #41 (updated with S-11)
+## 2026-07-13 — PR #41 (updated with S-12-duration)
+
+- **S-12-duration** — Added ISO 8601 `duration` field to all 15 VideoObject JSON-LD blocks. The S-12 validator (2026-07-12) had been emitting 21 warnings for missing `duration` — a Google-recommended field for VideoObject rich results. This run fetched real durations from YouTube metadata for all 15 videos in `lib/data/videos.ts` (ranging from PT52S to PT6M26S), added a `duration?: string` field to the `Video` interface, and updated `videoObjectSchema()` in `lib/seo/schemas.ts` to emit the field when present. Build: passes (50 routes). Validator: **0 errors, 14 warnings** (down from 35; all 21 VideoObject duration warnings resolved; remaining 14 are MedicalWebPage + MedicalScholarlyArticle blocks without validators). Verified: `"duration":"PT3M"` appears in SSR HTML on `/videos/`. 2 files, 19 insertions. **PR**: https://github.com/Marketing-Bull/hbotq/pull/41
+
+## 2026-07-12 — PR #41 (updated with S-12)
 
 - **S-11** — Fixed array JSON-LD emit on all 8 condition pages. `app/condition/[slug]/page.tsx` was passing `testimonials.map(reviewSchema)` (an array) as the `data` prop to a single `<JsonLd>` component. This produced a top-level JSON array in the `<script type="application/ld+json">` block — invalid markup per Google's Structured Data requirements (`block is not a JSON object`). All 8 condition pages were failing the schema validator with this error (8 errors total). Fix: changed to `{testimonials.map((t) => <JsonLd key={t.author} data={reviewSchema(t)} />)}` so each of the 5 Review blocks emits its own `<script>` block. 1 file, 3 insertions, 1 deletion. Build passes; `npm run validate:schema` now: **0 errors** (down from 8), 35 VideoObject warnings (pre-existing, no deep validator for that type). Per-condition pages now emit 12 schema blocks each. **PR**: https://github.com/Marketing-Bull/hbotq/pull/41
 
