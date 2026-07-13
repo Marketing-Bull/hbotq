@@ -249,6 +249,7 @@ export function videoObjectSchema(v: {
   title: string;
   description: string;
   uploadDate: string;
+  duration?: string;
 }) {
   return {
     "@context": "https://schema.org",
@@ -260,6 +261,7 @@ export function videoObjectSchema(v: {
       `https://i.ytimg.com/vi/${v.id}/maxresdefault.jpg`,
     ],
     uploadDate: v.uploadDate,
+    ...(v.duration ? { duration: v.duration } : {}),
     embedUrl: `https://www.youtube-nocookie.com/embed/${v.id}`,
     contentUrl: `https://www.youtube.com/watch?v=${v.id}`,
     publisher: {

@@ -6,6 +6,8 @@ export interface Video {
   description: string;
   /** Actual YouTube publish date (ISO yyyy-mm-dd) for VideoObject schema */
   uploadDate: string;
+  /** ISO 8601 duration (e.g. "PT3M", "PT2M35S") for VideoObject schema */
+  duration?: string;
   conditionSlug?: ConditionSlug;
 }
 
@@ -18,6 +20,7 @@ export const videos: Video[] = [
   {
     id: "yNwKh_JdSKQ",
     uploadDate: "2024-10-22",
+    duration: "PT3M",
     title: "Non-Healing Wounds and Hyperbaric Oxygen Therapy",
     description:
       "How HBOT restores oxygen to stalled wounds to support closure.",
@@ -26,6 +29,7 @@ export const videos: Video[] = [
   {
     id: "bvhlX3ya4e0",
     uploadDate: "2024-10-22",
+    duration: "PT2M2S",
     title: "Diabetic Lower-Extremity Wounds and Hyperbaric Oxygen Therapy",
     description:
       "Why diabetic foot ulcers stall and how HBOT supports limb salvage.",
@@ -34,6 +38,7 @@ export const videos: Video[] = [
   {
     id: "ui8Z9hLyQT8",
     uploadDate: "2024-10-22",
+    duration: "PT2M35S",
     title: "Radiation Tissue Damage and Hyperbaric Oxygen Therapy",
     description:
       "Treating late-effect radiation injury and osteoradionecrosis with HBOT.",
@@ -42,6 +47,7 @@ export const videos: Video[] = [
   {
     id: "9lKjrU0E1jk",
     uploadDate: "2024-10-23",
+    duration: "PT2M46S",
     title: "Sudden Hearing Loss and Hyperbaric Oxygen Therapy",
     description:
       "Why timing matters and how HBOT supports recovery from sudden hearing loss.",
@@ -50,6 +56,7 @@ export const videos: Video[] = [
   {
     id: "1jjSu8I2bQY",
     uploadDate: "2024-10-23",
+    duration: "PT2M49S",
     title: "Long-Haul COVID-19 and Hyperbaric Oxygen Therapy",
     description:
       "How HBOT is being used for persistent post-COVID symptoms.",
@@ -58,6 +65,7 @@ export const videos: Video[] = [
   {
     id: "y8HQEK6a924",
     uploadDate: "2024-10-23",
+    duration: "PT2M53S",
     title: "Chronic Pain and Hyperbaric Oxygen Therapy",
     description:
       "HBOT's anti-inflammatory and tissue-repair role in chronic pain.",
@@ -66,54 +74,63 @@ export const videos: Video[] = [
   {
     id: "OT9LzvA8DM0",
     uploadDate: "2021-02-07",
+    duration: "PT1M36S",
     title: "Hyperbaric Oxygen Therapy for Diabetic Wound and Ulcer Care",
     description: "A closer look at HBOT in diabetic wound and ulcer care.",
   },
   {
     id: "uyEBwWFiwWo",
     uploadDate: "2021-02-07",
+    duration: "PT58S",
     title: "Hyperbaric Oxygen Therapy for COVID-19 Recovery",
     description: "Using HBOT to support recovery after COVID-19.",
   },
   {
     id: "KIoanDGWiQc",
     uploadDate: "2021-02-07",
+    duration: "PT52S",
     title: "Hyperbaric Oxygen Therapy After Plastic Surgery (NYC)",
     description: "How HBOT can support healing and reduce recovery time after plastic surgery.",
   },
   {
     id: "1GW-rf7d818",
     uploadDate: "2021-01-02",
+    duration: "PT6M26S",
     title: "Hyperbaric Oxygen Therapy After Sports Injury",
     description: "HBOT for faster recovery from sports and soft-tissue injuries.",
   },
   {
     id: "gdaryvEI1jw",
     uploadDate: "2021-01-02",
+    duration: "PT2M46S",
     title: "Hyperbaric Oxygen Therapy After a Car Accident",
     description: "How HBOT supports healing after traumatic injury.",
   },
   {
     id: "9P3ZCT_EoMY",
     uploadDate: "2021-01-02",
+    duration: "PT3M36S",
     title: "Hyperbaric Oxygen Therapy for Cancer Patients",
     description: "HBOT's supportive role for patients during and after cancer care.",
   },
   {
     id: "-dTe7UB8TDA",
     uploadDate: "2021-01-02",
+    duration: "PT3M43S",
     title: "Hyperbaric Oxygen Therapy for Alzheimer's",
     description: "An overview of HBOT being explored for Alzheimer's and cognition.",
   },
   {
     id: "j98AfoPkjL8",
     uploadDate: "2021-01-02",
+    duration: "PT2M45S",
     title: "Hyperbaric Oxygen Therapy for Autism",
     description: "An overview of HBOT being explored in autism care.",
   },
   {
     id: "P981AQmVzhc",
     uploadDate: "2021-01-02",
+    duration: "PT6M20S",
     title: "Hyperbaric Oxygen Therapy in Queens — en Español",
     description: "Una introducción a la oxigenoterapia hiperbárica en Queens.",
   },
