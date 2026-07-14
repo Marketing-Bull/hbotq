@@ -583,6 +583,182 @@ function validateReview(page, idx, block) {
 //
 // uploadDate must be ISO 8601 date (YYYY-MM-DD or full datetime).
 
+// ---------- MedicalWebPage validator ----------
+//
+// MedicalWebPage is emitted on every /condition/[slug]/ page via
+// medicalWebPageSchema() in lib/seo/schemas.ts.
+//
+// Required per schema.org / Google: name, description, url, lastReviewed,
+// reviewedBy (Physician). Recommended: publisher (@id cross-link), citation.
+
+function validateMedicalWebPage(page, idx, block) {
+  // Required fields
+  validateString(page, idx, "MedicalWebPage", "name", block.name);
+  validateString(page, idx, "MedicalWebPage", "description", block.description);
+  validateString(page, idx, "MedicalWebPage", "url", block.url, { url: true });
+
+  // lastReviewed: required ISO 8601 date string
+  if (!present(block.lastReviewed)) {
+    err(page, idx, "MedicalWebPage", `missing required "lastReviewed" date string`);
+  } else if (typeof block.lastReviewed !== "string") {
+    err(
+      page, idx, "MedicalWebPage",
+      `"lastReviewed" must be a string (ISO 8601 date), got ${typeof block.lastReviewed}`,
+    );
+  } else if (!/^\d{4}-\d{2}-\d{2}(T[\d:.Z+-]+)?$/.test(block.lastReviewed)) {
+    err(
+      page, idx, "MedicalWebPage",
+      `"lastReviewed" "${block.lastReviewed}" does not match ISO 8601 (YYYY-MM-DD or full datetime)`,
+    );
+  }
+
+  // reviewedBy: required — Physician with name
+  if (!present(block.reviewedBy)) {
+    err(page, idx, "MedicalWebPage", `missing required "reviewedBy" (Physician object)`);
+  } else if (!isPlainObject(block.reviewedBy)) {
+    err(page, idx, "MedicalWebPage", `"reviewedBy" must be an object`);
+  } else {
+    if (block.reviewedBy["@type"] !== "Physician") {
+      warn(
+        page, idx, "MedicalWebPage",
+        `"reviewedBy[\"@type\"]" is "${block.reviewedBy["@type"]}" — expected "Physician" for medical pages`,
+      );
+    }
+    if (!nonEmptyString(block.reviewedBy.name)) {
+      err(page, idx, "MedicalWebPage", `"reviewedBy.name" is required`);
+    }
+  }
+
+  // publisher: recommended — @id cross-link to #business anchor
+  if (!present(block.publisher)) {
+    warn(
+      page, idx, "MedicalWebPage",
+      `"publisher" is recommended — add { "@id": "${SITE.url}/#business" } so Google can associate the page with your practice`,
+    );
+  } else if (!isPlainObject(block.publisher)) {
+    err(page, idx, "MedicalWebPage", `"publisher" must be an object`);
+  } else if (!nonEmptyString(block.publisher["@id"])) {
+    warn(
+      page, idx, "MedicalWebPage",
+      `"publisher[\"@id\"]" is missing — set it to "${SITE.url}/#business" to link the page to the MedicalBusiness entity`,
+    );
+  }
+
+  // citation: optional array of CreativeWork objects
+  if (present(block.citation)) {
+    const citations = Array.isArray(block.citation) ? block.citation : [block.citation];
+    for (let ci = 0; ci < citations.length; ci++) {
+      const c = citations[ci];
+      if (!isPlainObject(c)) {
+        warn(page, idx, "MedicalWebPage", `"citation[${ci}]" should be a CreativeWork object`);
+        continue;
+      }
+      if (!nonEmptyString(c.name)) {
+        warn(page, idx, "MedicalWebPage", `"citation[${ci}].name" should be a non-empty string`);
+      }
+      if (present(c.url) && !isHttpUrl(c.url)) {
+        err(
+          page, idx, "MedicalWebPage",
+          `"citation[${ci}].url" "${c.url}" is not a valid http(s) URL`,
+        );
+      }
+    }
+  }
+}
+
+// ---------- MedicalScholarlyArticle validator ----------
+//
+// MedicalScholarlyArticle is emitted on every /resources/[slug]/ page via
+// articleSchema() in lib/seo/schemas.ts.
+//
+// Required per schema.org: headline, description, url, datePublished,
+// dateModified, author. Recommended: reviewedBy, publisher (@id cross-link),
+// mainEntityOfPage.
+
+function validateMedicalScholarlyArticle(page, idx, block) {
+  // Required fields
+  validateString(page, idx, "MedicalScholarlyArticle", "headline", block.headline);
+  validateString(page, idx, "MedicalScholarlyArticle", "description", block.description);
+  validateString(page, idx, "MedicalScholarlyArticle", "url", block.url, { url: true });
+
+  // datePublished: required ISO 8601 date
+  if (!present(block.datePublished)) {
+    err(page, idx, "MedicalScholarlyArticle", `missing required "datePublished" date string`);
+  } else if (typeof block.datePublished !== "string") {
+    err(
+      page, idx, "MedicalScholarlyArticle",
+      `"datePublished" must be a string (ISO 8601 date), got ${typeof block.datePublished}`,
+    );
+  } else if (!/^\d{4}-\d{2}-\d{2}(T[\d:.Z+-]+)?$/.test(block.datePublished)) {
+    err(
+      page, idx, "MedicalScholarlyArticle",
+      `"datePublished" "${block.datePublished}" does not match ISO 8601`,
+    );
+  }
+
+  // dateModified: required ISO 8601 date
+  if (!present(block.dateModified)) {
+    err(page, idx, "MedicalScholarlyArticle", `missing required "dateModified" date string`);
+  } else if (typeof block.dateModified !== "string") {
+    err(
+      page, idx, "MedicalScholarlyArticle",
+      `"dateModified" must be a string (ISO 8601 date), got ${typeof block.dateModified}`,
+    );
+  } else if (!/^\d{4}-\d{2}-\d{2}(T[\d:.Z+-]+)?$/.test(block.dateModified)) {
+    err(
+      page, idx, "MedicalScholarlyArticle",
+      `"dateModified" "${block.dateModified}" does not match ISO 8601`,
+    );
+  }
+
+  // author: required — Physician or Person with name
+  if (!present(block.author)) {
+    err(page, idx, "MedicalScholarlyArticle", `missing required "author" object`);
+  } else if (!isPlainObject(block.author)) {
+    err(page, idx, "MedicalScholarlyArticle", `"author" must be an object`);
+  } else {
+    if (!nonEmptyString(block.author.name)) {
+      err(page, idx, "MedicalScholarlyArticle", `"author.name" is required`);
+    }
+  }
+
+  // reviewedBy: recommended for medical content
+  if (!present(block.reviewedBy)) {
+    warn(
+      page, idx, "MedicalScholarlyArticle",
+      `"reviewedBy" is recommended for medical scholarly articles — add a Physician reviewer`,
+    );
+  } else if (isPlainObject(block.reviewedBy) && !nonEmptyString(block.reviewedBy.name)) {
+    warn(page, idx, "MedicalScholarlyArticle", `"reviewedBy.name" should be a non-empty string`);
+  }
+
+  // publisher: recommended — @id cross-link to #business anchor
+  if (!present(block.publisher)) {
+    warn(
+      page, idx, "MedicalScholarlyArticle",
+      `"publisher" is recommended — add { "@id": "${SITE.url}/#business" } to link the article to your practice`,
+    );
+  } else if (isPlainObject(block.publisher) && !nonEmptyString(block.publisher["@id"])) {
+    warn(
+      page, idx, "MedicalScholarlyArticle",
+      `"publisher[\"@id\"]" is missing — set it to "${SITE.url}/#business"`,
+    );
+  }
+
+  // mainEntityOfPage: recommended — should match url
+  if (!present(block.mainEntityOfPage)) {
+    warn(
+      page, idx, "MedicalScholarlyArticle",
+      `"mainEntityOfPage" is recommended — set it to the canonical URL of the article page`,
+    );
+  } else if (typeof block.mainEntityOfPage === "string" && !isHttpUrl(block.mainEntityOfPage)) {
+    err(
+      page, idx, "MedicalScholarlyArticle",
+      `"mainEntityOfPage" "${block.mainEntityOfPage}" is not a valid http(s) URL`,
+    );
+  }
+}
+
 function validateVideoObject(page, idx, block) {
   // Required fields (Google marks these as Required for Video rich results)
   validateString(page, idx, "VideoObject", "name", block.name);
@@ -722,6 +898,8 @@ const TYPE_VALIDATORS = {
   Review: validateReview,
   WebSite: validateWebSite,
   VideoObject: validateVideoObject,
+  MedicalWebPage: validateMedicalWebPage,
+  MedicalScholarlyArticle: validateMedicalScholarlyArticle,
   // AggregateRating + Rating are nested inside other types; we still accept
   // them as top-level for future schema additions, and validate their fields.
   AggregateRating(page, idx, block) {
