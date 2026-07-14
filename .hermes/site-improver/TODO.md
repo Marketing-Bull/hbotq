@@ -7,14 +7,13 @@
 
 ## 🟢 NEXT (for the next nightly run, in priority order)
 
-**Cycle state (2026-07-13):** S-12-duration (2026-07-13) added real ISO 8601 `duration` values to all 15 VideoObject entries in `lib/data/videos.ts` and updated `videoObjectSchema()` to emit the field. Validator: 0 errors, 14 warnings (down from 35 — all VideoObject duration warnings resolved; remaining 14 are MedicalWebPage + MedicalScholarlyArticle type coverage gaps without validators).
+**Cycle state (2026-07-14):** V-MedicalWebPage+MSA (2026-07-14) added `validateMedicalWebPage()` and `validateMedicalScholarlyArticle()` to `scripts/validate-schema.mjs`, resolving all 14 remaining validator warnings. Validator: 0 errors, 0 warnings (259 blocks across 50 pages). Both validators cover the final two @types on the site without deep validation. Schema validator now covers all 10 @types emitted across the site.
 
 1. **S-12** — VideoObject deep validator in `scripts/validate-schema.mjs`. ✅ DONE 2026-07-12 — see Schema category checklist. Last shipped: S-12.
 2. **S-12-duration** — VideoObject `duration` ISO 8601 field. ✅ DONE 2026-07-13 — `lib/data/videos.ts` + `lib/seo/schemas.ts`. All 15 videos now carry real durations. Validator: 0 errors, 14 warnings.
+3. **V-MedicalWebPage + V-MedicalScholarlyArticle** — Deep validators for MedicalWebPage (8 blocks) and MedicalScholarlyArticle (6 blocks). ✅ DONE 2026-07-14 — `scripts/validate-schema.mjs`. Validator: 0 errors, 0 warnings (259 blocks).
 
 **Future audit-driven candidates** (no `[ ]` items; these are leads for the next cycle's audit, not commitments):
-- **V-MedicalWebPage** — Add `validateMedicalWebPage()` to `scripts/validate-schema.mjs`. 8 blocks on condition pages are emitting `MedicalWebPage` JSON-LD but the validator skips deep validation. Priority: Schema category; bounded fix (1 new validator function).
-- **V-MedicalScholarlyArticle** — Add `validateMedicalScholarlyArticle()` to `scripts/validate-schema.mjs`. 6 blocks on resources pages emit `MedicalScholarlyArticle` with no validator. Same shape as MedicalWebPage gap.
 - **T-13-GTM** — `404 → CTA` recovery funnel: GTM-side: configure a funnel trigger that pairs `not_found_view` with `404_page/cta_click` events to measure "of users who hit a broken page, how many clicked a recovery CTA". No code change required once T-12 is in place.
 - **T-13a** — Track copy-to-clipboard for the email `hello@hbotq.com` (currently no copy affordance); track outbound clicks to condition source pages (radiation injury, sudden hearing loss, etc. — useful for measuring "how many users go look up the underlying medical evidence").
 - **S-MedicalClinic** — `MedicalClinic` (more specific than `MedicalBusiness`) — Google treats `MedicalClinic` as a more specialized type with its own Knowledge Panel treatment. Currently the site uses `MedicalBusiness` per S-01. Worth measuring: does switching type to `MedicalClinic` change rich-result eligibility?
