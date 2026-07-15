@@ -53,6 +53,7 @@ export async function sendLeadToGhl(
     source: data.source,
     received_at: meta.receivedAt,
     submitted_at: meta.submittedAt,
+    ip: meta.ip,
   };
 
   try {
