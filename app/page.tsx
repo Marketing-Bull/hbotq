@@ -10,6 +10,9 @@ import { PhysiciansSection } from "@/components/sections/physicians-section";
 import { PhoneCta } from "@/components/sections/phone-cta";
 import { ConsultationForm } from "@/components/forms/consultation-form";
 import { CtaBanner } from "@/components/sections/cta-banner";
+import { JsonLd } from "@/components/seo/json-ld";
+import { reviewSchema } from "@/lib/seo/schemas";
+import { testimonials } from "@/lib/data/testimonials";
 import { buildMetadata } from "@/lib/seo/metadata";
 
 export const metadata = buildMetadata({
@@ -25,6 +28,7 @@ export const dynamic = "force-static";
 export default function HomePage() {
   return (
     <>
+      <JsonLd data={testimonials.map(reviewSchema)} />
       <Hero
         eyebrow="Hyperbaric Medicine in Queens"
         title="Healing that begins with oxygen."

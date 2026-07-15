@@ -61,9 +61,12 @@ docker compose up
 
 | Variable             | Required | Purpose                                                                 |
 | -------------------- | -------- | ----------------------------------------------------------------------- |
-| `RESEND_API_KEY`     | Prod     | Sends consultation-form leads. In dev with the key unset, the API logs the lead instead and returns 200. |
-| `LEAD_TO_EMAIL`      | No       | Where leads go. Defaults to `hello@hbotq.com`.                          |
+| `RESEND_API_KEY`     | Prod\*   | Emails consultation-form leads to the inbox. In dev, when no channel is configured the API logs the lead and returns 200. |
+| `LEAD_TO_EMAIL`      | No       | Where lead emails go. Defaults to `hello@hbotq.com`.                    |
+| `GHL_WEBHOOK_URL`    | Prod\*   | GoHighLevel inbound-webhook URL; each lead is POSTed here as JSON in parallel with the email. Unset = CRM push disabled. |
 | `NEXT_PUBLIC_GTM_ID` | No       | Google Tag Manager container ID (e.g. `GTM-XXXXXXX`). Loader is a no-op when unset, which is convenient locally. |
+
+\* The consultation form delivers to **both** Resend (email) and the GHL webhook (CRM), independently — a lead succeeds as long as *either* channel accepts it. Production needs **at least one** configured; set both for redundancy.
 
 The Resend sending domain (`hbotq.com`) needs DKIM/SPF verified in the Resend dashboard before production launch.
 
