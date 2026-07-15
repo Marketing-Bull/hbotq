@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
 import { consultationSchema } from "@/lib/validation/consultation";
-import { getResend } from "@/lib/email/resend";
-import { ConsultationLeadEmail } from "@/lib/email/templates/consultation-lead";
-import { site } from "@/lib/data/site";
+import { sendLeadEmail } from "@/lib/email/resend";
+import { sendLeadToGhl } from "@/lib/integrations/ghl";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -65,47 +64,45 @@ export async function POST(req: Request) {
   const data = parsed.data;
   ipHits.set(ip, now);
 
-  const resend = getResend();
-  const to = process.env.LEAD_TO_EMAIL || site.leadEmail;
+  const submittedAt = new Date();
+  const receivedAt = submittedAt.toLocaleString("en-US", {
+    timeZone: "America/New_York",
+  });
 
-  if (!resend) {
-    // In dev without RESEND_API_KEY, log the lead and return success so the
-    // funnel can be tested end-to-end. Production must have the key set.
-    if (process.env.NODE_ENV !== "production") {
-      console.warn("[consultation] RESEND_API_KEY not set — logging lead:", {
-        ...data,
-        ip,
-      });
-      return NextResponse.json({ ok: true });
-    }
-    return NextResponse.json(
-      { ok: false, error: "Email service is not configured." },
-      { status: 500 },
-    );
+  // Deliver to both channels independently and in parallel: the Resend email
+  // (notification inbox) and the GoHighLevel webhook (CRM). A lead must not be
+  // lost if one channel is down, so we succeed as long as either one delivered.
+  const [email, ghl] = await Promise.all([
+    sendLeadEmail(data, receivedAt),
+    sendLeadToGhl(data, {
+      receivedAt,
+      submittedAt: submittedAt.toISOString(),
+      ip,
+    }),
+  ]);
+
+  if (email === "sent" || ghl === "sent") {
+    return NextResponse.json({ ok: true });
   }
 
-  try {
-    await resend.emails.send({
-      from: site.fromEmail,
-      to: [to],
-      replyTo: data.email,
-      subject: `New consultation request — ${data.name} (${data.condition})`,
-      react: ConsultationLeadEmail({
-        data,
-        receivedAt: new Date().toLocaleString("en-US", {
-          timeZone: "America/New_York",
-        }),
-      }),
-    });
-  } catch (err) {
-    console.error("[consultation] resend error:", err);
-    return NextResponse.json(
-      { ok: false, error: "Could not send your message. Please call us." },
-      { status: 500 },
+  // Nothing delivered. If neither channel is configured at all, allow the funnel
+  // to be exercised in dev; production must have at least one channel set up.
+  if (
+    email === "skipped" &&
+    ghl === "skipped" &&
+    process.env.NODE_ENV !== "production"
+  ) {
+    console.warn(
+      "[consultation] no delivery channel configured — logging lead:",
+      { ...data, ip },
     );
+    return NextResponse.json({ ok: true });
   }
 
-  return NextResponse.json({ ok: true });
+  return NextResponse.json(
+    { ok: false, error: "Could not send your message. Please call us." },
+    { status: 500 },
+  );
 }
 
 export async function GET() {
