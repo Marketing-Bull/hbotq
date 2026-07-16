@@ -7,14 +7,14 @@
 
 ## 🟢 NEXT (for the next nightly run, in priority order)
 
-**Cycle state (2026-07-15):** T-15 (2026-07-15) shipped physician profile CTA + verified-profile link tracking, closing the last untracked interactive surface on the site. After T-15, every interactive link across all pages fires a labeled dataLayer event to GTM. Validator: 0 errors, 0 warnings (259 blocks across 50 pages).
+**Cycle state (2026-07-16):** T-16 (2026-07-16) shipped wellness + resources card-grid tracking. After T-16, every interactive link across all pages fires a labeled dataLayer event to GTM, including the wellness hub and resources hub card grids. Validator: 0 errors, 0 warnings (259 blocks across 50 pages).
 
 1. **S-12** — VideoObject deep validator in `scripts/validate-schema.mjs`. ✅ DONE 2026-07-12 — see Schema category checklist. Last shipped: S-12.
 2. **S-12-duration** — VideoObject `duration` ISO 8601 field. ✅ DONE 2026-07-13 — `lib/data/videos.ts` + `lib/seo/schemas.ts`. All 15 videos now carry real durations. Validator: 0 errors, 14 warnings.
 3. **V-MedicalWebPage + V-MedicalScholarlyArticle** — Deep validators for MedicalWebPage (8 blocks) and MedicalScholarlyArticle (6 blocks). ✅ DONE 2026-07-14 — `scripts/validate-schema.mjs`. Validator: 0 errors, 0 warnings (259 blocks).
 
 **Future audit-driven candidates** (no `[ ]` items; these are leads for the next cycle's audit, not commitments):
-- **T-16** — Wellness and Resources card-grid link tracking. `app/wellness/page.tsx` and `app/resources/page.tsx` each render a grid of `<Link>` cards with no `onClick` — similar to the T-10 condition-card gap. Both pages are server-rendered; same client-component extraction pattern as T-15 would apply.
+- **T-16** — Wellness and Resources card-grid link tracking. ✅ DONE 2026-07-16 — `components/cards/wellness-card-grid.tsx` + `components/cards/resources-card-grid.tsx` extracted as `"use client"` components; each card fires `trackClick("cta_click", { location: "wellness_grid"|"resources_grid", cta_label: ... })`. Build passes; validator: 0 errors, 0 warnings. PR #41 updated.
 - **T-13-GTM** — `404 → CTA` recovery funnel: GTM-side: configure a funnel trigger that pairs `not_found_view` with `404_page/cta_click` events to measure "of users who hit a broken page, how many clicked a recovery CTA". No code change required once T-12 is in place.
 - **T-13a** — Track copy-to-clipboard for the email `hello@hbotq.com` (currently no copy affordance); track outbound clicks to condition source pages (radiation injury, sudden hearing loss, etc. — useful for measuring "how many users go look up the underlying medical evidence").
 - **S-MedicalClinic** — `MedicalClinic` (more specific than `MedicalBusiness`) — Google treats `MedicalClinic` as a more specialized type with its own Knowledge Panel treatment. Currently the site uses `MedicalBusiness` per S-01. Worth measuring: does switching type to `MedicalClinic` change rich-result eligibility?
