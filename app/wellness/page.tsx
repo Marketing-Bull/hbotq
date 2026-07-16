@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { Hero } from "@/components/sections/hero";
 import { TrustBar } from "@/components/sections/trust-bar";
 import { CtaBanner } from "@/components/sections/cta-banner";
@@ -7,6 +6,7 @@ import { wellnessUses } from "@/lib/data/wellness";
 import { medicalBusinessSchema, breadcrumbSchema } from "@/lib/seo/schemas";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { site } from "@/lib/data/site";
+import { WellnessCardGrid } from "@/components/cards/wellness-card-grid";
 
 export const metadata = buildMetadata({
   title: "HBOT for Wellness & Recovery",
@@ -49,41 +49,7 @@ export default function WellnessHubPage() {
               expectations, always.
             </p>
           </div>
-          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {wellnessUses.map((w) => (
-              <Link
-                key={w.slug}
-                href={`/wellness/${w.slug}/`}
-                className="group rounded-2xl bg-[var(--color-sand-100)] p-6 border border-[var(--color-surface-border)] transition-all duration-200 hover:-translate-y-1 hover:border-[var(--color-brand-300)] hover:shadow-lg"
-              >
-                <h3 className="font-display text-xl font-semibold text-[var(--color-ink)] group-hover:text-[var(--color-brand-500)]">
-                  {w.name}
-                </h3>
-                <p className="mt-3 text-[var(--color-ink-muted)] leading-relaxed">
-                  {w.summary}
-                </p>
-                <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--color-brand-500)]">
-                  Learn more
-                  <span
-                    aria-hidden
-                    className="transition-transform duration-200 group-hover:translate-x-1"
-                  >
-                    →
-                  </span>
-                </span>
-              </Link>
-            ))}
-          </div>
-          <p className="mt-10 max-w-3xl text-sm text-[var(--color-ink-muted)]">
-            Looking for treatment of a medical condition? See our{" "}
-            <Link
-              href="/conditions/"
-              className="font-semibold text-[var(--color-brand-500)] hover:underline"
-            >
-              FDA-approved conditions
-            </Link>
-            .
-          </p>
+          <WellnessCardGrid uses={wellnessUses} />
         </div>
       </section>
 
