@@ -10,11 +10,11 @@
 External review of PR #41 (see PR comment for full evidence). **Execute in this order** — items 1 and 2 are sequentially dependent, 3–5 are independent and can run in parallel or any order after that. One item per nightly run, in sequence:
 
 **Night 1 — CR-01 (blocking, must go first):**
-- [ ] **CR-01** — Fix `extractJsonLdBlocks()` / block-dispatch in `scripts/validate-schema.mjs` to flatten top-level JSON-LD arrays before validating.
-  - Root cause: `isPlainObject()` explicitly excludes arrays (`!Array.isArray(v)`), so when a `<script>` tag's parsed content is an array (a valid, Google-documented JSON-LD pattern — see Google's structured-data intro docs, "single script with an array of items"), the whole array is treated as one opaque block and fails with `block is not a JSON object` — the 5+ real nodes inside are **never deep-validated**.
-  - Empirically confirmed: built `main` (which currently ships array-form Review schema) and ran this branch's validator against it → 9 identical `block is not a JSON object` errors, one per page (homepage + 8 condition pages).
-  - This means the S-11 commit's justification ("the array form is invalid markup") was very likely a misdiagnosis of this validator bug, not an actual Google/schema.org requirement.
-  - Acceptance: validator flattens a top-level array into its constituent nodes and deep-validates each one individually (same per-type validators, just iterate the array first).
+- [x] **CR-01** — ✅ DONE 2026-07-29 (automated nightly run, commit `59d10f7`)
+  - Fixed `extractJsonLdBlocks()` in `scripts/validate-schema.mjs`: a top-level JSON-LD array is now spread into individual entries instead of being pushed as one opaque block.
+  - Verified: built `main` (array-form Review schema) and ran the fixed validator against the real output — the 9 `block is not a JSON object` false positives are gone (135 → 126 errors, exactly the 9 removed), and all 5 Review nodes per page are now individually detected and pass deep validation cleanly (0 errors/warnings on the Review type specifically).
+  - Also verified no regression on this branch's own individual-block pattern: still 0 errors, 0 warnings, identical to the last recorded run (T-16).
+  - Confirms the original finding: the S-11 commit's "array form is invalid markup" justification was a misdiagnosis of this validator bug, not an actual Google/schema.org requirement.
 
 **Night 2 — CR-02 (depends on CR-01):**
 - [ ] **CR-02** — Now that the validator can correctly assess both patterns, decide the Review JSON-LD pattern on its actual merits (array-in-one-script vs. individual-blocks-per-node) and make `main` and this branch consistent. Don't let them re-diverge on merge.
