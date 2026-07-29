@@ -5,6 +5,34 @@
 
 ---
 
+## 🔴 URGENT — Claude code-review findings on this PR (2026-07-29)
+
+External review of PR #41 (see PR comment for full evidence). **Execute in this order** — items 1 and 2 are sequentially dependent, 3–5 are independent and can run in parallel or any order after that. One item per nightly run, in sequence:
+
+**Night 1 — CR-01 (blocking, must go first):**
+- [ ] **CR-01** — Fix `extractJsonLdBlocks()` / block-dispatch in `scripts/validate-schema.mjs` to flatten top-level JSON-LD arrays before validating.
+  - Root cause: `isPlainObject()` explicitly excludes arrays (`!Array.isArray(v)`), so when a `<script>` tag's parsed content is an array (a valid, Google-documented JSON-LD pattern — see Google's structured-data intro docs, "single script with an array of items"), the whole array is treated as one opaque block and fails with `block is not a JSON object` — the 5+ real nodes inside are **never deep-validated**.
+  - Empirically confirmed: built `main` (which currently ships array-form Review schema) and ran this branch's validator against it → 9 identical `block is not a JSON object` errors, one per page (homepage + 8 condition pages).
+  - This means the S-11 commit's justification ("the array form is invalid markup") was very likely a misdiagnosis of this validator bug, not an actual Google/schema.org requirement.
+  - Acceptance: validator flattens a top-level array into its constituent nodes and deep-validates each one individually (same per-type validators, just iterate the array first).
+
+**Night 2 — CR-02 (depends on CR-01):**
+- [ ] **CR-02** — Now that the validator can correctly assess both patterns, decide the Review JSON-LD pattern on its actual merits (array-in-one-script vs. individual-blocks-per-node) and make `main` and this branch consistent. Don't let them re-diverge on merge.
+  - Also restore `reviewSchema()`'s own `"@id": \`${site.url}/#review-${t.id}\`` field — it was silently dropped when the function was rewritten on this branch (only `itemReviewed["@id"]`, pointing to the business, survived). The validator doesn't catch this because it only checks `itemReviewed["@id"]`, not the Review node's own `@id`.
+
+**Night 3 — CR-03:**
+- [ ] **CR-03** — Fix `components/analytics/scroll-depth.tsx`: on any page shorter than the viewport, `trackable = Math.max(fullHeight - viewport, 1)` evaluates to `1` while `scrollTop` stays `0`, so `percent` computes to `0` forever — the 25/50/75/100% thresholds can never fire, even though the user has seen the entire page. Affects every short page site-wide (component is mounted globally in root layout). Fix: when `fullHeight <= viewport`, treat the page as fully seen (fire 100%, or all thresholds, on mount/first check).
+
+**Night 4 — CR-04:**
+- [ ] **CR-04** — Delete `public/robots.txt`. It was already removed once on `main` for this exact reason (see SE-02 history below) and has reappeared on this branch. Content-wise it's less restrictive than `app/robots.ts` (no `/api/` or `/thank-you/` disallow). Confirmed via build test that `app/robots.ts` currently wins at request time in this Next.js version, so it's not live-breaking today — but it's a dead, misleading file that will keep resurfacing in audits unless removed for good.
+
+**Night 5 — CR-05:**
+- [ ] **CR-05** — Two dead-code cleanups found in the same review:
+  - `lib/utils/nav.ts` (`isNavItemActive()`) — well-implemented, correctly documented, but never imported into `Header.tsx` or `MobileNav.tsx`. Either wire it in (finish the apparent "highlight active nav item" feature) or delete it.
+  - `aggregateRatingSchema()` in `lib/seo/schemas.ts` — exported but never called anywhere. Delete it outright: if it's ever wired in alongside `medicalBusinessSchema()`'s already-nested `aggregateRating`, it reproduces the exact duplicate-`AggregateRating` bug that S-01 fixed once already.
+
+---
+
 ## 🟢 NEXT (for the next nightly run, in priority order)
 
 **Cycle state (2026-07-16):** T-16 (2026-07-16) shipped wellness + resources card-grid tracking. After T-16, every interactive link across all pages fires a labeled dataLayer event to GTM, including the wellness hub and resources hub card grids. Validator: 0 errors, 0 warnings (259 blocks across 50 pages).
