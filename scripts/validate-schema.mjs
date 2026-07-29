@@ -951,7 +951,22 @@ async function extractJsonLdBlocks(html) {
     // (none today) would need handling here.
     try {
       const parsed = JSON.parse(body);
-      out.push(parsed);
+      // A single <script type="application/ld+json"> tag may legally contain
+      // either one JSON-LD node object, or a top-level array of node objects
+      // (e.g. <JsonLd data={testimonials.map(reviewSchema)} />) — both are
+      // valid per Google's structured-data docs: a single script with an
+      // array of items is documented as equivalent to multiple script tags,
+      // provided each item is self-contained (this codebase's schema helpers
+      // already include "@context" on every node). Flatten arrays here so
+      // every entry in `out` is always a single node — otherwise the array
+      // itself is pushed as one opaque "block", fails the isPlainObject
+      // check in validateBlock(), and the real nodes inside are never
+      // deep-validated at all.
+      if (Array.isArray(parsed)) {
+        out.push(...parsed);
+      } else {
+        out.push(parsed);
+      }
     } catch (e) {
       // Stash as a string marker; caller will log it.
       out.push({ __parseError: String(e.message), __raw: body.slice(0, 200) });
