@@ -2,7 +2,7 @@ import { site } from "@/lib/data/site";
 import { physicians } from "@/lib/data/physicians";
 import { testimonials } from "@/lib/data/testimonials";
 import { conditions } from "@/lib/data/conditions";
-import type { Condition, Faq } from "@/types/content";
+import type { Condition, Faq, Testimonial } from "@/types/content";
 
 /**
  * Build the LocalBusiness areaServed entry. We support the two shapes
@@ -380,23 +380,27 @@ export function aggregateRatingSchema() {
   };
 }
 
-export function reviewSchema(
-  opts: { quote: string; author: string; conditionLabel: string; rating?: number },
-) {
+export function reviewSchema(t: Testimonial) {
   return {
     "@context": "https://schema.org",
     "@type": "Review",
+    // Own identity anchor so each Review is individually addressable in the
+    // knowledge graph — distinct from itemReviewed's @id below, which points
+    // the other direction (Review -> the business it describes). Restored
+    // after CR-02: this was dropped when reviewSchema() was rewritten to
+    // take a destructured options object instead of a Testimonial directly.
+    "@id": `${site.url}/#review-${t.id}`,
     reviewRating: {
       "@type": "Rating",
-      ratingValue: opts.rating ?? 5,
+      ratingValue: t.rating ?? 5,
       bestRating: 5,
       worstRating: 1,
     },
     author: {
       "@type": "Person",
-      name: opts.author,
+      name: t.author,
     },
-    reviewBody: opts.quote,
+    reviewBody: t.quote,
     // Cross-link to the same `#business` entity the MedicalBusiness,
     // WebSite, and Physician blocks all use — completes the inverse-
     // link loop so the Knowledge Graph can resolve each Review back

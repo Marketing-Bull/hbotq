@@ -28,9 +28,7 @@ export const dynamic = "force-static";
 export default function HomePage() {
   return (
     <>
-      {testimonials.map((t) => (
-        <JsonLd key={t.id} data={reviewSchema(t)} />
-      ))}
+      <JsonLd data={testimonials.map(reviewSchema)} />
       <Hero
         eyebrow="Hyperbaric Medicine in Queens"
         title="Healing that begins with oxygen."
