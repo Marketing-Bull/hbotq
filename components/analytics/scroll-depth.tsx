@@ -40,8 +40,15 @@ export function ScrollDepth() {
       const scrollTop = window.scrollY || doc.scrollTop || 0;
       const viewport = window.innerHeight || doc.clientHeight || 0;
       const fullHeight = doc.scrollHeight || 0;
-      const trackable = Math.max(fullHeight - viewport, 1);
-      const raw = (scrollTop / trackable) * 100;
+      const trackableHeight = fullHeight - viewport;
+      // A page that fits entirely within the viewport has nothing to
+      // scroll — the user has seen 100% of the content as soon as it
+      // renders. Previously this clamped `trackable` to a minimum of 1,
+      // which forced `raw` to 0 (scrollTop is always 0 on an unscrollable
+      // page) and meant short pages could never fire ANY threshold, even
+      // though the user saw the whole page.
+      if (trackableHeight <= 0) return 100;
+      const raw = (scrollTop / trackableHeight) * 100;
       // Clamp to [0, 100] — overscroll on iOS can push the ratio past 100.
       return Math.min(100, Math.max(0, Math.round(raw)));
     };
