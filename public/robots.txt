@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://hbotq.com/sitemap.xml
