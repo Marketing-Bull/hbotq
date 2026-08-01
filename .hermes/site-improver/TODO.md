@@ -30,7 +30,10 @@ External review of PR #41 (see PR comment for full evidence). **Execute in this 
   - `npm run build` passes; eslint clean.
 
 **Night 4 — CR-04:**
-- [ ] **CR-04** — Delete `public/robots.txt`. It was already removed once on `main` for this exact reason (see SE-02 history below) and has reappeared on this branch. Content-wise it's less restrictive than `app/robots.ts` (no `/api/` or `/thank-you/` disallow). Confirmed via build test that `app/robots.ts` currently wins at request time in this Next.js version, so it's not live-breaking today — but it's a dead, misleading file that will keep resurfacing in audits unless removed for good.
+- [x] **CR-04** — ✅ DONE 2026-08-01 (automated nightly run, commit `7916056`)
+  - Deleted `public/robots.txt` (confirmed no code referenced it — only historical TODO/COMPLETED notes did).
+  - Verified: built this branch after deletion, started the production server, and confirmed the actually-served `/robots.txt` is unchanged — still the correct, restrictive content from `app/robots.ts` (`Disallow: /api/`, `Disallow: /thank-you/`, `Host` header). Only the generated `.next` build artifact remains on disk, not a static source file.
+  - `npm run build` passes. The 2 pre-existing lint issues noted in the original review are unrelated (a static text file deletion can't affect them).
 
 **Night 5 — CR-05:**
 - [ ] **CR-05** — Two dead-code cleanups found in the same review:
