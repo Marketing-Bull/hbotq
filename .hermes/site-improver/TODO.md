@@ -36,9 +36,12 @@ External review of PR #41 (see PR comment for full evidence). **Execute in this 
   - `npm run build` passes. The 2 pre-existing lint issues noted in the original review are unrelated (a static text file deletion can't affect them).
 
 **Night 5 — CR-05:**
-- [ ] **CR-05** — Two dead-code cleanups found in the same review:
-  - `lib/utils/nav.ts` (`isNavItemActive()`) — well-implemented, correctly documented, but never imported into `Header.tsx` or `MobileNav.tsx`. Either wire it in (finish the apparent "highlight active nav item" feature) or delete it.
-  - `aggregateRatingSchema()` in `lib/seo/schemas.ts` — exported but never called anywhere. Delete it outright: if it's ever wired in alongside `medicalBusinessSchema()`'s already-nested `aggregateRating`, it reproduces the exact duplicate-`AggregateRating` bug that S-01 fixed once already.
+- [x] **CR-05** — ✅ DONE 2026-08-02 (automated nightly run, commit `1e8b578`)
+  - Deleted `lib/utils/nav.ts` (`isNavItemActive()`) outright rather than wiring it in — building a new "highlight active nav item" UI is a design decision outside the scope of an automated dead-code cleanup, and no visual treatment for it exists anywhere to wire it to. File contained nothing else; the now-empty `lib/utils/` directory was removed too.
+  - Deleted `aggregateRatingSchema()` from `lib/seo/schemas.ts` outright (never called anywhere; would have reproduced the duplicate-`AggregateRating` bug S-01 already fixed if it had ever been wired in).
+  - Verified: grepped for references to both symbols before removing (none in code); `npm run build` passes; validator reports 0 errors/0 warnings (no regression); confirmed exactly 1 `AggregateRating` block per page in real build output (no duplicate-emission risk); eslint clean.
+
+**All 5 items (CR-01 through CR-05) are now complete as of 2026-08-02.** See PR #41 comments for the original findings and each night's verification evidence, plus this file's history above for the automated fix-schedule's full record.
 
 ---
 
