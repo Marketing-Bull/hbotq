@@ -364,22 +364,6 @@ export function breadcrumbSchema(
   };
 }
 
-export function aggregateRatingSchema() {
-  const count = testimonials.length;
-  if (count === 0) return null;
-  const avg =
-    testimonials.reduce((sum, t) => sum + (t.rating ?? 0), 0) / count;
-  return {
-    "@context": "https://schema.org",
-    "@type": "AggregateRating",
-    // Google Rich Results requires ratingValue to be a Number, not a string.
-    ratingValue: Math.round(avg * 10) / 10,
-    reviewCount: count,
-    bestRating: 5,
-    worstRating: 1,
-  };
-}
-
 export function reviewSchema(t: Testimonial) {
   return {
     "@context": "https://schema.org",
