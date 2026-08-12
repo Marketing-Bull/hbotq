@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { usePrefersReducedMotion } from "./use-reduced-motion";
 
 interface RevealProps {
   children: ReactNode;
@@ -16,23 +17,22 @@ export function Reveal({
   variant = "up",
 }: RevealProps) {
   const ref = useRef<HTMLDivElement | null>(null);
-  const [visible, setVisible] = useState(false);
+  const prefersReducedMotion = usePrefersReducedMotion();
+  const [inView, setInView] = useState(false);
 
   useEffect(() => {
+    // Reduced motion shows the content immediately (see `visible` below), so
+    // there is nothing to observe.
+    if (prefersReducedMotion) return;
+
     const node = ref.current;
     if (!node) return;
-
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (mediaQuery.matches) {
-      setVisible(true);
-      return;
-    }
 
     const obs = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
           if (entry.isIntersecting) {
-            setVisible(true);
+            setInView(true);
             obs.disconnect();
           }
         }
@@ -41,7 +41,9 @@ export function Reveal({
     );
     obs.observe(node);
     return () => obs.disconnect();
-  }, []);
+  }, [prefersReducedMotion]);
+
+  const visible = prefersReducedMotion || inView;
 
   const transform = (() => {
     if (visible) return "translate3d(0,0,0) scale(1)";

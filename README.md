@@ -159,13 +159,21 @@ Tailwind v4 tokens are defined in `app/globals.css`:
 ## Scripts
 
 ```bash
-npm run dev      # next dev (Turbopack)
-npm run build    # next build (production, with TS check)
-npm run start    # next start (production server)
-npm run lint     # eslint
+npm run dev              # next dev (Turbopack)
+npm run build            # next build (production, with TS check)
+npm run start            # next start (production server)
+npm run lint             # eslint
+npm run validate:schema  # validate JSON-LD in the build output (needs a build first)
+npm run validate         # build + validate:schema
 ```
 
-The CI build is just `npm run build`; that runs TypeScript and the production bundle and is what Vercel runs on each push to `main`.
+### CI
+
+`.github/workflows/ci.yml` runs **lint → build → validate:schema** on every pull request and every push to `main`. `next build` also type-checks, so that job covers lint, types, build breaks, and structured-data regressions together. `.github/workflows/codeql-analysis.yml` runs the security scan separately.
+
+Vercel also builds every PR as a preview deploy, but that reports *after* the fact — the CI workflow is what gates the merge.
+
+> To make CI blocking rather than advisory, mark **“Lint, build & validate schema”** as a required status check in GitHub → Settings → Branches → branch protection for `main`. That’s a one-time repo-settings change and can’t be done from code.
 
 ---
 
@@ -183,6 +191,51 @@ The CI build is just `npm run build`; that runs TypeScript and the production bu
 6. Spot-check top traffic URLs from GSC against the redirects in `next.config.ts`
 7. Update the Google Business Profile website URL (see also: the GBP name/phone reconciliation noted in the SEO snapshot)
 8. Keep WordPress live for ~7 days as a rollback path
+
+---
+
+## Pending manual tasks
+
+These are **outside the codebase** — they can’t be done in a PR and need someone with access to the relevant dashboard. Delete each item once it’s done.
+
+### Vercel — add the GTM container ID
+
+`NEXT_PUBLIC_GTM_ID` is not yet set in production, so Google Tag Manager currently no-ops on the live site and none of the tracking events reach GTM.
+
+- Go to <https://vercel.com/marketing-bull/hbotq/settings/environment-variables>
+- Add `NEXT_PUBLIC_GTM_ID` = `GTM-NJLGQSS`, scoped to **Production** (and **Preview** if you want tags firing on branch previews)
+- Redeploy, or let it apply on the next merge to `main`
+
+No secret-handling concerns here — the `NEXT_PUBLIC_` prefix means this value is client-visible by design.
+
+### GoHighLevel — finish and publish the intake workflow
+
+The site posts every consultation lead to the GHL inbound webhook and this is confirmed working end-to-end, but a webhook *receiving* a payload is not the same as a usable CRM contact. The workflow behind the trigger still needs to be finished:
+
+- Map the captured sample onto a **Create/Update Contact** action, de-duplicating by email (fall back to phone). The payload fields are `first_name`, `last_name`, `name`, `email`, `phone`, `condition`, `condition_label`, `preferred_contact`, `message`, `source`, `received_at`, `submitted_at`, `ip` — see `lib/integrations/ghl.ts` for the authoritative shape
+- Add tags (e.g. a constant `website-lead`, plus one from `source` and one from `condition_label`) and put `message` into a contact Note so intake staff see the context
+- Add an internal notification so new leads get seen promptly
+- **Publish/activate the workflow** — until then, leads arrive but aren’t filed
+
+### GoHighLevel — delete the two test contacts
+
+Verification runs created two contacts that should not stay in the CRM:
+
+- The raw webhook test — **“Webhook Test”** (`webhook-test@hbotq.com`, source `webhook-test`)
+- The live end-to-end form test — **“Production Smoke Test”** (`smoke-test@hbotq.com`, source `production-smoke-test`)
+
+### GitHub — delete merged/stale branches
+
+All of these are fully merged or superseded and safe to delete (the repo’s git proxy blocks branch deletion from the CLI, so use the GitHub branches UI):
+
+- `improve-credibility-conversion` — merged in PR #41
+- `claude/happy-darwin-g7qtl7` — merged in PR #43
+- `design/wow-background-refresh` — merged in PR #42
+- `claude/stoic-gauss-IKcno` — abandoned; its conditions-submenu idea was rebuilt against current `main` and merged separately
+
+### Claude Code — delete the finished nightly Routine
+
+A scheduled Routine named **“HBOTQ PR #41 code-review fixes (CR-01..CR-05)”** was created to work through the PR #41 code-review findings one per night. **All five items are done and merged**, so it now fires nightly with nothing to do. Delete it from the Routines UI — it can’t remove itself.
 
 ---
 
