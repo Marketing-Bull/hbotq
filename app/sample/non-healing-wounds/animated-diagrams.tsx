@@ -1,22 +1,22 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePrefersReducedMotion } from "./use-reduced-motion";
 
 function useReveal<T extends Element>() {
   const ref = useRef<T | null>(null);
-  const [visible, setVisible] = useState(false);
+  const prefersReducedMotion = usePrefersReducedMotion();
+  const [inView, setInView] = useState(false);
   useEffect(() => {
+    // Reduced motion reveals everything immediately, so skip the observer.
+    if (prefersReducedMotion) return;
     const node = ref.current;
     if (!node) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setVisible(true);
-      return;
-    }
     const obs = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
           if (e.isIntersecting) {
-            setVisible(true);
+            setInView(true);
             obs.disconnect();
           }
         }
@@ -25,8 +25,8 @@ function useReveal<T extends Element>() {
     );
     obs.observe(node);
     return () => obs.disconnect();
-  }, []);
-  return { ref, visible };
+  }, [prefersReducedMotion]);
+  return { ref, visible: prefersReducedMotion || inView };
 }
 
 export function PulsingOxygenDiagram() {

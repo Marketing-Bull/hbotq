@@ -18,7 +18,10 @@ export function trackClick(
   category: "phone_call" | "mailto" | "external" | "cta_click",
   metadata?: Record<string, string | number | boolean>,
 ) {
-  return (e: React.MouseEvent<HTMLAnchorElement>) => {
+  // No event parameter: the handler only reports the click, it never inspects
+  // or intercepts the event. A zero-arg function is still assignable to
+  // onClick, so call sites are unaffected.
+  return () => {
     if (typeof window === "undefined" || !("dataLayer" in window)) return;
     (window as { dataLayer: unknown[] }).dataLayer.push({
       event: category === "cta_click" ? "cta_click" : "outbound_click",
