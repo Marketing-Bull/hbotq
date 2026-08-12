@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import type { Faq } from "@/types/content";
+import { trackEvent } from "@/lib/analytics/track";
 
 export function FaqSection({
   faqs,
@@ -30,7 +32,12 @@ export function FaqSection({
         </div>
         <ul className="divide-y divide-[var(--color-surface-border)] border-y border-[var(--color-surface-border)]">
           {faqs.map((f, idx) => (
-            <FaqRow key={f.id} faq={f} defaultOpen={idx === 0} />
+            <FaqRow
+              key={f.id}
+              faq={f}
+              defaultOpen={idx === 0}
+              sectionHeading={heading}
+            />
           ))}
         </ul>
       </div>
@@ -38,14 +45,33 @@ export function FaqSection({
   );
 }
 
-function FaqRow({ faq, defaultOpen }: { faq: Faq; defaultOpen?: boolean }) {
+function FaqRow({
+  faq,
+  defaultOpen,
+  sectionHeading,
+}: {
+  faq: Faq;
+  defaultOpen?: boolean;
+  sectionHeading: string;
+}) {
   const [open, setOpen] = useState(Boolean(defaultOpen));
+  const pathname = usePathname();
   return (
     <li>
       <button
         type="button"
         aria-expanded={open}
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => {
+          const next = !open;
+          setOpen(next);
+          trackEvent(next ? "faq_expand" : "faq_collapse", {
+            faq_id: faq.id,
+            faq_category: faq.category,
+            faq_question: faq.question,
+            faq_section_heading: sectionHeading,
+            page: pathname || "/",
+          });
+        }}
         className="w-full text-left flex items-center justify-between gap-4 py-5"
       >
         <span className="font-semibold text-[var(--color-ink)]">

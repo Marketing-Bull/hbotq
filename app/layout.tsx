@@ -3,8 +3,9 @@ import { Inter, Fraunces } from "next/font/google";
 import "./globals.css";
 import { site } from "@/lib/data/site";
 import { GTM, GTMNoScript } from "@/components/analytics/gtm";
+import { ScrollDepth } from "@/components/analytics/scroll-depth";
 import { JsonLd } from "@/components/seo/json-ld";
-import { medicalBusinessSchema } from "@/lib/seo/schemas";
+import { medicalBusinessSchema, webSiteSchema } from "@/lib/seo/schemas";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { StickyCta } from "@/components/layout/sticky-cta";
@@ -32,6 +33,9 @@ export const metadata: Metadata = {
   applicationName: site.name,
   authors: [{ name: site.legalName }],
   generator: "Next.js",
+  icons: {
+    icon: "/favicon.ico",
+  },
   openGraph: {
     siteName: site.name,
     type: "website",
@@ -52,6 +56,7 @@ export default function RootLayout({
     >
       <head>
         <GTM gtmId={gtmId} />
+        <JsonLd data={webSiteSchema()} />
         <JsonLd data={medicalBusinessSchema()} />
       </head>
       <body className="min-h-screen flex flex-col bg-white text-[var(--color-ink)]">
@@ -65,7 +70,8 @@ export default function RootLayout({
         </main>
         <Footer />
         <StickyCta />
-        <div className="h-20 lg:hidden" aria-hidden />
+        <ScrollDepth />
+        <div className="h-16 lg:hidden" aria-hidden />
       </body>
     </html>
   );

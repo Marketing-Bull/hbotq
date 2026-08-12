@@ -8,7 +8,7 @@ import { JsonLd } from "@/components/seo/json-ld";
 import { articles, getArticle } from "@/lib/data/articles";
 import { physicians } from "@/lib/data/physicians";
 import { getCondition } from "@/lib/data/conditions";
-import { articleSchema, breadcrumbSchema } from "@/lib/seo/schemas";
+import { medicalBusinessSchema, articleSchema, breadcrumbSchema } from "@/lib/seo/schemas";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { site } from "@/lib/data/site";
 
@@ -54,6 +54,7 @@ export default async function ArticlePage(props: {
 
   return (
     <>
+      <JsonLd data={medicalBusinessSchema()} />
       <JsonLd
         data={articleSchema({
           title: a.title,

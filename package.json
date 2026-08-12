@@ -5,8 +5,11 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:validate": "npm run build && npm run validate:schema",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "validate:schema": "node scripts/validate-schema.mjs",
+    "validate": "npm run build:validate"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",

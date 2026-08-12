@@ -9,7 +9,7 @@ import { TikTokEmbed } from "@/components/media/tiktok-embed";
 import { JsonLd } from "@/components/seo/json-ld";
 import { wellnessUses, getWellnessUse } from "@/lib/data/wellness";
 import { tiktoks, TIKTOK_PROFILE_URL } from "@/lib/data/videos";
-import { breadcrumbSchema } from "@/lib/seo/schemas";
+import { medicalBusinessSchema, breadcrumbSchema } from "@/lib/seo/schemas";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { site } from "@/lib/data/site";
 
@@ -53,6 +53,7 @@ export default async function WellnessPage(props: {
 
   return (
     <>
+      <JsonLd data={medicalBusinessSchema()} />
       <JsonLd
         data={breadcrumbSchema([
           { name: "Home", url: `${site.url}/` },

@@ -1,9 +1,11 @@
 import { Hero } from "@/components/sections/hero";
+import { TrustBar } from "@/components/sections/trust-bar";
 import { FaqSection } from "@/components/sections/faq-section";
 import { CtaBanner } from "@/components/sections/cta-banner";
 import { JsonLd } from "@/components/seo/json-ld";
-import { faqPageSchema } from "@/lib/seo/schemas";
+import { breadcrumbSchema, faqPageSchema } from "@/lib/seo/schemas";
 import { groupFaqs, faqs } from "@/lib/data/faqs";
+import { site } from "@/lib/data/site";
 import { buildMetadata } from "@/lib/seo/metadata";
 
 export const metadata = buildMetadata({
@@ -20,6 +22,12 @@ export default function FaqsPage() {
   return (
     <>
       <JsonLd data={faqPageSchema(faqs)} />
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", url: `${site.url}/` },
+          { name: "FAQs", url: `${site.url}/faqs/` },
+        ])}
+      />
       <Hero
         variant="page"
         eyebrow="FAQ"
@@ -27,6 +35,7 @@ export default function FaqsPage() {
         subtitle="Don't see your question? Call us at the number below — we're glad to talk it through."
         primaryCta={{ label: "Book a consultation", href: "/contact-us/" }}
       />
+      <TrustBar />
       <FaqSection
         heading="General questions"
         faqs={groups.general}

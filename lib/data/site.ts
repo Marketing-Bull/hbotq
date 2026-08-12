@@ -34,6 +34,8 @@ export const site = {
     instagram: "https://www.instagram.com/queenshyperbarics/",
     youtube: "https://www.youtube.com/@hyperbaricoxygentherapyque5418",
     tiktok: "https://www.tiktok.com/@hyperbaricqueens",
+    googleBusinessProfile:
+      "https://www.google.com/maps/place/?api=1&query=Hyperbaric+Medicine+and+Wound+Treatment+Center+of+Queens+Woodside+NY",
   },
   ctas: {
     book: "Book a free consultation",

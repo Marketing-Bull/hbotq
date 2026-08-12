@@ -1,4 +1,7 @@
+"use client";
+
 import { site } from "@/lib/data/site";
+import { trackClick } from "@/lib/analytics/track";
 
 export function MapHours() {
   const addressLine = `${site.address.street}, ${site.address.city}, ${site.address.region} ${site.address.postalCode}`;
@@ -25,12 +28,14 @@ export function MapHours() {
             <div className="mt-6 flex flex-col gap-2 text-[var(--color-ink-muted)]">
               <a
                 href={`tel:${site.phoneE164}`}
+                onClick={trackClick("phone_call", { location: "map_hours" })}
                 className="text-[var(--color-brand-500)] font-semibold text-lg hover:underline"
               >
                 {site.phone}
               </a>
               <a
                 href={`mailto:${site.email}`}
+                onClick={trackClick("mailto", { location: "map_hours" })}
                 className="hover:text-[var(--color-brand-500)]"
               >
                 {site.email}

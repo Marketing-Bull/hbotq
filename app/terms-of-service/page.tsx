@@ -8,6 +8,7 @@ export const metadata = buildMetadata({
   description:
     "The terms that govern your use of the HBOTQ website, our consultation form, and the content we publish about hyperbaric oxygen therapy.",
   path: "/terms-of-service/",
+  noIndex: true,
 });
 
 export const dynamic = "force-static";

@@ -3,13 +3,14 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   consultationSchema,
   CONDITION_OPTIONS,
   type ConsultationInput,
 } from "@/lib/validation/consultation";
 import { site } from "@/lib/data/site";
+import { trackEvent } from "@/lib/analytics/track";
 
 interface Props {
   source?: string;
@@ -17,6 +18,22 @@ interface Props {
   compact?: boolean;
   heading?: string;
   subheading?: string;
+}
+
+// Fields we surface to the funnel-tracker. Excludes `consent`, `source`,
+// and `website` (honeypot) — those are not user-authored content and
+// tracking them would inflate the funnel or trip spam heuristics.
+const TRACKED_FIELDS = [
+  "name",
+  "phone",
+  "email",
+  "condition",
+  "message",
+] as const;
+type TrackedField = (typeof TRACKED_FIELDS)[number];
+
+function isTrackedField(name: string): name is TrackedField {
+  return (TRACKED_FIELDS as readonly string[]).includes(name);
 }
 
 export function ConsultationForm({
@@ -28,6 +45,9 @@ export function ConsultationForm({
 }: Props) {
   const router = useRouter();
   const [formError, setFormError] = useState<string | null>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const startedFiredRef = useRef(false);
+  const completedFiredRef = useRef<Set<TrackedField>>(new Set());
 
   const {
     register,
@@ -47,6 +67,113 @@ export function ConsultationForm({
       website: "",
     },
   });
+
+  // T-11: form-funnel tracking.
+  //
+  // The consultation form already fires `form_submit` on success (T-02), but
+  // GA4 funnels can only see the conversion if we also surface the
+  // upstream steps. Three new dataLayer events make the funnel measurable:
+  //
+  //   - `form_view`        — fires once when the form scrolls into view
+  //                          (or on mount, whichever is first). Captures
+  //                          "user saw the form" — the top of the funnel.
+  //   - `form_start`       — fires once on the first keystroke / change in
+  //                          any tracked field. Captures "user started
+  //                          filling it out" — the mid-funnel engagement.
+  //   - `form_field_complete` — fires once per field, on blur, when the
+  //                          field has a non-empty value. Captures
+  //                          per-field drop-off (which fields users
+  //                          complete vs. abandon).
+  //
+  // `form_submit` (T-02) remains the conversion event. GAs can build a
+  // complete funnel view → start → field complete → submit from these
+  // four events without any additional config.
+  useEffect(() => {
+    const el = formRef.current;
+    if (!el) return;
+
+    // `form_view` — fire-once when the form enters the viewport.
+    // IntersectionObserver is supported in every browser we ship for and
+    // has zero runtime cost when off-screen. If for any reason IO isn't
+    // available (very old browser, jsdom in tests), fall back to firing
+    // on mount.
+    let viewFired = false;
+    const fireView = () => {
+      if (viewFired) return;
+      viewFired = true;
+      trackEvent("form_view", { form_name: source });
+    };
+    if (typeof IntersectionObserver === "undefined") {
+      fireView();
+    } else {
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              fireView();
+              io.disconnect();
+              break;
+            }
+          }
+        },
+        { threshold: 0.1 },
+      );
+      io.observe(el);
+      return () => io.disconnect();
+    }
+  }, [source]);
+
+  // `form_start` — fire-once on the first interaction with a tracked
+  // field. Listening on focusin (event bubbles, so the listener on the
+  // form catches every field focus) is the cleanest way: it fires
+  // exactly once regardless of how many times the user tabs through
+  // the form, and it doesn't require a separate handler per field.
+  useEffect(() => {
+    const el = formRef.current;
+    if (!el) return;
+    const onFocusIn = () => {
+      if (startedFiredRef.current) return;
+      startedFiredRef.current = true;
+      trackEvent("form_start", { form_name: source });
+    };
+    el.addEventListener("focusin", onFocusIn);
+    return () => el.removeEventListener("focusin", onFocusIn);
+  }, [source]);
+
+  // `form_field_complete` — fire-once per tracked field, on blur, when
+  // the field has a non-empty value. Listening on `blur` (capture phase
+  // so we catch it before any per-field handler swallows it) gives us
+  // the latest value directly from the DOM via `target.value`, which
+  // is what react-hook-form has already committed to its uncontrolled
+  // input via the `register()` onChange handler. We use the capture
+  // phase (third arg `true`) so the event fires even if a per-field
+  // handler stops propagation.
+  useEffect(() => {
+    const el = formRef.current;
+    if (!el) return;
+    const onBlur = (e: FocusEvent) => {
+      const target = e.target;
+      if (
+        !(target instanceof HTMLInputElement) &&
+        !(target instanceof HTMLTextAreaElement) &&
+        !(target instanceof HTMLSelectElement)
+      ) {
+        return;
+      }
+      const name = target.name;
+      if (!isTrackedField(name)) return;
+      const value = target.value.trim();
+      if (!value) return;
+      if (completedFiredRef.current.has(name)) return;
+      completedFiredRef.current.add(name);
+      trackEvent("form_field_complete", {
+        form_name: source,
+        field_name: name,
+      });
+    };
+    el.addEventListener("blur", onBlur, true);
+    return () => el.removeEventListener("blur", onBlur, true);
+  }, [source]);
 
   const onSubmit = handleSubmit(async (data) => {
     setFormError(null);
@@ -74,6 +201,11 @@ export function ConsultationForm({
         );
         return;
       }
+      // Fire GTM conversion event
+      trackEvent("form_submit", {
+        form_name: source,
+        form_condition: data.condition ?? "",
+      });
       router.push("/thank-you/");
     } catch {
       setFormError(`Something went wrong. Please call us at ${site.phone}.`);
@@ -85,6 +217,7 @@ export function ConsultationForm({
 
   return (
     <form
+      ref={formRef}
       onSubmit={onSubmit}
       className={`bg-white rounded-2xl border border-[var(--color-surface-border)] p-6 lg:p-8 ${
         compact ? "" : "shadow-sm"

@@ -6,6 +6,9 @@ import { BenefitsGrid } from "@/components/sections/benefits-grid";
 import { RelaxBreathe } from "@/components/sections/relax-breathe";
 import { ConsultationForm } from "@/components/forms/consultation-form";
 import { CtaBanner } from "@/components/sections/cta-banner";
+import { JsonLd } from "@/components/seo/json-ld";
+import { breadcrumbSchema } from "@/lib/seo/schemas";
+import { site } from "@/lib/data/site";
 import { buildMetadata } from "@/lib/seo/metadata";
 
 export const metadata = buildMetadata({
@@ -21,6 +24,12 @@ export const dynamic = "force-static";
 export default function TreatmentPage() {
   return (
     <>
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", url: `${site.url}/` },
+          { name: "Treatment", url: `${site.url}/treatment/` },
+        ])}
+      />
       <Hero
         variant="page"
         eyebrow="The Treatment"

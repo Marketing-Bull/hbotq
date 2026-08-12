@@ -4,8 +4,10 @@ import { notFound } from "next/navigation";
 import { TrustBar } from "@/components/sections/trust-bar";
 import { CtaBanner } from "@/components/sections/cta-banner";
 import { JsonLd } from "@/components/seo/json-ld";
+import { PhysicianCtaButtons } from "@/components/cards/physician-cta-buttons";
+import { PhysicianProfileLinks } from "@/components/cards/physician-profile-links";
 import { physicians } from "@/lib/data/physicians";
-import { physicianSchema, breadcrumbSchema } from "@/lib/seo/schemas";
+import { medicalBusinessSchema, physicianSchema, breadcrumbSchema } from "@/lib/seo/schemas";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { site } from "@/lib/data/site";
 
@@ -13,18 +15,6 @@ type Params = { slug: string };
 
 export const dynamicParams = false;
 export const dynamic = "force-static";
-
-const PROFILE_LABELS: { match: string; label: string }[] = [
-  { match: "healthgrades.com", label: "Healthgrades" },
-  { match: "zocdoc.com", label: "Zocdoc" },
-  { match: "doximity.com", label: "Doximity" },
-  { match: "vitals.com", label: "Vitals" },
-  { match: "cms.gov", label: "Medicare (CMS)" },
-];
-
-function profileLabel(url: string): string {
-  return PROFILE_LABELS.find((p) => url.includes(p.match))?.label ?? "Profile";
-}
 
 function getPhysician(slug: string) {
   return physicians.find((p) => p.slug === slug);
@@ -68,6 +58,7 @@ export default async function PhysicianDetailPage(props: {
 
   return (
     <>
+      <JsonLd data={medicalBusinessSchema()} />
       <JsonLd data={physicianSchema(p)} />
       <JsonLd
         data={breadcrumbSchema([
@@ -108,20 +99,7 @@ export default async function PhysicianDetailPage(props: {
               <p className="mt-1 text-sm text-[var(--color-ink-muted)]">
                 {p.credentials.join(" · ")}
               </p>
-              <div className="mt-6 flex flex-wrap gap-3">
-                <Link
-                  href="/contact-us/"
-                  className="inline-flex items-center justify-center rounded-full bg-[var(--color-accent)] text-white px-6 py-3 font-semibold hover:bg-[var(--color-accent-hover)]"
-                >
-                  Book a consultation
-                </Link>
-                <a
-                  href={`tel:${site.phoneE164}`}
-                  className="inline-flex items-center justify-center rounded-full border border-[var(--color-brand-500)] text-[var(--color-brand-500)] px-6 py-3 font-semibold hover:bg-[var(--color-brand-50)]"
-                >
-                  Call {site.phone}
-                </a>
-              </div>
+              <PhysicianCtaButtons />
             </div>
           </div>
         </div>
@@ -216,24 +194,7 @@ export default async function PhysicianDetailPage(props: {
               </div>
             ))}
             {p.sameAs?.length ? (
-              <div className="rounded-2xl border border-[var(--color-surface-border)] bg-white p-6">
-                <h3 className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--color-ink-muted)]">
-                  Verified profiles
-                </h3>
-                <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5">
-                  {p.sameAs.map((url) => (
-                    <a
-                      key={url}
-                      href={url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm font-medium text-[var(--color-brand-500)] hover:underline"
-                    >
-                      {profileLabel(url)}
-                    </a>
-                  ))}
-                </div>
-              </div>
+              <PhysicianProfileLinks sameAs={p.sameAs} />
             ) : null}
           </aside>
         </div>

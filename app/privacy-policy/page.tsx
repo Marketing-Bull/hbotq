@@ -8,6 +8,7 @@ export const metadata = buildMetadata({
   description:
     "How HBOTQ collects, uses, and protects the information you share with us through this website.",
   path: "/privacy-policy/",
+  noIndex: true,
 });
 
 export const dynamic = "force-static";
