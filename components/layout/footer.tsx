@@ -1,8 +1,11 @@
-import Link from "next/link";
 import Image from "next/image";
 import { footerNav } from "@/lib/data/nav";
 import { site } from "@/lib/data/site";
 import { locations } from "@/lib/data/locations";
+import {
+  TrackedAnchor,
+  TrackedLink,
+} from "@/components/analytics/tracked-link";
 
 const areaLinks = [
   { label: "All areas we serve", href: "/locations/" },
@@ -18,8 +21,10 @@ export function Footer() {
       <div className="container-page py-16 lg:py-20">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-5">
           <div className="sm:col-span-2 lg:col-span-1">
-            <Link
+            <TrackedLink
               href="/"
+              location="footer"
+              ctaLabel="logo_home"
               className="inline-flex items-center"
               aria-label="HBOTQ home"
             >
@@ -30,7 +35,7 @@ export function Footer() {
                 height={78}
                 className="h-10 w-auto"
               />
-            </Link>
+            </TrackedLink>
             <p className="mt-4 text-sm leading-relaxed text-[var(--color-sand-300)]">
               {site.legalName}. Hyperbaric oxygen therapy and advanced wound
               care in Woodside, Queens.
@@ -42,18 +47,24 @@ export function Footer() {
               {site.address.postalCode}
             </address>
             <div className="mt-4 flex flex-col gap-1 text-sm">
-              <a
+              <TrackedAnchor
                 href={`tel:${site.phoneE164}`}
+                category="phone_call"
+                location="footer"
+                ctaLabel="call_cta"
                 className="text-white font-semibold hover:underline"
               >
                 {site.phone}
-              </a>
-              <a
+              </TrackedAnchor>
+              <TrackedAnchor
                 href={`mailto:${site.email}`}
+                category="mailto"
+                location="footer"
+                ctaLabel="email_cta"
                 className="text-[var(--color-sand-300)] hover:text-white"
               >
                 {site.email}
-              </a>
+              </TrackedAnchor>
             </div>
 
             {/* Social icons */}
@@ -126,10 +137,13 @@ function SocialIcon({
   icon: React.ReactNode;
 }) {
   return (
-    <a
+    <TrackedAnchor
       href={href}
       target="_blank"
       rel="noopener noreferrer"
+      category="external"
+      location="footer_social"
+      ctaLabel={label.toLowerCase()}
       aria-label={label}
       className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--color-brand-600)] text-[var(--color-sand-300)] hover:border-[var(--color-brand-400)] hover:text-white transition-colors"
     >
@@ -146,7 +160,7 @@ function SocialIcon({
       >
         {icon}
       </svg>
-    </a>
+    </TrackedAnchor>
   );
 }
 
@@ -157,6 +171,7 @@ function FooterColumn({
   title: string;
   links: readonly { label: string; href: string }[];
 }) {
+  const location = `footer_${title.toLowerCase().replace(/\s+/g, "_")}`;
   return (
     <div>
       <h3 className="text-sm font-semibold text-white uppercase tracking-wider">
@@ -165,12 +180,14 @@ function FooterColumn({
       <ul className="mt-4 space-y-2">
         {links.map((l) => (
           <li key={l.href}>
-            <Link
+            <TrackedLink
               href={l.href}
+              location={location}
+              ctaLabel={l.label}
               className="text-sm text-[var(--color-sand-300)] hover:text-white"
             >
               {l.label}
-            </Link>
+            </TrackedLink>
           </li>
         ))}
       </ul>
