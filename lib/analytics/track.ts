@@ -1,4 +1,21 @@
 /**
+ * Push one event onto the GTM dataLayer, creating the queue if it does not
+ * exist yet.
+ *
+ * The GTM container loads with `strategy="afterInteractive"`, so it can define
+ * `window.dataLayer` *after* React has hydrated. Any event fired from a mount
+ * effect — `form_view`, `not_found_view`, the initial `scroll_depth` check on a
+ * short page — therefore races the container script. Bailing out when the array
+ * is missing dropped exactly those events; creating it here queues them instead,
+ * and GTM replays whatever is already in the array when it loads.
+ */
+function pushToDataLayer(payload: Record<string, unknown>) {
+  if (typeof window === "undefined") return;
+  const w = window as unknown as { dataLayer?: unknown[] };
+  (w.dataLayer ??= []).push(payload);
+}
+
+/**
  * GTM outbound link click tracking.
  * Fire a dataLayer event when users click tel:, mailto:, or external
  * (social / GBP / other off-site) links.
@@ -22,8 +39,7 @@ export function trackClick(
   // or intercepts the event. A zero-arg function is still assignable to
   // onClick, so call sites are unaffected.
   return () => {
-    if (typeof window === "undefined" || !("dataLayer" in window)) return;
-    (window as { dataLayer: unknown[] }).dataLayer.push({
+    pushToDataLayer({
       event: category === "cta_click" ? "cta_click" : "outbound_click",
       outbound_category: category,
       ...metadata,
@@ -39,8 +55,7 @@ export function trackEvent(
   eventName: string,
   metadata?: Record<string, string | number | boolean>,
 ) {
-  if (typeof window === "undefined" || !("dataLayer" in window)) return;
-  (window as { dataLayer: unknown[] }).dataLayer.push({
+  pushToDataLayer({
     event: eventName,
     ...metadata,
   });
