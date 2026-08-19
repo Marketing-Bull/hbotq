@@ -11,6 +11,7 @@ import {
 } from "@/lib/validation/consultation";
 import { site } from "@/lib/data/site";
 import { trackEvent } from "@/lib/analytics/track";
+import { getAttribution } from "@/lib/analytics/attribution";
 
 interface Props {
   source?: string;
@@ -182,7 +183,9 @@ export function ConsultationForm({
       const res = await fetch("/api/consultation/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        // Read attribution at submit time rather than at mount: the visitor
+        // may have landed on an ad URL in another tab of the same session.
+        body: JSON.stringify({ ...data, attribution: getAttribution() }),
       });
       const body = (await res.json().catch(() => ({}))) as {
         ok?: boolean;
@@ -202,9 +205,14 @@ export function ConsultationForm({
         return;
       }
       // Fire GTM conversion event
+      const attribution = getAttribution();
       trackEvent("form_submit", {
         form_name: source,
         form_condition: data.condition ?? "",
+        utm_source: attribution.utm_source ?? "",
+        utm_medium: attribution.utm_medium ?? "",
+        utm_campaign: attribution.utm_campaign ?? "",
+        has_gclid: Boolean(attribution.gclid),
       });
       router.push("/thank-you/");
     } catch {
@@ -339,7 +347,6 @@ export function ConsultationForm({
           type="checkbox"
           {...register("consent")}
           className="mt-1"
-          value="true"
         />
         <span>
           I’d like HBOTQ to contact me about my consultation. I understand

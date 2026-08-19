@@ -16,6 +16,19 @@ interface Props {
 }
 
 export function ConsultationLeadEmail({ data, receivedAt }: Props) {
+  // Only render rows we actually have — a direct visitor produces none of
+  // these, and empty "utm_source:" lines would be noise for intake staff.
+  const campaign = Object.entries({
+    "UTM source": data.attribution?.utm_source,
+    "UTM medium": data.attribution?.utm_medium,
+    "UTM campaign": data.attribution?.utm_campaign,
+    "UTM term": data.attribution?.utm_term,
+    "UTM content": data.attribution?.utm_content,
+    "Google click ID": data.attribution?.gclid,
+    "Landing page": data.attribution?.landing_page,
+    Referrer: data.attribution?.referrer,
+  }).filter((entry): entry is [string, string] => Boolean(entry[1]));
+
   return (
     <Html>
       <Head />
@@ -35,6 +48,15 @@ export function ConsultationLeadEmail({ data, receivedAt }: Props) {
             <Row label="Preferred contact" value={data.preferredContact} />
             <Row label="Source page" value={data.source ?? "unknown"} />
           </Section>
+
+          {campaign.length > 0 ? (
+            <Section style={card}>
+              <Text style={label}>Campaign attribution</Text>
+              {campaign.map(([k, v]) => (
+                <Row key={k} label={k} value={v} />
+              ))}
+            </Section>
+          ) : null}
 
           {data.message ? (
             <Section style={card}>

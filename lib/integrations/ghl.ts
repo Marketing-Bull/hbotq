@@ -39,6 +39,28 @@ export async function sendLeadToGhl(
     CONDITION_OPTIONS.find((o) => o.value === data.condition)?.label ??
     data.condition;
 
+  // Flattened rather than nested: GoHighLevel's workflow builder maps top-level
+  // payload keys onto contact/custom fields, and will not reach into an object.
+  // Every attribution key is always present (empty string when unknown) so the
+  // sample GHL captures when building the workflow shows the full field list —
+  // a key that is absent from the sample cannot be mapped later.
+  const attribution = data.attribution ?? {};
+  const attributionFields = {
+    utm_source: attribution.utm_source ?? "",
+    utm_medium: attribution.utm_medium ?? "",
+    utm_campaign: attribution.utm_campaign ?? "",
+    utm_term: attribution.utm_term ?? "",
+    utm_content: attribution.utm_content ?? "",
+    gclid: attribution.gclid ?? "",
+    gbraid: attribution.gbraid ?? "",
+    wbraid: attribution.wbraid ?? "",
+    fbclid: attribution.fbclid ?? "",
+    msclkid: attribution.msclkid ?? "",
+    landing_page: attribution.landing_page ?? "",
+    referrer: attribution.referrer ?? "",
+    first_seen_at: attribution.first_seen_at ?? "",
+  };
+
   // Keys chosen to map cleanly onto GHL contact fields in the workflow builder.
   const payload = {
     first_name: firstName,
@@ -54,6 +76,7 @@ export async function sendLeadToGhl(
     received_at: meta.receivedAt,
     submitted_at: meta.submittedAt,
     ip: meta.ip,
+    ...attributionFields,
   };
 
   try {

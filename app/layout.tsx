@@ -3,6 +3,7 @@ import { Inter, Fraunces } from "next/font/google";
 import "./globals.css";
 import { site } from "@/lib/data/site";
 import { GTM, GTMNoScript } from "@/components/analytics/gtm";
+import { AttributionCapture } from "@/components/analytics/attribution-capture";
 import { ScrollDepth } from "@/components/analytics/scroll-depth";
 import { JsonLd } from "@/components/seo/json-ld";
 import { medicalBusinessSchema, webSiteSchema } from "@/lib/seo/schemas";
@@ -72,6 +73,7 @@ export default function RootLayout({
         <Footer />
         <StickyCta />
         <ScrollDepth />
+        <AttributionCapture />
         <div className="h-16 lg:hidden" aria-hidden />
       </body>
     </html>
