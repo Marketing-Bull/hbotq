@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { primaryNav } from "@/lib/data/nav";
 import { site } from "@/lib/data/site";
+import { trackClick } from "@/lib/analytics/track";
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);
@@ -102,7 +103,13 @@ export function MobileNav() {
                       <li>
                         <Link
                           href={item.href}
-                          onClick={close}
+                          onClick={() => {
+                            trackClick("cta_click", {
+                              location: "mobile_nav_submenu",
+                              cta_label: `${item.label}_view_all`,
+                            })();
+                            close();
+                          }}
                           className="block py-2 pl-4 text-base font-semibold text-[var(--color-brand-500)]"
                         >
                           View all conditions →
@@ -112,7 +119,13 @@ export function MobileNav() {
                         <li key={child.href}>
                           <Link
                             href={child.href}
-                            onClick={close}
+                            onClick={() => {
+                              trackClick("cta_click", {
+                                location: "mobile_nav_submenu",
+                                cta_label: child.label,
+                              })();
+                              close();
+                            }}
                             className="block py-2 pl-4 text-base text-[var(--color-ink-muted)] hover:text-[var(--color-brand-500)]"
                           >
                             {child.label}
@@ -126,7 +139,13 @@ export function MobileNav() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  onClick={close}
+                  onClick={() => {
+                    trackClick("cta_click", {
+                      location: "mobile_nav",
+                      cta_label: item.label,
+                    })();
+                    close();
+                  }}
                   className="py-3 text-lg font-medium border-b border-[var(--color-surface-border)]"
                 >
                   {item.label}
@@ -137,13 +156,25 @@ export function MobileNav() {
               <a
                 href={`tel:${site.phoneE164}`}
                 className="inline-flex items-center justify-center rounded-full bg-[var(--color-brand-500)] text-white px-5 py-3 font-semibold"
-                onClick={close}
+                onClick={() => {
+                  trackClick("phone_call", {
+                    location: "mobile_nav",
+                    cta_label: "call_cta",
+                  })();
+                  close();
+                }}
               >
                 Call {site.phone}
               </a>
               <Link
                 href="/contact-us/"
-                onClick={close}
+                onClick={() => {
+                  trackClick("cta_click", {
+                    location: "mobile_nav",
+                    cta_label: "book_consultation",
+                  })();
+                  close();
+                }}
                 className="inline-flex items-center justify-center rounded-full bg-[var(--color-accent)] text-white px-5 py-3 font-semibold"
               >
                 Book consultation

@@ -1,5 +1,8 @@
-import Link from "next/link";
 import { site } from "@/lib/data/site";
+import {
+  TrackedAnchor,
+  TrackedLink,
+} from "@/components/analytics/tracked-link";
 
 export function StickyCta() {
   return (
@@ -8,8 +11,11 @@ export function StickyCta() {
         Free consultation · Medicare &amp; major insurers accepted
       </p>
       <div className="container-page pb-2 pt-1.5 grid grid-cols-2 gap-2">
-        <a
+        <TrackedAnchor
           href={`tel:${site.phoneE164}`}
+          category="phone_call"
+          location="sticky_cta"
+          ctaLabel="call_cta"
           className="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--color-brand-500)] text-white px-4 py-3 text-sm font-semibold active:scale-[0.98] transition-transform"
           aria-label={`Call ${site.phone}`}
         >
@@ -23,9 +29,11 @@ export function StickyCta() {
             <path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .58 3.6 1 1 0 0 1-.24 1z" />
           </svg>
           Call
-        </a>
-        <Link
+        </TrackedAnchor>
+        <TrackedLink
           href="/contact-us/"
+          location="sticky_cta"
+          ctaLabel="book_free_consult"
           className="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--color-accent)] text-white px-4 py-3 text-sm font-semibold active:scale-[0.98] transition-transform"
         >
           <svg
@@ -41,7 +49,7 @@ export function StickyCta() {
             <path d="M3 9h18M8 3v3m8-3v3" strokeLinecap="round" />
           </svg>
           Book free consult
-        </Link>
+        </TrackedLink>
       </div>
     </div>
   );

@@ -5,6 +5,33 @@
 
 ---
 
+## 🔵 REPO REVIEW — 2026-08-18 (branch `claude/repo-review-mvmrjf`)
+
+A fresh read of the repo after the PR #45 merge. Every formal checklist item
+below was already done, so this pass audited the merged state of `main` itself
+rather than picking a pending item. Three findings, all fixed on this branch:
+
+- [x] **R-01** — App icon file conventions were suppressed ✅ DONE 2026-08-18
+  - `app/layout.tsx` set `metadata.icons = { icon: "/favicon.ico" }`, which takes precedence over the `app/` file conventions. Built `<head>` carried **two** links to the same `favicon.ico` and **no** `apple-touch-icon`; `app/icon.png` and `app/apple-icon.png` were never emitted, so an iOS home-screen save fell back to a screenshot of the page.
+  - Removed the `icons` key (the Next docs recommend the file-based API precisely so config and files can't drift). Deleted 22 stray binaries — `icon 2.png`..`icon 12.png`, `apple-icon 2.png`..`apple-icon 12.png` (~160KB): the space in the name never matched the `icon<N>` convention, all 11 copies per set are byte-identical, and the `icon N.png` set is a 59x78 wordmark crop, not a square icon.
+  - Verified in build output: one `favicon.ico` link, one `/icon.png` link, one `/apple-icon.png` apple-touch-icon.
+
+- [x] **R-02** — Every dataLayer event was being dropped ✅ DONE 2026-08-18
+  - `trackClick()`/`trackEvent()` returned early when `window.dataLayer` did not exist. GTM loads `afterInteractive`, so it defines `dataLayer` *after* hydration — mount-effect events (`form_view`, `not_found_view`, the initial `scroll_depth` check the CR-03 fix added) raced the container script. And with `NEXT_PUBLIC_GTM_ID` still unset in production (see README → Pending manual tasks), `dataLayer` never appears at all, so **no** event on the site was recorded, including everything T-01..T-16 instrumented.
+  - Both helpers now push through `pushToDataLayer()`, which creates the queue when missing; GTM replays what is already in the array when it loads (the standard `w[l]=w[l]||[]` contract).
+  - RED/GREEN with headless Chromium on `/contact-us/` (a page this change does not otherwise touch): before — `dataLayer` undefined, 0 events on load, map-hours phone click pushed nothing; after — `form_view` on load, `scroll_depth` 25/50 on scroll, `outbound_click`/`phone_call`/`map_hours` on the same click.
+
+- [x] **R-03** — Conversion tracking lost in the PR #41 merge ✅ DONE 2026-08-18
+  - The T-01/T-03/T-06/T-14 instrumentation never reached `main`: the merge kept main's design-refresh versions of the components those items had edited. On `main`, the header phone + "Book consultation", the entire primary nav and conditions submenu, the mobile drawer, the footer phone/email/social/columns, the hero CTAs, the mobile sticky CTA, `CtaBanner` and `PhoneCta` fired **no** dataLayer event. `/lp/` (paid traffic) and `/thank-you/` were never instrumented at all.
+  - New `components/analytics/tracked-link.tsx`: `TrackedLink` (internal routes → `cta_click`) and `TrackedAnchor` (tel:/mailto:/off-site → `outbound_click` + category). Wrapping the anchor keeps those sections server components instead of promoting each one to a client component. `MobileNav` is already a client component, so it calls `trackClick` directly next to its existing `close()`.
+  - `Hero` now picks the element by href scheme, because condition/locations/wellness pages pass a `tel:` href as the secondary CTA — a hero phone CTA reports `phone_call`, not `cta_click`.
+  - Verified with headless Chromium on a production build: `sticky_cta`/`call_cta`, `header`/`book_consultation`, `hero`/`call_cta` on a condition page, `footer_social`/`facebook` all push the expected payload. Build, eslint and `validate:schema` (0 errors, 0 warnings) pass.
+  - Deliberately **not** tracked: body-copy contact links on the noindex legal pages (`/privacy-policy/`, `/terms-of-service/`, `/accessibility/`) — low-intent surfaces where per-link events would only add noise.
+
+**Lesson for future merges:** "instrumented" claims in COMPLETED.md describe the branch the work was done on, not necessarily `main`. Re-check the merged result when a design branch touches the same components.
+
+---
+
 ## 🔴 URGENT — Claude code-review findings on this PR (2026-07-29)
 
 External review of PR #41 (see PR comment for full evidence). **Execute in this order** — items 1 and 2 are sequentially dependent, 3–5 are independent and can run in parallel or any order after that. One item per nightly run, in sequence:
@@ -59,6 +86,7 @@ External review of PR #41 (see PR comment for full evidence). **Execute in this 
 - **T-13a** — Track copy-to-clipboard for the email `hello@hbotq.com` (currently no copy affordance); track outbound clicks to condition source pages (radiation injury, sudden hearing loss, etc. — useful for measuring "how many users go look up the underlying medical evidence").
 - **S-MedicalClinic** — `MedicalClinic` (more specific than `MedicalBusiness`) — Google treats `MedicalClinic` as a more specialized type with its own Knowledge Panel treatment. Currently the site uses `MedicalBusiness` per S-01. Worth measuring: does switching type to `MedicalClinic` change rich-result eligibility?
 - **WD-07** — `prefers-reduced-motion` is honored in `globals.css` and the sample page's animations, but no centralized `useReducedMotion` hook. Worth adding a `components/motion/reduced-motion.ts` helper so future motion components can opt in consistently.
+- **T-17** — Contact links in body copy on the legal pages (`/privacy-policy/`, `/terms-of-service/`, `/accessibility/`) are still untracked, deliberately (R-03). Revisit only if those pages ever show meaningful phone/email intent in GA4.
 - **C-06** — "As seen on" / press logos (deferred 2026-06-20; only revisit if real press coverage exists).
 - **SE-07+** — Consider also adding `code` (ICD-10) and `expectedPrognosis` per Google's `MedicalCondition` docs. Would require new authored data on each condition (ICD-10 codes, prognosis phrasing) — defer until editorial can supply it.
 

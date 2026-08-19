@@ -33,9 +33,10 @@ export const metadata: Metadata = {
   applicationName: site.name,
   authors: [{ name: site.legalName }],
   generator: "Next.js",
-  icons: {
-    icon: "/favicon.ico",
-  },
+  // No `icons` key on purpose: the file conventions in app/ (favicon.ico,
+  // icon.png, apple-icon.png) generate the <link> tags themselves. Setting
+  // `icons` here suppressed them — the page shipped two identical favicon.ico
+  // links and no apple-touch-icon at all.
   openGraph: {
     siteName: site.name,
     type: "website",

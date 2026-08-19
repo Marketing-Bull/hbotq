@@ -1,4 +1,7 @@
-import Link from "next/link";
+import {
+  TrackedAnchor,
+  TrackedLink,
+} from "@/components/analytics/tracked-link";
 import { notFound } from "next/navigation";
 import { ConsultationForm } from "@/components/forms/consultation-form";
 import { ReassuranceLine } from "@/components/sections/reassurance-line";
@@ -94,15 +97,18 @@ export default async function ConditionLpPage(props: {
             </ul>
 
             <div className="mt-8 flex flex-wrap gap-3">
-              <a
+              <TrackedAnchor
                 href={`tel:${site.phoneE164}`}
+                category="phone_call"
+                location="lp_hero"
+                ctaLabel="call_cta"
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-white/15 border border-white/30 text-white px-6 py-3 font-semibold hover:bg-white/25 transition-colors"
               >
                 <svg width="17" height="17" viewBox="0 0 24 24" aria-hidden fill="currentColor">
                   <path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .58 3.6 1 1 0 0 1-.24 1z" />
                 </svg>
                 Call {site.phone}
-              </a>
+              </TrackedAnchor>
             </div>
           </div>
 
@@ -177,13 +183,15 @@ export default async function ConditionLpPage(props: {
               {lp.mechanism}
             </p>
             <div className="mt-8">
-              <Link
+              <TrackedLink
                 href={`/condition/${lp.conditionSlug}/`}
+                location="lp_body"
+                ctaLabel="clinical_overview"
                 className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--color-brand-500)] hover:underline"
               >
                 Read the full clinical overview
                 <span aria-hidden>→</span>
-              </Link>
+              </TrackedLink>
             </div>
           </div>
 
@@ -297,23 +305,32 @@ export default async function ConditionLpPage(props: {
             </p>
             <p className="mt-1 text-[var(--color-ink-muted)]">
               65-35 Queens Blvd, Suite #100 ·{" "}
-              <a href={`tel:${site.phoneE164}`} className="font-semibold text-[var(--color-brand-500)] hover:underline">
+              <TrackedAnchor
+                href={`tel:${site.phoneE164}`}
+                category="phone_call"
+                location="lp_footer"
+                ctaLabel="address_phone"
+                className="font-semibold text-[var(--color-brand-500)] hover:underline"
+              >
                 {site.phone}
-              </a>
+              </TrackedAnchor>
             </p>
             <p className="mt-1 text-sm text-[var(--color-ink-muted)]">
               Mon–Fri 8:00 AM–6:00 PM · Sat 9:00 AM–2:00 PM · 2 blocks from 7 train + LIRR
             </p>
           </div>
-          <a
+          <TrackedAnchor
             href={`tel:${site.phoneE164}`}
+            category="phone_call"
+            location="lp_footer"
+            ctaLabel="call_cta"
             className="shrink-0 inline-flex items-center justify-center gap-2 rounded-full bg-[var(--color-brand-500)] text-white px-7 py-3.5 font-semibold hover:bg-[var(--color-brand-600)] transition-colors"
           >
             <svg width="17" height="17" viewBox="0 0 24 24" aria-hidden fill="currentColor">
               <path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .58 3.6 1 1 0 0 1-.24 1z" />
             </svg>
             Call {site.phone}
-          </a>
+          </TrackedAnchor>
         </div>
       </section>
     </>

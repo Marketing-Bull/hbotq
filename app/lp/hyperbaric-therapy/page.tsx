@@ -1,4 +1,7 @@
-import Link from "next/link";
+import {
+  TrackedAnchor,
+  TrackedLink,
+} from "@/components/analytics/tracked-link";
 import Image from "next/image";
 import { TrustBar } from "@/components/sections/trust-bar";
 import { TestimonialCarousel } from "@/components/sections/testimonial-carousel";
@@ -123,15 +126,18 @@ export default function HyperbaricTherapyPage() {
             </ul>
 
             <div className="mt-8 flex flex-wrap gap-3">
-              <a
+              <TrackedAnchor
                 href={`tel:${site.phoneE164}`}
+                category="phone_call"
+                location="lp_hero"
+                ctaLabel="call_cta"
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-white/15 border border-white/30 text-white px-6 py-3 font-semibold hover:bg-white/25 transition-colors"
               >
                 <svg width="17" height="17" viewBox="0 0 24 24" aria-hidden fill="currentColor">
                   <path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .58 3.6 1 1 0 0 1-.24 1z" />
                 </svg>
                 Call {site.phone}
-              </a>
+              </TrackedAnchor>
             </div>
           </div>
 
@@ -188,9 +194,11 @@ export default function HyperbaricTherapyPage() {
           </p>
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {fdaConditions.map((c) => (
-              <Link
+              <TrackedLink
                 key={c.slug}
                 href={`/condition/${c.slug}/`}
+                location="lp_conditions_grid"
+                ctaLabel={c.name}
                 className="group flex items-start gap-3 rounded-xl border border-[var(--color-surface-border)] bg-[var(--color-sand-100)] p-4 hover:border-[var(--color-brand-300)] hover:shadow-md transition-all duration-200"
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden className="shrink-0 mt-0.5 text-[var(--color-brand-500)]">
@@ -204,12 +212,17 @@ export default function HyperbaricTherapyPage() {
                     {c.summary}
                   </p>
                 </div>
-              </Link>
+              </TrackedLink>
             ))}
           </div>
-          <Link href="/conditions/" className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--color-brand-500)] hover:underline">
+          <TrackedLink
+            href="/conditions/"
+            location="lp_conditions_grid"
+            ctaLabel="see_all_conditions"
+            className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--color-brand-500)] hover:underline"
+          >
             See all conditions including off-label uses <span aria-hidden>→</span>
-          </Link>
+          </TrackedLink>
         </div>
       </section>
 
@@ -288,18 +301,23 @@ export default function HyperbaricTherapyPage() {
               ))}
             </ul>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link
+              <TrackedLink
                 href="/contact-us/"
+                location="lp_body"
+                ctaLabel="book_consultation"
                 className="inline-flex items-center justify-center rounded-full bg-[var(--color-accent)] text-white px-6 py-3 font-semibold hover:bg-[var(--color-accent-hover)] transition-colors"
               >
                 Book a free consultation
-              </Link>
-              <a
+              </TrackedLink>
+              <TrackedAnchor
                 href={`tel:${site.phoneE164}`}
+                category="phone_call"
+                location="lp_body"
+                ctaLabel="call_cta"
                 className="inline-flex items-center justify-center rounded-full border border-[var(--color-brand-500)] text-[var(--color-brand-500)] px-6 py-3 font-semibold hover:bg-[var(--color-brand-50)] transition-colors"
               >
                 Call {site.phone}
-              </a>
+              </TrackedAnchor>
             </div>
           </div>
         </div>
@@ -334,13 +352,24 @@ export default function HyperbaricTherapyPage() {
           </dl>
           <p className="mt-8 text-[var(--color-ink-muted)]">
             More questions?{" "}
-            <Link href="/faqs/" className="font-semibold text-[var(--color-brand-500)] hover:underline">
+            <TrackedLink
+              href="/faqs/"
+              location="lp_faq"
+              ctaLabel="see_all_faqs"
+              className="font-semibold text-[var(--color-brand-500)] hover:underline"
+            >
               See all FAQs
-            </Link>
+            </TrackedLink>
             {" "}or call us at{" "}
-            <a href={`tel:${site.phoneE164}`} className="font-semibold text-[var(--color-brand-500)] hover:underline">
+            <TrackedAnchor
+              href={`tel:${site.phoneE164}`}
+              category="phone_call"
+              location="lp_faq"
+              ctaLabel="call_cta"
+              className="font-semibold text-[var(--color-brand-500)] hover:underline"
+            >
               {site.phone}
-            </a>.
+            </TrackedAnchor>.
           </p>
         </div>
       </section>
@@ -365,20 +394,28 @@ export default function HyperbaricTherapyPage() {
             </p>
             <p className="mt-1 text-[var(--color-ink-muted)]">
               65-35 Queens Blvd, Suite #100 ·{" "}
-              <a href={`tel:${site.phoneE164}`} className="font-semibold text-[var(--color-brand-500)] hover:underline">
+              <TrackedAnchor
+                href={`tel:${site.phoneE164}`}
+                category="phone_call"
+                location="lp_footer"
+                ctaLabel="address_phone"
+                className="font-semibold text-[var(--color-brand-500)] hover:underline"
+              >
                 {site.phone}
-              </a>
+              </TrackedAnchor>
             </p>
             <p className="mt-1 text-sm text-[var(--color-ink-muted)]">
               Mon–Fri 8:00 AM–6:00 PM · Sat 9:00 AM–2:00 PM · 2 blocks from 7 train + LIRR
             </p>
           </div>
-          <Link
+          <TrackedLink
             href="/contact-us/"
+            location="lp_footer"
+            ctaLabel="book_now"
             className="shrink-0 inline-flex items-center justify-center rounded-full bg-[var(--color-accent)] text-white px-7 py-3.5 font-semibold hover:bg-[var(--color-accent-hover)] transition-colors"
           >
             Book now
-          </Link>
+          </TrackedLink>
         </div>
       </section>
 

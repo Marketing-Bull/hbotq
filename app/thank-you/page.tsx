@@ -1,4 +1,7 @@
-import Link from "next/link";
+import {
+  TrackedAnchor,
+  TrackedLink,
+} from "@/components/analytics/tracked-link";
 import Script from "next/script";
 import { Hero } from "@/components/sections/hero";
 import { site } from "@/lib/data/site";
@@ -81,18 +84,23 @@ export default function ThankYouPage() {
               you.
             </p>
             <div className="mt-6 flex flex-wrap justify-center gap-3">
-              <a
+              <TrackedAnchor
                 href={`tel:${site.phoneE164}`}
+                category="phone_call"
+                location="thank_you"
+                ctaLabel="call_cta"
                 className="inline-flex items-center justify-center rounded-full bg-[var(--color-brand-500)] text-white px-6 py-3 font-semibold"
               >
                 Call {site.phone}
-              </a>
-              <Link
+              </TrackedAnchor>
+              <TrackedLink
                 href="/videos/"
+                location="thank_you"
+                ctaLabel="watch_videos"
                 className="inline-flex items-center justify-center rounded-full border border-[var(--color-brand-500)] text-[var(--color-brand-500)] px-6 py-3 font-semibold"
               >
                 Watch: how HBOT works
-              </Link>
+              </TrackedLink>
             </div>
           </div>
         </div>

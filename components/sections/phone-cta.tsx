@@ -1,6 +1,9 @@
-import Link from "next/link";
 import { site } from "@/lib/data/site";
 import { ReassuranceLine } from "@/components/sections/reassurance-line";
+import {
+  TrackedAnchor,
+  TrackedLink,
+} from "@/components/analytics/tracked-link";
 
 export function PhoneCta() {
   return (
@@ -18,18 +21,23 @@ export function PhoneCta() {
             and can’t do, and let you know whether a consultation makes sense.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <a
+            <TrackedAnchor
               href={`tel:${site.phoneE164}`}
+              category="phone_call"
+              location="phone_cta"
+              ctaLabel="call_cta"
               className="inline-flex items-center justify-center rounded-full bg-[var(--color-brand-500)] text-white px-7 py-3.5 font-semibold hover:bg-[var(--color-brand-600)]"
             >
               Call {site.phone}
-            </a>
-            <Link
+            </TrackedAnchor>
+            <TrackedLink
               href="/contact-us/"
+              location="phone_cta"
+              ctaLabel="book_consultation"
               className="inline-flex items-center justify-center rounded-full bg-[var(--color-accent)] text-white px-7 py-3.5 font-semibold hover:bg-[var(--color-accent-hover)]"
             >
               Book a free consultation
-            </Link>
+            </TrackedLink>
           </div>
           <ReassuranceLine className="mt-6" />
         </div>

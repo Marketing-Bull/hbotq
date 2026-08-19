@@ -1,7 +1,56 @@
-import Link from "next/link";
 import Image from "next/image";
 import { site } from "@/lib/data/site";
 import { BlobsHero } from "@/components/ui/background-blobs";
+import {
+  TrackedAnchor,
+  TrackedLink,
+} from "@/components/analytics/tracked-link";
+
+/**
+ * Hero CTAs are data-driven, and several pages pass a `tel:` href as the
+ * secondary CTA (condition, locations and wellness detail pages). Route those
+ * through a plain tracked anchor with the `phone_call` category instead of
+ * next/link + `cta_click`, so a call from the hero is reported as the phone
+ * conversion it actually is.
+ */
+function HeroCta({
+  cta,
+  className,
+}: {
+  cta: { label: string; href: string };
+  className: string;
+}) {
+  const scheme = cta.href.startsWith("tel:")
+    ? "phone_call"
+    : cta.href.startsWith("mailto:")
+      ? "mailto"
+      : null;
+
+  if (scheme) {
+    return (
+      <TrackedAnchor
+        href={cta.href}
+        category={scheme}
+        location="hero"
+        ctaLabel={scheme === "phone_call" ? "call_cta" : "email_cta"}
+        className={className}
+      >
+        {cta.label}
+      </TrackedAnchor>
+    );
+  }
+
+  return (
+    <TrackedLink
+      href={cta.href}
+      location="hero"
+      ctaLabel={cta.label}
+      className={className}
+    >
+      {cta.label}
+    </TrackedLink>
+  );
+}
 
 type HeroVariant = "home" | "condition" | "lp" | "page";
 
@@ -85,32 +134,31 @@ export function Hero({
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
             {primaryCta ? (
-              <Link
-                href={primaryCta.href}
+              <HeroCta
+                cta={primaryCta}
                 className="inline-flex items-center justify-center rounded-full bg-[var(--color-accent)] text-white px-7 py-3.5 font-semibold hover:bg-[var(--color-accent-hover)] transition-colors shadow-lg shadow-[var(--color-accent)]/30"
-              >
-                {primaryCta.label}
-              </Link>
+              />
             ) : null}
             {secondaryCta ? (
-              <Link
-                href={secondaryCta.href}
+              <HeroCta
+                cta={secondaryCta}
                 className="inline-flex items-center justify-center rounded-full border border-white/30 text-white px-7 py-3.5 font-semibold hover:bg-white/10 transition-colors backdrop-blur-sm"
-              >
-                {secondaryCta.label}
-              </Link>
+              />
             ) : null}
           </div>
 
           {isHome || isLp ? (
             <p className="mt-6 text-sm text-[var(--color-brand-100)] opacity-75">
               Or call us directly:{" "}
-              <a
+              <TrackedAnchor
                 href={`tel:${site.phoneE164}`}
+                category="phone_call"
+                location="hero"
+                ctaLabel="call_cta"
                 className="text-white font-semibold hover:underline opacity-100"
               >
                 {site.phone}
-              </a>
+              </TrackedAnchor>
             </p>
           ) : null}
 
