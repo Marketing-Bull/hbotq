@@ -21,16 +21,30 @@ function pushToDataLayer(payload: Record<string, unknown>) {
  * (social / GBP / other off-site) links.
  * Call this from onClick on any <a> element.
  *
- * The dataLayer event name is `outbound_click` for phone_call / mailto /
- * external — all three are "leaving the site" conversion events from
- * GTM's perspective. `cta_click` is a separate event used for internal
- * route navigation that we still want to attribute (primary nav, hero
- * CTAs, etc.).
+ * Event names, by category:
+ *   phone_call            -> `phone_call`
+ *   mailto / external     -> `outbound_click`
+ *   cta_click             -> `cta_click`
+ *
+ * Phone gets its own event name rather than hiding inside `outbound_click`.
+ * It is the dominant conversion path for this account, and a GTM trigger built
+ * on an event literally named `phone_call` is much harder to get wrong than one
+ * that has to match `outbound_click` AND `outbound_category == "phone_call"`.
+ * `outbound_category` is still emitted on every event so existing filters keep
+ * working. `cta_click` covers internal route navigation we want to attribute
+ * (primary nav, hero CTAs).
  *
  * Usage:
  *   <a href="tel:..." onClick={trackClick('phone_call', { location: 'sticky_cta' })}>
  *   <a href="https://facebook.com/hbotq" onClick={trackClick('external', { location: 'footer', outbound_target: 'facebook' })}>
  */
+const EVENT_NAME_BY_CATEGORY = {
+  phone_call: "phone_call",
+  mailto: "outbound_click",
+  external: "outbound_click",
+  cta_click: "cta_click",
+} as const;
+
 export function trackClick(
   category: "phone_call" | "mailto" | "external" | "cta_click",
   metadata?: Record<string, string | number | boolean>,
@@ -40,7 +54,7 @@ export function trackClick(
   // onClick, so call sites are unaffected.
   return () => {
     pushToDataLayer({
-      event: category === "cta_click" ? "cta_click" : "outbound_click",
+      event: EVENT_NAME_BY_CATEGORY[category],
       outbound_category: category,
       ...metadata,
     });
@@ -51,9 +65,19 @@ export function trackClick(
  * Fire a custom dataLayer event for non-link interactions
  * (form submit, sticky-cta dismiss, etc.). Use from onClick / onSubmit.
  */
+/**
+ * Values allowed on a dataLayer event. Mostly primitives; the one nested shape
+ * is `user_data`, which Google Ads Enhanced Conversions expects as an object.
+ */
+type EventValue =
+  | string
+  | number
+  | boolean
+  | Record<string, string | undefined>;
+
 export function trackEvent(
   eventName: string,
-  metadata?: Record<string, string | number | boolean>,
+  metadata?: Record<string, EventValue>,
 ) {
   pushToDataLayer({
     event: eventName,

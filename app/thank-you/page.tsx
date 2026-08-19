@@ -2,7 +2,7 @@ import {
   TrackedAnchor,
   TrackedLink,
 } from "@/components/analytics/tracked-link";
-import Script from "next/script";
+import { ConversionConfirmed } from "@/components/analytics/conversion-confirmed";
 import { Hero } from "@/components/sections/hero";
 import { site } from "@/lib/data/site";
 import { buildMetadata } from "@/lib/seo/metadata";
@@ -20,13 +20,7 @@ export const dynamic = "force-static";
 export default function ThankYouPage() {
   return (
     <>
-      <Script
-        id="gtm-form-success"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: `window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'form_submission_success',form:'consultation'});`,
-        }}
-      />
+      <ConversionConfirmed />
       <Hero
         variant="page"
         eyebrow="Thank You"

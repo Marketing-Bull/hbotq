@@ -127,3 +127,38 @@ export function getAttribution(): Attribution {
   if (typeof window === "undefined") return {};
   return readStored() ?? {};
 }
+
+/**
+ * Set by the form on a successful submission and consumed by the confirmation
+ * page, so the `/thank-you/` conversion fires once per lead rather than once per
+ * page view — and never at all for someone who navigates there without
+ * submitting.
+ */
+const PENDING_CONVERSION_KEY = "hbotq_pending_conversion";
+
+export function markConversionPending(): void {
+  if (typeof window === "undefined") return;
+  try {
+    window.sessionStorage.setItem(PENDING_CONVERSION_KEY, "1");
+  } catch {
+    // Storage unavailable — the confirmation-page event is then skipped, but
+    // `form_submit` still fires, so the conversion is not lost outright.
+  }
+}
+
+/**
+ * Whether a submission is awaiting confirmation. Clears the flag as it reads,
+ * so a refresh of the confirmation page does not fire a second conversion.
+ */
+export function consumePendingConversion(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    if (window.sessionStorage.getItem(PENDING_CONVERSION_KEY) !== "1") {
+      return false;
+    }
+    window.sessionStorage.removeItem(PENDING_CONVERSION_KEY);
+    return true;
+  } catch {
+    return false;
+  }
+}
