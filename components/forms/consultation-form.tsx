@@ -11,6 +11,10 @@ import {
 } from "@/lib/validation/consultation";
 import { site } from "@/lib/data/site";
 import { trackEvent } from "@/lib/analytics/track";
+import {
+  getAttribution,
+  markConversionPending,
+} from "@/lib/analytics/attribution";
 
 interface Props {
   source?: string;
@@ -34,6 +38,20 @@ type TrackedField = (typeof TRACKED_FIELDS)[number];
 
 function isTrackedField(name: string): name is TrackedField {
   return (TRACKED_FIELDS as readonly string[]).includes(name);
+}
+
+/**
+ * Best-effort E.164 for Enhanced Conversions. Callers are effectively all US,
+ * and the form accepts "718-925-3322", "(718) 925 3322" and similar. A 10-digit
+ * number gains +1; an 11-digit number already starting 1 gains the plus. Any
+ * other shape is returned digits-only rather than guessed at — a wrong country
+ * code matches nothing and is worse than an unmatched value.
+ */
+function toE164(raw: string): string {
+  const digits = raw.replace(/\D/g, "");
+  if (digits.length === 10) return `+1${digits}`;
+  if (digits.length === 11 && digits.startsWith("1")) return `+${digits}`;
+  return digits;
 }
 
 export function ConsultationForm({
@@ -182,7 +200,9 @@ export function ConsultationForm({
       const res = await fetch("/api/consultation/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        // Read attribution at submit time rather than at mount: the visitor
+        // may have landed on an ad URL in another tab of the same session.
+        body: JSON.stringify({ ...data, attribution: getAttribution() }),
       });
       const body = (await res.json().catch(() => ({}))) as {
         ok?: boolean;
@@ -202,10 +222,25 @@ export function ConsultationForm({
         return;
       }
       // Fire GTM conversion event
+      const attribution = getAttribution();
+      // Google Ads Enhanced Conversions. GTM hashes these with SHA-256 before
+      // anything leaves the browser — the dataLayer carries them in the clear,
+      // which is why this is opt-in rather than on by default. Google expects
+      // email lowercased and trimmed, and phone in E.164.
+      const userData = {
+        email_address: data.email.trim().toLowerCase(),
+        phone_number: toE164(data.phone),
+      };
       trackEvent("form_submit", {
+        user_data: userData,
         form_name: source,
         form_condition: data.condition ?? "",
+        utm_source: attribution.utm_source ?? "",
+        utm_medium: attribution.utm_medium ?? "",
+        utm_campaign: attribution.utm_campaign ?? "",
+        has_gclid: Boolean(attribution.gclid),
       });
+      markConversionPending();
       router.push("/thank-you/");
     } catch {
       setFormError(`Something went wrong. Please call us at ${site.phone}.`);
@@ -339,7 +374,6 @@ export function ConsultationForm({
           type="checkbox"
           {...register("consent")}
           className="mt-1"
-          value="true"
         />
         <span>
           I’d like HBOTQ to contact me about my consultation. I understand

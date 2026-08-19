@@ -3,6 +3,9 @@ import { Inter, Fraunces } from "next/font/google";
 import "./globals.css";
 import { site } from "@/lib/data/site";
 import { GTM, GTMNoScript } from "@/components/analytics/gtm";
+import { AttributionCapture } from "@/components/analytics/attribution-capture";
+import { CallRail } from "@/components/analytics/callrail";
+import { ChromeGate } from "@/components/layout/chrome-gate";
 import { ScrollDepth } from "@/components/analytics/scroll-depth";
 import { JsonLd } from "@/components/seo/json-ld";
 import { medicalBusinessSchema, webSiteSchema } from "@/lib/seo/schemas";
@@ -49,6 +52,8 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
+  const callRailCompanyId = process.env.NEXT_PUBLIC_CALLRAIL_COMPANY_ID;
+  const callRailScriptId = process.env.NEXT_PUBLIC_CALLRAIL_SCRIPT_ID;
   return (
     <html
       lang="en"
@@ -65,13 +70,22 @@ export default function RootLayout({
           Skip to content
         </a>
         <GTMNoScript gtmId={gtmId} />
-        <Header />
+        <ChromeGate>
+          <Header />
+        </ChromeGate>
         <main id="main" className="flex-1">
           {children}
         </main>
-        <Footer />
+        <ChromeGate>
+          <Footer />
+        </ChromeGate>
         <StickyCta />
         <ScrollDepth />
+        <AttributionCapture />
+        <CallRail
+          companyId={callRailCompanyId}
+          scriptId={callRailScriptId}
+        />
         <div className="h-16 lg:hidden" aria-hidden />
       </body>
     </html>

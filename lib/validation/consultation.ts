@@ -15,6 +15,30 @@ const CONDITION_VALUES = [
 
 const PHONE_REGEX = /^[+()\-\s.\d]{7,20}$/;
 
+// First-touch campaign attribution, captured client-side and passed through to
+// the CRM and the lead email. Every field is optional: direct visitors have
+// none of it, and a lead must never be rejected for missing marketing metadata.
+const ATTRIBUTION_MAX = 200;
+const attributionField = z.string().trim().max(ATTRIBUTION_MAX).optional();
+
+export const attributionSchema = z
+  .object({
+    utm_source: attributionField,
+    utm_medium: attributionField,
+    utm_campaign: attributionField,
+    utm_term: attributionField,
+    utm_content: attributionField,
+    gclid: attributionField,
+    gbraid: attributionField,
+    wbraid: attributionField,
+    fbclid: attributionField,
+    msclkid: attributionField,
+    landing_page: attributionField,
+    referrer: attributionField,
+    first_seen_at: attributionField,
+  })
+  .optional();
+
 export const consultationSchema = z.object({
   name: z
     .string()
@@ -40,6 +64,7 @@ export const consultationSchema = z.object({
   }),
   source: z.string().trim().max(200),
   website: z.string().max(200), // honeypot — checked in handler, not by Zod
+  attribution: attributionSchema,
 });
 
 export type ConsultationInput = z.infer<typeof consultationSchema>;
