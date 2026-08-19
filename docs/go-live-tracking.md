@@ -76,11 +76,14 @@ from the site.
 2. **GA4 Event tags** for each custom event in section 3. Pass the event
    parameters through (`form_name`, `form_condition`, `location`, `cta_label`,
    `utm_source`, `utm_medium`, `utm_campaign`, `has_gclid`).
-3. **Mark conversions in GA4** — Admin → Events → mark `form_submit` and
-   `phone_call` as key events.
+3. **Mark conversions in GA4** — Admin → Events → mark `conversion_confirmed`
+   and `phone_call` as key events. Use `conversion_confirmed` rather than
+   `form_submit` so GA4 and Ads count the same thing; keep `form_submit` as a
+   plain event, where it is still useful as the top of the funnel (submitted vs.
+   confirmed will differ if anyone drops out between the two).
 4. **Google Ads conversion actions.** Create two in the Ads UI, then fire them
    from GTM on the same triggers:
-   - *Website lead — form* on `form_submit`
+   - *Website lead — form* on `conversion_confirmed` (deduped; see section 3)
    - *Website lead — phone click* on `phone_call`
    Import the GA4 key events instead if you prefer a single source of truth —
    but do not do both, or every conversion double-counts.
@@ -89,8 +92,12 @@ from the site.
 6. **Set the conversion window and counting.** For a medical lead, "one per
    click" is usually right; "every" inflates on repeat callers — the CallRail
    data has one patient placing 36 calls.
-7. **Enable Enhanced Conversions** if you want to close the loop on offline
-   bookings. The form already collects email and phone.
+7. **Enable Enhanced Conversions** — the data side is already shipped.
+   `form_submit` carries a `user_data` object with `email_address` (lowercased,
+   trimmed) and `phone_number` (E.164), which is the shape Google expects. In
+   GTM, turn on Enhanced Conversions for the conversion action and point it at
+   `user_data` from the dataLayer; GTM applies SHA-256 before anything is sent.
+   Nothing further is needed in code.
 
 > Beware double-counting with CallRail (section 6). If CallRail also reports
 > calls into Ads, and GTM fires a `phone_call` conversion on the same click,
@@ -108,15 +115,26 @@ from the site.
 | `form_view` | Consultation form enters the viewport | `form_name` |
 | `form_start` | First interaction with any form field | `form_name` |
 | `form_field_complete` | Each tracked field blurred non-empty | `form_name`, `field_name` |
-| `form_submit` | Successful submission | `form_name`, `form_condition`, `utm_source`, `utm_medium`, `utm_campaign`, `has_gclid` |
-| `outbound_click` | `tel:` / `mailto:` / external links | `outbound_category` (`phone_call`, `mailto`, `external`), `location`, `cta_label` |
+| `form_submit` | Successful submission | `form_name`, `form_condition`, `utm_source`, `utm_medium`, `utm_campaign`, `has_gclid`, `user_data` |
+| `conversion_confirmed` | `/thank-you/` reached after a real submission | `form`, `utm_source`, `utm_medium`, `utm_campaign`, `has_gclid` |
+| `phone_call` | `tel:` link clicked | `outbound_category` (`phone_call`), `location`, `cta_label` |
+| `outbound_click` | `mailto:` / external links | `outbound_category` (`mailto`, `external`), `location`, `cta_label` |
 | `cta_click` | Internal CTA and nav clicks | `location`, `cta_label` |
 | `scroll_depth` | 25 / 50 / 75 / 100% | `percent`, `page_location` |
 | `not_found_view` | 404 page render | `page_location` |
 
-Note `phone_call` arrives as **`outbound_click` with `outbound_category:
-phone_call`**, not as its own event name. Build the GTM trigger on that pair —
-a trigger listening for an event literally named `phone_call` will never fire.
+Two notes for whoever builds the triggers:
+
+- **`phone_call` is its own event name.** It used to be nested inside
+  `outbound_click` with `outbound_category: phone_call`; that was split out
+  precisely because it is the dominant conversion here and the paired match was
+  easy to get wrong. `outbound_category` is still emitted on every event, so a
+  filter built on it also works.
+- **Use `conversion_confirmed` as the Ads conversion trigger, not a plain
+  `/thank-you/` page view.** The event only fires when the visitor actually
+  submitted the form this session, and only once — a refresh, a bookmark, or a
+  direct visit to `/thank-you/` fires nothing. A raw page-view trigger on that
+  URL would count all three and feed duplicates into automated bidding.
 
 ---
 
@@ -165,7 +183,9 @@ Authoritative payload shape: `lib/integrations/ghl.ts`.
 ## 5. Landing page URLs
 
 All six are `noindex` and excluded from `sitemap.xml` by design, so they never
-compete with the organic condition pages.
+compete with the organic condition pages. They also render **without the site
+nav or footer** — a minimal header (wordmark plus the phone CTA) replaces them,
+so the only routes off a paid page are the form and the phone.
 
 | URL | Targets |
 | --- | --- |
@@ -230,6 +250,8 @@ the number pool.
 - [ ] `NEXT_PUBLIC_GTM_ID` set in Vercel Production
 - [ ] GTM: WordPress-era triggers removed, custom-event triggers rebuilt
 - [ ] GA4 config tag + event tags live, key events marked
+- [ ] Ads conversion built on `conversion_confirmed`, not a `/thank-you/` page view
+- [ ] Enhanced Conversions switched on and pointed at `user_data`
 - [ ] Google Ads conversion actions created and linked, counting rules set
 - [ ] GHL: sample re-captured with UTMs, fields mapped, workflow **published**
 - [ ] CallRail env vars set, swap verified across a route change
