@@ -42,3 +42,11 @@ next-env.d.ts
 
 # local Claude Code settings (personal, not shared)
 .claude/settings.local.json
+
+# agent working state — runner config, task queues and work logs.
+# Local to whoever runs the automation; must not ship in a public repo.
+.hermes/
+
+# client/campaign working documents (ad data, call analyses, draft comms).
+# These belong in the client doc store, not in a public source repo.
+/docs/ads/

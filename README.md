@@ -196,39 +196,25 @@ Vercel also builds every PR as a preview deploy, but that reports *after* the fa
 
 ## Pending manual tasks
 
-These are **outside the codebase** — they can’t be done in a PR and need someone with access to the relevant dashboard. Delete each item once it’s done.
-
 ### GoHighLevel — finish and publish the intake workflow
 
-The site posts every consultation lead to the GHL inbound webhook and this is confirmed working end-to-end, but a webhook *receiving* a payload is not the same as a usable CRM contact. The workflow behind the trigger still needs to be finished:
+The site posts every consultation lead to the GHL inbound webhook and this is confirmed
+working end-to-end, but a webhook *receiving* a payload is not the same as a usable CRM
+contact. The workflow behind the trigger still needs to be finished:
 
-- Map the captured sample onto a **Create/Update Contact** action, de-duplicating by email (fall back to phone). The payload fields are `first_name`, `last_name`, `name`, `email`, `phone`, `condition`, `condition_label`, `preferred_contact`, `message`, `source`, `received_at`, `submitted_at`, `ip` — see `lib/integrations/ghl.ts` for the authoritative shape
-- Add tags (e.g. a constant `website-lead`, plus one from `source` and one from `condition_label`) and put `message` into a contact Note so intake staff see the context
+- Map the captured sample onto a **Create/Update Contact** action, de-duplicating by email
+  (fall back to phone). The payload fields are `first_name`, `last_name`, `name`, `email`,
+  `phone`, `condition`, `condition_label`, `preferred_contact`, `message`, `source`,
+  `received_at`, `submitted_at`, `ip` — see `lib/integrations/ghl.ts` for the authoritative shape
+- Add tags (e.g. a constant `website-lead`, plus one from `source` and one from
+  `condition_label`) and put `message` into a contact Note so intake staff see the context
 - Add an internal notification so new leads get seen promptly
-- **Publish/activate the workflow** — until then, leads arrive but aren’t filed
+- **Publish/activate the workflow** — until then, leads arrive but aren't filed
 
-### GoHighLevel — delete the two test contacts
-
-Verification runs created two contacts that should not stay in the CRM:
-
-- The raw webhook test — **“Webhook Test”** (`webhook-test@hbotq.com`, source `webhook-test`)
-- The live end-to-end form test — **“Production Smoke Test”** (`smoke-test@hbotq.com`, source `production-smoke-test`)
-
-### GitHub — delete merged/stale branches
-
-All of these are fully merged or superseded and safe to delete (the repo’s git proxy blocks branch deletion from the CLI, so use the GitHub branches UI):
-
-- `improve-credibility-conversion` — merged in PR #41
-- `claude/happy-darwin-g7qtl7` — merged in PR #43
-- `design/wow-background-refresh` — merged in PR #42
-- `claude/stoic-gauss-IKcno` — abandoned; its conditions-submenu idea was rebuilt against current `main` and merged separately
-- `claude/repo-review-mvmrjf` — merged in PR #46
-
-### Claude Code — delete the finished nightly Routine
-
-A scheduled Routine named **“HBOTQ PR #41 code-review fixes (CR-01..CR-05)”** was created to work through the PR #41 code-review findings one per night. **All five items are done and merged**, so it now fires nightly with nothing to do. Delete it from the Routines UI — it can’t remove itself.
-
-It does not appear under the `alex@getmarketingbull.com` account’s Routines, so it is either already gone or owned by the Hermes agent account that created it — check there.
+> Other operational tasks — CRM record cleanup, dashboard configuration, branch and
+> scheduled-job housekeeping — are tracked in the team's internal tracker rather than here.
+> **This repository is public**: keep account identifiers, personal email addresses, client
+> data, and campaign material out of it.
 
 ---
 
