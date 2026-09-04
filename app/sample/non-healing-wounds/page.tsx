@@ -441,8 +441,8 @@ export default function SamplePage() {
           <Reveal className="col-span-12 lg:col-span-5" delay={150} variant="up">
             <figure className="relative aspect-[4/5] w-full overflow-hidden border border-[#1A2424]/15">
               <Image
-                src="/images/conditions/service.webp"
-                alt="HBOTQ wound-care visit"
+                src="/images/conditions/safe-effective.webp"
+                alt="Nurse monitoring a patient during hyperbaric oxygen therapy at HBOTQ"
                 fill
                 sizes="(min-width: 1024px) 36vw, 100vw"
                 className="object-cover"
