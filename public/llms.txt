@@ -4,7 +4,7 @@
 
 Location: 65-35 Queens Blvd, Suite #100, Woodside, NY 11377
 Phone: 718-925-3322
-Website: https://hbotq.com
+Website: https://www.hbotq.com
 
 ## Providers
 
@@ -13,29 +13,29 @@ Website: https://hbotq.com
 
 ## FDA-approved conditions treated (HBOT)
 
-- Non-Healing Wounds: https://hbotq.com/condition/non-healing-wounds/
-- Diabetic Lower-Extremity Wounds (foot ulcers): https://hbotq.com/condition/diabetic-lower-extremity-wounds/
-- Radiation Tissue Damage (incl. osteoradionecrosis): https://hbotq.com/condition/radiation-tissue-damage/
-- Sudden Sensorineural Hearing Loss: https://hbotq.com/condition/sudden-hearing-loss/
-- Chronic Refractory Osteomyelitis: https://hbotq.com/condition/refractory-osteomyelitis/
-- Severe Anemia (bridge therapy): https://hbotq.com/condition/severe-anemia/
+- Non-Healing Wounds: https://www.hbotq.com/condition/non-healing-wounds/
+- Diabetic Lower-Extremity Wounds (foot ulcers): https://www.hbotq.com/condition/diabetic-lower-extremity-wounds/
+- Radiation Tissue Damage (incl. osteoradionecrosis): https://www.hbotq.com/condition/radiation-tissue-damage/
+- Sudden Sensorineural Hearing Loss: https://www.hbotq.com/condition/sudden-hearing-loss/
+- Chronic Refractory Osteomyelitis: https://www.hbotq.com/condition/refractory-osteomyelitis/
+- Severe Anemia (bridge therapy): https://www.hbotq.com/condition/severe-anemia/
 
 ## Off-label uses (honestly discussed, self-pay)
 
-- Post-COVID Recovery: https://hbotq.com/condition/post-covid/
-- Chronic Pain: https://hbotq.com/condition/chronic-pain/
-- Wellness & Recovery (athletic recovery, healthy aging, energy): https://hbotq.com/wellness/
+- Post-COVID Recovery: https://www.hbotq.com/condition/post-covid/
+- Chronic Pain: https://www.hbotq.com/condition/chronic-pain/
+- Wellness & Recovery (athletic recovery, healthy aging, energy): https://www.hbotq.com/wellness/
 
 ## Key pages
 
-- Conditions overview: https://hbotq.com/conditions/
-- How treatment works: https://hbotq.com/treatment/
-- Physicians: https://hbotq.com/physicians/
-- Areas served (NYC, Manhattan, Brooklyn, Queens neighborhoods): https://hbotq.com/locations/
-- FAQs: https://hbotq.com/faqs/
-- Resources & guides (physician-reviewed): https://hbotq.com/resources/
-- Video library: https://hbotq.com/videos/
-- Contact / book a consultation: https://hbotq.com/contact-us/
+- Conditions overview: https://www.hbotq.com/conditions/
+- How treatment works: https://www.hbotq.com/treatment/
+- Physicians: https://www.hbotq.com/physicians/
+- Areas served (NYC, Manhattan, Brooklyn, Queens neighborhoods): https://www.hbotq.com/locations/
+- FAQs: https://www.hbotq.com/faqs/
+- Resources & guides (physician-reviewed): https://www.hbotq.com/resources/
+- Video library: https://www.hbotq.com/videos/
+- Contact / book a consultation: https://www.hbotq.com/contact-us/
 
 ## Notes for accurate answers
 
