@@ -64,11 +64,40 @@ docker compose up
 | `RESEND_API_KEY`     | Prod\*   | Emails consultation-form leads to the inbox. In dev, when no channel is configured the API logs the lead and returns 200. |
 | `LEAD_TO_EMAIL`      | No       | Where lead emails go. Defaults to `hello@hbotq.com`.                    |
 | `GHL_WEBHOOK_URL`    | Prod\*   | GoHighLevel inbound-webhook URL; each lead is POSTed here as JSON in parallel with the email. Unset = CRM push disabled. |
-| `NEXT_PUBLIC_GTM_ID` | No       | Google Tag Manager container ID (e.g. `GTM-XXXXXXX`). Loader is a no-op when unset, which is convenient locally. |
+| `NEXT_PUBLIC_GTM_ID` | Set in `.env` | Google Tag Manager container ID. Committed in `.env` (see below) — the loader is a no-op when unset, which is convenient locally. |
 
 \* The consultation form delivers to **both** Resend (email) and the GHL webhook (CRM), independently — a lead succeeds as long as *either* channel accepts it. Production needs **at least one** configured; set both for redundancy.
 
 The Resend sending domain (`hbotq.com`) needs DKIM/SPF verified in the Resend dashboard before production launch.
+
+### Which env file to use
+
+**`.env` is committed to this repository.** It holds only non-secret,
+public-by-design build-time values — currently just the GTM container ID, which
+ships in the page HTML on every request anyway. It exists so that local builds,
+preview deploys and production all get the same value without anyone having to
+configure a dashboard.
+
+**Secrets never go in `.env`.** `RESEND_API_KEY` and `GHL_WEBHOOK_URL` belong in
+`.env.local` locally and in Vercel's environment variables when deployed. Both
+are gitignored — `.gitignore` allows exactly one exception (`!.env`) and ignores
+everything else matching `.env*`. This repository is public, so a secret
+committed here is a secret disclosed.
+
+**Precedence.** Next.js resolves in this order, stopping at the first hit:
+
+```
+process.env  →  .env.$NODE_ENV.local  →  .env.local  →  .env.$NODE_ENV  →  .env
+```
+
+Vercel injects project environment variables as `process.env`, which sits
+**above** `.env`. So a variable set in the Vercel dashboard silently wins over
+the committed file — worth knowing, because it is not obvious from the file
+alone why a change to `.env` had no effect. Prefer deleting the dashboard
+variable and letting `.env` be the single source of truth for public values.
+
+`NEXT_PUBLIC_` values are inlined into the client bundle at build time, not read
+at runtime, so changing one requires a rebuild to take effect.
 
 ---
 
