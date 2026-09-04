@@ -11,7 +11,7 @@ export const conditions: Condition[] = [
     metaDescription:
       "HBOT in Woodside, Queens for chronic non-healing wounds. Our wound program combines hyperbaric oxygen, debridement, and advanced wound care for patients across NYC.",
     fdaStatus: "on-label",
-    heroImage: "/images/conditions/service.webp",
+    heroImage: "/images/conditions/safe-effective.webp",
     howHbotHelps:
       "Chronic wounds stall when the surrounding tissue is starved of oxygen. Inside the hyperbaric chamber, you breathe 100% oxygen at increased atmospheric pressure, which dissolves significantly more oxygen into your plasma than breathing air at sea level. That additional oxygen reaches tissue that compromised blood vessels can no longer feed, supporting fibroblast activity, new capillary growth, collagen synthesis, and infection control — the building blocks of wound closure.",
     sections: [
@@ -252,7 +252,7 @@ export const conditions: Condition[] = [
     metaDescription:
       "Hyperbaric oxygen therapy in Woodside, Queens for chronic refractory osteomyelitis — recurrent bone infection that hasn't cleared with antibiotics and surgery alone.",
     fdaStatus: "on-label",
-    heroImage: "/images/conditions/service.webp",
+    heroImage: "/images/conditions/safe-effective.webp",
     howHbotHelps:
       "Osteomyelitis becomes \"refractory\" when infection persists in bone that no longer has the blood supply to deliver antibiotics or immune cells where they're needed. Inside the hyperbaric chamber, you breathe 100% oxygen at increased atmospheric pressure, raising oxygen levels in the infected bone high enough to restore the function of infection-fighting white cells, boost the killing power of certain antibiotics, and stimulate new blood vessel growth into the dead and devitalized tissue that harbors the infection.",
     sections: [
