@@ -6,7 +6,7 @@ export const articles: Article[] = [
     title: "How Does Hyperbaric Oxygen Therapy Work?",
     metaTitle: "How Does Hyperbaric Oxygen Therapy (HBOT) Work? | HBOTQ",
     metaDescription:
-      "A clear, physician-reviewed explanation of how hyperbaric oxygen therapy works — from dissolved plasma oxygen to wound healing, infection control, and tissue repair.",
+      "A clear, physician-reviewed explanation of how hyperbaric oxygen therapy works — from dissolved plasma oxygen to wound healing and tissue repair.",
     excerpt:
       "HBOT isn't about breathing 'more air' — it's about dissolving far more oxygen directly into your blood plasma so it can reach tissue your blood vessels can't. Here's the biology, in plain language.",
     datePublished: "2026-06-01",
@@ -57,7 +57,7 @@ export const articles: Article[] = [
     title: "How Many HBOT Sessions Will I Need?",
     metaTitle: "How Many Hyperbaric Oxygen Therapy Sessions Will I Need? | HBOTQ",
     metaDescription:
-      "How long a course of hyperbaric oxygen therapy takes by condition — from 10–20 sessions for sudden hearing loss to 20–40 for wounds and radiation injury. Physician-reviewed.",
+      "How long a course of hyperbaric oxygen therapy takes by condition — 10–20 sessions for sudden hearing loss, 20–40 for wounds and radiation injury.",
     excerpt:
       "The honest answer is 'it depends on your condition' — but here are realistic ranges by indication, what a typical schedule looks like, and how your physician decides.",
     datePublished: "2026-06-01",
@@ -102,7 +102,7 @@ export const articles: Article[] = [
     title: "Is Hyperbaric Oxygen Therapy Covered by Insurance?",
     metaTitle: "Is Hyperbaric Oxygen Therapy Covered by Insurance? | HBOTQ Queens",
     metaDescription:
-      "When HBOT is covered by Medicare, Medicaid, and major insurers — the FDA-approved indications that qualify, what documentation is needed, and which uses are self-pay.",
+      "When HBOT is covered by Medicare, Medicaid and major insurers — which FDA-approved indications qualify, what documentation is needed, what is self-pay.",
     excerpt:
       "For FDA-approved indications, HBOT is typically covered when medical necessity is documented. Here's what qualifies, what doesn't, and how the paperwork works.",
     datePublished: "2026-06-01",
@@ -150,7 +150,7 @@ export const articles: Article[] = [
     title: "What Conditions Does Hyperbaric Oxygen Therapy Treat?",
     metaTitle: "What Conditions Does HBOT Treat? Full List | HBOTQ Queens",
     metaDescription:
-      "Complete guide to conditions treated with hyperbaric oxygen therapy — FDA-approved indications (wounds, radiation injury, hearing loss) and carefully evaluated off-label uses.",
+      "Guide to conditions treated with hyperbaric oxygen therapy — FDA-approved indications for wounds, radiation injury and hearing loss, plus off-label uses.",
     excerpt:
       "HBOT has a specific list of FDA-approved indications — conditions where clinical evidence is strong enough for insurance coverage — and a set of off-label uses where the evidence is still developing. Here's the honest breakdown.",
     datePublished: "2026-06-01",
@@ -208,7 +208,7 @@ export const articles: Article[] = [
     title: "Hard vs. Soft Hyperbaric Chambers: Why It Matters",
     metaTitle: "Hard vs. Soft Hyperbaric Chambers: What's the Difference? | HBOTQ",
     metaDescription:
-      "Hard-shell and soft-sided hyperbaric chambers are not the same thing. Learn why the pressure difference matters for medical outcomes — and what to look for in a provider.",
+      "Hard-shell and soft-sided hyperbaric chambers are not the same thing. Why the pressure difference matters — and what to look for in a provider.",
     excerpt:
       "Not all hyperbaric chambers are equal — and the difference isn't cosmetic. The pressure a chamber reaches determines whether it can deliver the biological effects that make HBOT work for medical conditions. Here's what you need to know.",
     datePublished: "2026-06-01",
@@ -260,7 +260,7 @@ export const articles: Article[] = [
     title: "How Much Does HBOT Cost? Insurance, Medicare & Self-Pay Explained",
     metaTitle: "How Much Does Hyperbaric Oxygen Therapy Cost? | HBOTQ Queens",
     metaDescription:
-      "What hyperbaric oxygen therapy costs depends entirely on whether your condition is FDA-approved and insured. Here's the honest breakdown — including Medicare, self-pay, and what questions to ask.",
+      "What hyperbaric oxygen therapy costs depends on whether your condition is FDA-approved and insured. An honest breakdown — Medicare, self-pay, what to ask.",
     excerpt:
       "The cost of HBOT ranges from fully covered by insurance to several hundred dollars per session out of pocket — and which camp you fall into depends almost entirely on your diagnosis and whether it's an FDA-approved indication. Here's how to figure out where you stand.",
     datePublished: "2026-06-01",

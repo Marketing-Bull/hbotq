@@ -18,7 +18,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = buildMetadata({
   title: "Wound Care Center in Queens, NY | Non-Healing Wounds | HBOTQ",
   description:
-    "Physician-led wound care center in Woodside, Queens. Debridement, advanced dressings, offloading and hyperbaric oxygen therapy for wounds that won't heal. Medicare & most insurers accepted.",
+    "Physician-led wound care in Woodside, Queens. Debridement, advanced dressings, offloading and hyperbaric oxygen for wounds that won't heal.",
   path: "/lp/wound-care-queens/",
   // noindex — ad LPs should not compete with the condition pages in organic search
   noIndex: true,

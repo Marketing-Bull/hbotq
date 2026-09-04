@@ -18,7 +18,7 @@ import { buildMetadata } from "@/lib/seo/metadata";
 export const metadata = buildMetadata({
   title: "Hyperbaric Oxygen Therapy in Queens & NYC",
   description:
-    "HBOTQ in Woodside, Queens offers hyperbaric oxygen therapy for patients across NYC — non-healing wounds, diabetic ulcers, radiation injury, sudden hearing loss, post-COVID, and chronic pain. Physician-led care, Medicare and most insurers accepted.",
+    "Physician-led hyperbaric oxygen therapy in Woodside, Queens, serving all of NYC — non-healing wounds, radiation injury, hearing loss and chronic pain.",
   path: "/",
   image: "/images/og/homepage.jpg",
 });

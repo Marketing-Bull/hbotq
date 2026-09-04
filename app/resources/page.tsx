@@ -11,7 +11,7 @@ import { ResourcesCardGrid } from "@/components/cards/resources-card-grid";
 export const metadata = buildMetadata({
   title: "HBOT Resources & Guides",
   description:
-    "Physician-reviewed guides to hyperbaric oxygen therapy — how it works, how many sessions you need, insurance coverage, and what to expect. From the HBOTQ medical team.",
+    "Physician-reviewed guides to hyperbaric oxygen therapy — how it works, how many sessions you need, insurance coverage and what to expect.",
   path: "/resources/",
 });
 

@@ -14,7 +14,7 @@ import { buildMetadata } from "@/lib/seo/metadata";
 export const metadata = buildMetadata({
   title: "HBOT Treatment in NYC — How It Works",
   description:
-    "How hyperbaric oxygen therapy works at HBOTQ in Woodside, Queens — serving patients across NYC. From the science of pressurized oxygen to what a session actually looks like.",
+    "How hyperbaric oxygen therapy works at HBOTQ in Woodside, Queens — the science of pressurized oxygen and what a session actually looks like.",
   path: "/treatment/",
   image: "/images/og/treatment.jpg",
 });

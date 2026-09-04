@@ -13,6 +13,11 @@ type BuildArgs = {
   };
 };
 
+// Google truncates SERP snippets at roughly 155-160 characters; anything
+// longer is cut mid-sentence. Warn in development so a long description is
+// caught while it is being written rather than in the next SEO audit.
+const DESCRIPTION_MAX = 160;
+
 export function buildMetadata({
   title,
   description,
@@ -21,6 +26,13 @@ export function buildMetadata({
   noIndex,
   geo,
 }: BuildArgs): Metadata {
+  if (process.env.NODE_ENV !== "production" && description.length > DESCRIPTION_MAX) {
+    console.warn(
+      `[seo] meta description for ${path} is ${description.length} chars ` +
+        `(max ${DESCRIPTION_MAX}) — Google will truncate it.`,
+    );
+  }
+
   const url = `${site.url}${path}`;
   const ogImage = image ?? "/images/og/default.jpg";
   const fullTitle = title.includes("HBOTQ") ? title : `${title} | HBOTQ`;

@@ -35,6 +35,16 @@ export function VideoEmbed({ id, title, caption }: VideoEmbedProps) {
             aria-label={`Play video: ${title}`}
             className="group absolute inset-0 h-full w-full cursor-pointer"
           >
+            {/*
+              alt="" is deliberate, not an oversight. The thumbnail is
+              decorative: the button around it already carries
+              aria-label="Play video: {title}", which is what a screen reader
+              announces. Giving the image its own alt would either be ignored
+              (aria-label wins the name computation) or read the title twice.
+              Automated scanners that flag "image without alt text" here are
+              reporting a false positive — per WCAG H67, a decorative image
+              inside a labelled control takes an empty alt.
+            */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`}
