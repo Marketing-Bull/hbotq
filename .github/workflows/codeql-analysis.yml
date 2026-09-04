@@ -39,6 +39,16 @@ jobs:
         with:
           languages: ${{ matrix.language }}
           queries: security-extended
+          # docs/migration/raw-html is a byte-for-byte archive of the old
+          # WordPress site, kept so the pre-migration content survives the DNS
+          # cutover. It carries ~700 inline WordPress/Elementor/jQuery script
+          # blocks that CodeQL flags as vulnerable third-party code. None of it
+          # is built, executed, or deployed — it is inert reference material —
+          # so it is scoped out rather than triaged. Everything we actually
+          # ship stays in scope.
+          config: |
+            paths-ignore:
+              - docs/migration/raw-html
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
