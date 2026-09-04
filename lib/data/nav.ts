@@ -18,9 +18,16 @@ const conditionLinks = [
   { label: "Sudden Hearing Loss", href: "/condition/sudden-hearing-loss/" },
 ] as const;
 
+// The Conditions menu also surfaces the wellness hub — off-label, self-pay uses
+// that live at /wellness/ rather than under /condition/.
+const conditionNavLinks = [
+  ...conditionLinks,
+  { label: "Wellness & Recovery", href: "/wellness/" },
+] as const;
+
 export const primaryNav = [
   { label: "Treatment", href: "/treatment/" },
-  { label: "Conditions", href: "/conditions/", children: conditionLinks },
+  { label: "Conditions", href: "/conditions/", children: conditionNavLinks },
   { label: "Locations", href: "/locations/" },
   { label: "Physicians", href: "/physicians/" },
   { label: "FAQs", href: "/faqs/" },

@@ -1,4 +1,4 @@
-import type { Condition } from "@/types/content";
+import type { Condition, ConditionListing } from "@/types/content";
 
 export const conditions: Condition[] = [
   {
@@ -323,6 +323,36 @@ export const conditions: Condition[] = [
     faqIds: ["how-does-hbot-work", "is-hbot-safe"],
     relatedSlugs: ["non-healing-wounds", "radiation-tissue-damage"],
   },
+];
+
+/**
+ * The wellness hub as a conditions-grid entry. Wellness uses are off-label and
+ * self-pay, so they get a badge of their own and point at the existing
+ * /wellness/ hub instead of a duplicate page under /condition/.
+ */
+export const wellnessListing: ConditionListing = {
+  key: "wellness",
+  name: "Wellness & Recovery",
+  summary:
+    "Athletic recovery, healthy aging, and everyday wellness — the non-medical reasons people use hyperbaric oxygen. Off-label, self-pay, and always explained with honest expectations.",
+  href: "/wellness/",
+  status: "wellness",
+};
+
+export function toConditionListing(c: Condition): ConditionListing {
+  return {
+    key: c.slug,
+    name: c.name,
+    summary: c.summary,
+    href: `/condition/${c.slug}/`,
+    status: c.fdaStatus,
+  };
+}
+
+/** Every card shown in the conditions grid: the clinical pages, then wellness. */
+export const conditionListings: ConditionListing[] = [
+  ...conditions.map(toConditionListing),
+  wellnessListing,
 ];
 
 export function getCondition(slug: string): Condition | undefined {

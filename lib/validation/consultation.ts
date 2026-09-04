@@ -9,6 +9,7 @@ const CONDITION_VALUES = [
   "refractory-osteomyelitis",
   "severe-anemia",
   "sudden-hearing-loss",
+  "wellness",
   "other",
   "unsure",
 ] as const;
@@ -84,6 +85,7 @@ export const CONDITION_OPTIONS: { value: (typeof CONDITION_VALUES)[number]; labe
   { value: "sudden-hearing-loss", label: "Sudden Hearing Loss" },
   { value: "post-covid", label: "Post-COVID" },
   { value: "chronic-pain", label: "Chronic Pain" },
+  { value: "wellness", label: "Wellness & Recovery" },
   { value: "other", label: "Other / Not Listed" },
   { value: "unsure", label: "I'm Not Sure Yet" },
 ];

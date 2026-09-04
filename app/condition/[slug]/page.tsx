@@ -19,6 +19,7 @@ import {
   conditions,
   getCondition,
   relatedConditions,
+  toConditionListing,
 } from "@/lib/data/conditions";
 import { getConditionVideo, getConditionTikTok } from "@/lib/data/videos";
 import { getFaqsByIds } from "@/lib/data/faqs";
@@ -312,7 +313,7 @@ export default async function ConditionPage(props: {
             </h2>
             <div className="mt-8 grid gap-5 md:grid-cols-2">
               {related.map((r) => (
-                <ConditionCard key={r.slug} condition={r} />
+                <ConditionCard key={r.slug} listing={toConditionListing(r)} />
               ))}
             </div>
           </div>

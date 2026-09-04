@@ -1,9 +1,9 @@
-import { conditions } from "@/lib/data/conditions";
+import { conditionListings } from "@/lib/data/conditions";
 import { ConditionCard } from "@/components/cards/condition-card";
 
 export function ConditionsGrid({
   heading = "Conditions we treat",
-  subtitle = "From FDA-approved wound and radiation indications to carefully evaluated off-label uses, our medical team will tell you honestly whether HBOT is right for you.",
+  subtitle = "From FDA-approved wound and radiation indications to carefully evaluated off-label uses and wellness sessions, our medical team will tell you honestly whether HBOT is right for you.",
 }: {
   heading?: string;
   subtitle?: string;
@@ -20,8 +20,8 @@ export function ConditionsGrid({
           </p>
         </div>
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {conditions.map((c) => (
-            <ConditionCard key={c.slug} condition={c} />
+          {conditionListings.map((c) => (
+            <ConditionCard key={c.key} listing={c} />
           ))}
         </div>
       </div>
