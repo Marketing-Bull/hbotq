@@ -7,7 +7,7 @@ import { MedicalReviewer } from "@/components/seo/medical-reviewer";
 import { JsonLd } from "@/components/seo/json-ld";
 import { articles, getArticle } from "@/lib/data/articles";
 import { physicians } from "@/lib/data/physicians";
-import { getCondition } from "@/lib/data/conditions";
+import { getCondition, toConditionListing } from "@/lib/data/conditions";
 import { medicalBusinessSchema, articleSchema, breadcrumbSchema } from "@/lib/seo/schemas";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { site } from "@/lib/data/site";
@@ -175,7 +175,7 @@ export default async function ArticlePage(props: {
               </h2>
               <div className="mt-6 grid gap-5 sm:grid-cols-2">
                 {related.map((c) => (
-                  <ConditionCard key={c.slug} condition={c} />
+                  <ConditionCard key={c.slug} listing={toConditionListing(c)} />
                 ))}
               </div>
             </div>

@@ -8,7 +8,7 @@ import { buildMetadata } from "@/lib/seo/metadata";
 export const metadata = buildMetadata({
   title: "Conditions We Treat",
   description:
-    "Conditions treated with hyperbaric oxygen therapy at HBOTQ in Woodside, Queens — including FDA-approved wound, radiation, and hearing-loss indications, plus carefully evaluated off-label uses.",
+    "Conditions treated with hyperbaric oxygen therapy at HBOTQ in Woodside, Queens — including FDA-approved wound, radiation, and hearing-loss indications, carefully evaluated off-label uses, and wellness and recovery sessions.",
   path: "/conditions/",
   image: "/images/og/conditions.jpg",
 });
@@ -22,13 +22,13 @@ export default function ConditionsPage() {
         variant="page"
         eyebrow="What We Treat"
         title="Conditions hyperbaric oxygen therapy can help."
-        subtitle="From FDA-approved wound and radiation indications to carefully evaluated off-label uses, here are the patients we see most often — and the honest evidence behind each."
+        subtitle="From FDA-approved wound and radiation indications to carefully evaluated off-label uses and wellness sessions, here are the patients we see most often — and the honest evidence behind each."
         primaryCta={{ label: "Book a consultation", href: "/contact-us/" }}
       />
       <TrustBar />
       <ConditionsGrid
-        heading="Eight conditions, one care team"
-        subtitle="Click any condition for a deeper look at how HBOT helps, what to expect, and how we coordinate with the rest of your care team."
+        heading="Eight conditions plus wellness, one care team"
+        subtitle="Click any card for a deeper look at how HBOT helps, what to expect, and how we coordinate with the rest of your care team — including the wellness and recovery uses people come to us for outside a diagnosis."
       />
       <PhysiciansSection />
       <CtaBanner />

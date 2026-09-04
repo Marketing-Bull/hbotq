@@ -30,6 +30,20 @@ export interface Condition {
   relatedSlugs: ConditionSlug[];
 }
 
+/**
+ * A card in the conditions grid. Most entries are clinical condition pages,
+ * but the grid also surfaces the wellness hub — off-label, self-pay uses that
+ * live at /wellness/ rather than under /condition/.
+ */
+export interface ConditionListing {
+  /** Stable React key — the condition slug, or "wellness" for the hub card. */
+  key: string;
+  name: string;
+  summary: string;
+  href: string;
+  status: "on-label" | "off-label" | "wellness";
+}
+
 export interface Article {
   slug: string;
   title: string;
