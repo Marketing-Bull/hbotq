@@ -30,8 +30,12 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# env files. `.env` itself IS committed — it holds only non-secret, public-by-design
+# build-time values (see the file's own header). Everything else stays ignored:
+# .env.local and .env.*.local carry real secrets (RESEND_API_KEY, GHL_WEBHOOK_URL)
+# and must never reach this public repository.
 .env*
+!.env
 
 # vercel
 .vercel
