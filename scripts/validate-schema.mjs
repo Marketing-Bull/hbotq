@@ -36,7 +36,7 @@ const SCHEMA_ORG = "https://schema.org";
 // (the .mjs script can't import the @/... TS path alias). Kept in
 // sync manually; the only field currently used is `url`.
 const SITE = {
-  url: "https://hbotq.com",
+  url: "https://www.hbotq.com",
 };
 
 const args = new Set(process.argv.slice(2));

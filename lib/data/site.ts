@@ -3,7 +3,7 @@ export const site = {
   legalName: "Hyperbaric Medicine and Wound Treatment Center of Queens",
   shortDescription:
     "Hyperbaric oxygen therapy and advanced wound care in Woodside, Queens.",
-  url: "https://hbotq.com",
+  url: "https://www.hbotq.com",
   email: "hello@hbotq.com",
   leadEmail: "hello@hbotq.com",
   fromEmail: "HBOTQ Website <leads@hbotq.com>",
