@@ -13,7 +13,6 @@ Everything here was taken from the live site so the content survives the DNS rep
 | [`global-header-footer.md`](./global-header-footer.md) | Shared nav and footer copy |
 | [`page-inventory.md`](./page-inventory.md) | Every URL with its SEO metadata |
 | [`redirects.md`](./redirects.md) / [`redirects.csv`](./redirects.csv) | The verified 301 map (28 rules) |
-| [`next-redirects.ts`](./next-redirects.ts) | The 18 rules missing from `next.config.ts`, ready to paste |
 | [`fetch-videos.sh`](./fetch-videos.sh) | Downloads the 17 videos (443 MB) not committed here |
 | [`crawl-results.json`](./crawl-results.json) / [`media-inventory.json`](./media-inventory.json) | Raw audit data |
 
@@ -39,7 +38,7 @@ CleanTalk anti-spam and renders as `he***@***tq.com`):
    every image, but the 17 videos (443 MB) are only listed, not copied — run
    [`fetch-videos.sh`](./fetch-videos.sh) or pull them from the host. Once DNS moves you can
    still reach the origin by IP or via the host panel, but only if you have those credentials.
-2. **Add the 18 missing redirects** in [`next-redirects.ts`](./next-redirects.ts) — see below.
+2. ~~Add the 18 missing redirects.~~ **Done** — all 18 are now in `next.config.ts` (37 rules total) and verified against `next start`.
 3. **Export Search Console data** if you want pre-migration baselines. (GSC access itself is
    not affected by the DNS change, so this is not urgent.)
 
@@ -61,15 +60,15 @@ new Next.js app references it — worth keeping it that way.
 destination** on the new site — no live page will 404. All six old condition slugs exist in
 `lib/data/conditions.ts`. The gaps are in the *aliases* around them:
 
-**Missing — these 301 on the old site today but have no rule on the new one:**
+**Added — these 301 on the old site and now redirect on the new one:**
 `/hyperbaric/`, `/privacy/`, `/condition/`, `/radiation/`, and all six root-level condition
 slugs (`/chronic-pain/`, `/post-covid/`, `/non-healing-wounds/`, `/sudden-hearing-loss/`,
 `/radiation-tissue-damage/`, `/diabetic-lower-extremity-wounds/`).
 
-**Missing — indexed sitemap URLs.** The old `robots.txt` points Google at
+**Added — indexed sitemap URLs.** The old `robots.txt` points Google at
 `/sitemap_index.xml`, and Rank Math also publishes `/page-sitemap.xml`,
 `/condition-sitemap.xml` and `/local-sitemap.xml`. The new site serves `/sitemap.xml` via
-`app/sitemap.ts`, so the Rank Math paths will 404 unless redirected.
+`app/sitemap.ts`, so the Rank Math paths would have 404'd; they now redirect.
 
 **Worth a decision, not a bug:**
 

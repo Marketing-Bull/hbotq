@@ -4,7 +4,7 @@ Captured from the live site on 2026-09-04, before DNS cutover. Every rule below 
 verified with a live request; nothing here is guessed.
 
 **28 rules.** Machine-readable copy: [`redirects.csv`](./redirects.csv).
-Ready-to-paste Next.js config: [`next-redirects.ts`](./next-redirects.ts).
+All 18 rules the new site was missing are now applied in `next.config.ts`.
 
 | Source | Destination | Status | Note |
 | --- | --- | --- | --- |
