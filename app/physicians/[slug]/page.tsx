@@ -7,6 +7,7 @@ import { JsonLd } from "@/components/seo/json-ld";
 import { PhysicianCtaButtons } from "@/components/cards/physician-cta-buttons";
 import { PhysicianProfileLinks } from "@/components/cards/physician-profile-links";
 import { physicians } from "@/lib/data/physicians";
+import type { Physician } from "@/types/content";
 import { medicalBusinessSchema, physicianSchema, breadcrumbSchema } from "@/lib/seo/schemas";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { site } from "@/lib/data/site";
@@ -18,6 +19,27 @@ export const dynamic = "force-static";
 
 function getPhysician(slug: string) {
   return physicians.find((p) => p.slug === slug);
+}
+
+/**
+ * The meta description is generated, and a long credentialled name plus four
+ * specialties runs well past the ~160 characters Google shows before it
+ * truncates. Keep the identifying sentence whole and append only as many
+ * specialties as still fit.
+ */
+const DESCRIPTION_MAX = 160;
+
+function physicianDescription(p: Physician): string {
+  const base = `${p.name}, ${p.title} at HBOTQ in Woodside, Queens.`;
+  let description = base;
+  const kept: string[] = [];
+  for (const specialty of p.specialties) {
+    const next = `${base} ${[...kept, specialty].join(", ")}.`;
+    if (next.length > DESCRIPTION_MAX) break;
+    kept.push(specialty);
+    description = next;
+  }
+  return description;
 }
 
 export function generateStaticParams(): Params[] {
@@ -37,7 +59,7 @@ export async function generateMetadata(props: { params: Promise<Params> }) {
   }
   return buildMetadata({
     title: `${p.name} — ${p.title}`,
-    description: `${p.name}, ${p.title} at HBOTQ in Woodside, Queens. ${p.specialties.join(", ")}.`,
+    description: physicianDescription(p),
     path: `/physicians/${p.slug}/`,
     image: p.image,
   });

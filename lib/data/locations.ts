@@ -7,7 +7,7 @@ export const locations: Location[] = [
     shortName: "NYC",
     metaTitle: "Hyperbaric Oxygen Therapy in NYC | HBOTQ Queens",
     metaDescription:
-      "Hyperbaric oxygen therapy for patients across New York City. HBOTQ in Woodside, Queens offers physician-led HBOT in hard-shell medical chambers — Medicare and most insurers accepted.",
+      "Hyperbaric oxygen therapy for patients across New York City — HBOTQ in Woodside, Queens. Physician-led, hard-shell chambers, Medicare accepted.",
     summary:
       "Physician-led hyperbaric oxygen therapy for patients across the five boroughs, in one of the most accessible spots in the city — Woodside, Queens.",
     intro:
@@ -38,7 +38,7 @@ export const locations: Location[] = [
     shortName: "Manhattan",
     metaTitle: "Hyperbaric Oxygen Therapy Near Manhattan | HBOTQ Queens",
     metaDescription:
-      "Manhattan patients reach HBOTQ in Woodside, Queens in about 20 minutes on the 7 train. Physician-led, medical-grade hyperbaric oxygen therapy. Medicare and most insurers accepted.",
+      "Manhattan patients reach HBOTQ in Woodside, Queens in about 20 minutes on the 7 train — physician-led hyperbaric oxygen therapy, Medicare accepted.",
     summary:
       "A direct 7-train ride from Midtown — medical-grade hyperbaric oxygen therapy without the Manhattan price tag or the wait.",
     intro:
@@ -68,7 +68,7 @@ export const locations: Location[] = [
     shortName: "Brooklyn",
     metaTitle: "Hyperbaric Oxygen Therapy Near Brooklyn | HBOTQ Queens",
     metaDescription:
-      "Brooklyn patients travel to HBOTQ in Woodside, Queens for physician-led, medical-grade hyperbaric oxygen therapy. Non-healing wounds, diabetic ulcers, radiation injury and more.",
+      "Brooklyn patients travel to HBOTQ in Woodside, Queens for physician-led hyperbaric oxygen therapy — wounds, diabetic ulcers and radiation injury.",
     summary:
       "Medical-grade hyperbaric oxygen therapy a straightforward trip from north Brooklyn — physician-led, with free parking on-site.",
     intro:
@@ -97,7 +97,7 @@ export const locations: Location[] = [
     shortName: "Long Island City",
     metaTitle: "Hyperbaric Oxygen Therapy Near Long Island City | HBOTQ Queens",
     metaDescription:
-      "Long Island City patients are minutes from HBOTQ in Woodside, Queens. Physician-led, medical-grade hyperbaric oxygen therapy with free parking. Medicare and most insurers accepted.",
+      "Long Island City patients are minutes from HBOTQ in Woodside, Queens. Physician-led hyperbaric oxygen therapy, free parking, Medicare accepted.",
     summary:
       "Just a few stops up the 7 line — the closest dedicated hyperbaric oxygen therapy center to Long Island City.",
     intro:
@@ -125,7 +125,7 @@ export const locations: Location[] = [
     shortName: "Astoria",
     metaTitle: "Hyperbaric Oxygen Therapy Near Astoria | HBOTQ Queens",
     metaDescription:
-      "Astoria patients reach HBOTQ in nearby Woodside in minutes for physician-led, medical-grade hyperbaric oxygen therapy. Wounds, diabetic ulcers, radiation injury, hearing loss.",
+      "Astoria patients reach HBOTQ in nearby Woodside in minutes — physician-led hyperbaric oxygen therapy for wounds, radiation injury and hearing loss.",
     summary:
       "A neighboring-Queens trip to hard-shell, medical-grade hyperbaric oxygen therapy — physician-led, with free parking.",
     intro:
@@ -152,7 +152,7 @@ export const locations: Location[] = [
     shortName: "Jackson Heights",
     metaTitle: "Hyperbaric Oxygen Therapy Near Jackson Heights | HBOTQ Queens",
     metaDescription:
-      "Jackson Heights patients are minutes from HBOTQ in neighboring Woodside. Physician-led, medical-grade hyperbaric oxygen therapy with free parking. Medicare and most insurers accepted.",
+      "Jackson Heights patients are minutes from HBOTQ in neighboring Woodside. Physician-led hyperbaric oxygen therapy, free parking, Medicare accepted.",
     summary:
       "Practically next door — medical-grade hyperbaric oxygen therapy a stop or two up the 7 line from Jackson Heights.",
     intro:
@@ -179,7 +179,7 @@ export const locations: Location[] = [
     shortName: "Forest Hills",
     metaTitle: "Hyperbaric Oxygen Therapy Near Forest Hills | HBOTQ Queens",
     metaDescription:
-      "Forest Hills patients reach HBOTQ via a straight shot up Queens Boulevard. Physician-led, medical-grade hyperbaric oxygen therapy with free parking. Medicare and most insurers accepted.",
+      "Forest Hills patients reach HBOTQ via a straight shot up Queens Boulevard. Physician-led hyperbaric oxygen therapy, free parking, Medicare accepted.",
     summary:
       "A straight shot up Queens Boulevard — physician-led, medical-grade hyperbaric oxygen therapy with free parking on arrival.",
     intro:
@@ -206,7 +206,7 @@ export const locations: Location[] = [
     shortName: "Flushing",
     metaTitle: "Hyperbaric Oxygen Therapy Near Flushing | HBOTQ Queens",
     metaDescription:
-      "Flushing patients ride the 7 train straight to HBOTQ in Woodside for physician-led, medical-grade hyperbaric oxygen therapy. Wounds, diabetic ulcers, radiation injury, hearing loss.",
+      "Flushing patients ride the 7 train straight to HBOTQ in Woodside for physician-led hyperbaric oxygen therapy — wounds, radiation injury, hearing loss.",
     summary:
       "One direct 7-train ride from downtown Flushing to medical-grade hyperbaric oxygen therapy in Woodside.",
     intro:
@@ -233,7 +233,7 @@ export const locations: Location[] = [
     shortName: "Elmhurst",
     metaTitle: "Hyperbaric Oxygen Therapy Near Elmhurst | HBOTQ Queens",
     metaDescription:
-      "Elmhurst patients are minutes from HBOTQ in neighboring Woodside. Physician-led, medical-grade hyperbaric oxygen therapy with free parking. Medicare and most insurers accepted.",
+      "Elmhurst patients are minutes from HBOTQ in neighboring Woodside. Physician-led hyperbaric oxygen therapy, free parking, Medicare accepted.",
     summary:
       "Just up the road from Elmhurst — medical-grade hyperbaric oxygen therapy, physician-led, with free parking.",
     intro:

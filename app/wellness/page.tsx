@@ -11,7 +11,7 @@ import { WellnessCardGrid } from "@/components/cards/wellness-card-grid";
 export const metadata = buildMetadata({
   title: "HBOT for Wellness & Recovery",
   description:
-    "Beyond our FDA-approved medical care, some patients use hyperbaric oxygen therapy for athletic recovery, healthy aging, and everyday wellness. Honest, physician-supervised, in Woodside, Queens.",
+    "Some patients use hyperbaric oxygen therapy for athletic recovery, healthy aging and everyday wellness. Honest, physician-supervised care in Queens.",
   path: "/wellness/",
 });
 

@@ -12,7 +12,7 @@ export const wellnessUses: WellnessUse[] = [
     shortName: "Athletic Recovery",
     metaTitle: "HBOT for Athletic Recovery & Performance | Queens, NY",
     metaDescription:
-      "Athletes use hyperbaric oxygen therapy to support recovery between training and competition. A wellness use — not an FDA-approved treatment. HBOTQ, Woodside, Queens.",
+      "Athletes use hyperbaric oxygen therapy to support recovery between training and competition. A wellness use — not an FDA-approved treatment. HBOTQ, Queens.",
     summary:
       "Active people use hyperbaric oxygen to support recovery between hard training and competition. This is a wellness use — not an FDA-approved medical treatment — and we'll always be honest about what the evidence does and doesn't show.",
     intro:
@@ -52,7 +52,7 @@ export const wellnessUses: WellnessUse[] = [
     shortName: "Healthy Aging",
     metaTitle: "HBOT for Healthy Aging & Skin | Queens, NY",
     metaDescription:
-      "Hyperbaric oxygen therapy as part of a healthy-aging and skin-wellness routine in Woodside, Queens. A wellness use — not an FDA-approved treatment. Honest, physician-supervised.",
+      "Hyperbaric oxygen therapy as part of a healthy-aging and skin-wellness routine in Queens. A wellness use — not an FDA-approved treatment. Physician-supervised.",
     summary:
       "Some people add hyperbaric oxygen to a healthy-aging and skin-care routine. This is a wellness use — not an FDA-approved medical treatment — and we keep our claims grounded in what the evidence actually supports.",
     intro:
@@ -88,7 +88,7 @@ export const wellnessUses: WellnessUse[] = [
     shortName: "Energy & Wellness",
     metaTitle: "HBOT for Energy & Everyday Wellness | Queens, NY",
     metaDescription:
-      "Add hyperbaric oxygen therapy to your wellness routine for an oxygen boost in Woodside, Queens. A wellness use — not an FDA-approved treatment. Honest, physician-supervised.",
+      "Add hyperbaric oxygen therapy to your wellness routine for an oxygen boost in Queens. A wellness use — not an FDA-approved treatment. Physician-supervised.",
     summary:
       "Some people add hyperbaric oxygen to their wellness routine for an oxygen boost and a sense of restoration. This is a wellness use — not an FDA-approved medical treatment — and we keep our claims honest.",
     intro:

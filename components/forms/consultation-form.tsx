@@ -3,7 +3,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import {
   consultationSchema,
   CONDITION_OPTIONS,
@@ -40,6 +40,17 @@ function isTrackedField(name: string): name is TrackedField {
   return (TRACKED_FIELDS as readonly string[]).includes(name);
 }
 
+// Order the error summary reads in, matching the visual order of the fields
+// so the list a screen reader announces matches the list a sighted user scans.
+const SUMMARY_ORDER = [
+  "name",
+  "phone",
+  "email",
+  "condition",
+  "message",
+  "consent",
+] as const satisfies readonly (keyof ConsultationInput)[];
+
 /**
  * Best-effort E.164 for Enhanced Conversions. Callers are effectively all US,
  * and the form accepts "718-925-3322", "(718) 925 3322" and similar. A 10-digit
@@ -71,7 +82,7 @@ export function ConsultationForm({
     register,
     handleSubmit,
     setError,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, submitCount },
   } = useForm<ConsultationInput>({
     resolver: zodResolver(consultationSchema),
     defaultValues: {
@@ -250,6 +261,37 @@ export function ConsultationForm({
   const fieldBase =
     "w-full rounded-lg border border-[var(--color-surface-border)] bg-white px-4 py-3 text-[var(--color-ink)] focus:border-[var(--color-brand-500)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-200)]";
 
+  // Every field gets a stable, form-scoped id so the error text can be wired
+  // to its input with aria-describedby. `useId` keeps two forms on the same
+  // page (e.g. an inline hero form plus the page form) from colliding.
+  const uid = useId();
+  const fieldId = (name: string) => `${uid}-${name}`;
+  const errorId = (name: string) => `${uid}-${name}-error`;
+
+  // aria-invalid + aria-describedby for a field, applied only while it is in
+  // error so we never point at an element that isn't rendered.
+  const errorAria = (name: string, message?: string) =>
+    message
+      ? { "aria-invalid": true as const, "aria-describedby": errorId(name) }
+      : {};
+
+  // The error summary. Zod reports every failure at once, so a screen-reader
+  // user needs one announcement listing them rather than five separate live
+  // regions firing together. react-hook-form focuses the first invalid field
+  // for us; this block is what gets read out.
+  const summary = SUMMARY_ORDER.flatMap((name) => {
+    const message = errors[name]?.message;
+    return message ? [{ name, message }] : [];
+  });
+
+  const focusField = (name: string) => {
+    const el = document.getElementById(fieldId(name));
+    if (el instanceof HTMLElement) {
+      el.focus();
+      el.scrollIntoView({ block: "center", behavior: "smooth" });
+    }
+  };
+
   return (
     <form
       ref={formRef}
@@ -257,6 +299,10 @@ export function ConsultationForm({
       className={`bg-white rounded-2xl border border-[var(--color-surface-border)] p-6 lg:p-8 ${
         compact ? "" : "shadow-sm"
       }`}
+      // Kept intentionally: validation is Zod's, so the browser must not
+      // pre-empt it with native bubbles that would suppress our own messages.
+      // The `required` attributes below still carry the semantics to
+      // assistive tech.
       noValidate
     >
       {!compact ? (
@@ -292,36 +338,101 @@ export function ConsultationForm({
 
       <input type="hidden" {...register("source")} value={source} />
 
+      {summary.length > 0 ? (
+        <div
+          // Keyed on submitCount so a second submit with the same errors
+          // remounts the live region and is announced again — an unchanged
+          // role="alert" node is silent on re-render.
+          key={submitCount}
+          role="alert"
+          className="mb-5 rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-800"
+        >
+          <p className="font-semibold">
+            {summary.length === 1
+              ? "There is 1 problem with this form:"
+              : `There are ${summary.length} problems with this form:`}
+          </p>
+          <ul className="mt-2 list-disc space-y-1 pl-5">
+            {summary.map(({ name, message }) => (
+              <li key={name}>
+                <button
+                  type="button"
+                  onClick={() => focusField(name)}
+                  className="underline underline-offset-2 hover:no-underline"
+                >
+                  {message}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
+
       <div className="grid sm:grid-cols-2 gap-4">
-        <Field label="Full name" error={errors.name?.message}>
+        <Field
+          id={fieldId("name")}
+          errorId={errorId("name")}
+          label="Full name"
+          error={errors.name?.message}
+        >
           <input
+            id={fieldId("name")}
             type="text"
             autoComplete="name"
+            required
             className={fieldBase}
+            {...errorAria("name", errors.name?.message)}
             {...register("name")}
           />
         </Field>
-        <Field label="Phone" error={errors.phone?.message}>
+        <Field
+          id={fieldId("phone")}
+          errorId={errorId("phone")}
+          label="Phone"
+          error={errors.phone?.message}
+        >
           <input
+            id={fieldId("phone")}
             type="tel"
             autoComplete="tel"
+            required
             className={fieldBase}
+            {...errorAria("phone", errors.phone?.message)}
             {...register("phone")}
           />
         </Field>
       </div>
 
       <div className="mt-4 grid sm:grid-cols-2 gap-4">
-        <Field label="Email" error={errors.email?.message}>
+        <Field
+          id={fieldId("email")}
+          errorId={errorId("email")}
+          label="Email"
+          error={errors.email?.message}
+        >
           <input
+            id={fieldId("email")}
             type="email"
             autoComplete="email"
+            required
             className={fieldBase}
+            {...errorAria("email", errors.email?.message)}
             {...register("email")}
           />
         </Field>
-        <Field label="Condition" error={errors.condition?.message}>
-          <select className={fieldBase} {...register("condition")}>
+        <Field
+          id={fieldId("condition")}
+          errorId={errorId("condition")}
+          label="Condition"
+          error={errors.condition?.message}
+        >
+          <select
+            id={fieldId("condition")}
+            required
+            className={fieldBase}
+            {...errorAria("condition", errors.condition?.message)}
+            {...register("condition")}
+          >
             <option value="">Select one…</option>
             {CONDITION_OPTIONS.map((opt) => (
               <option key={opt.value} value={opt.value}>
@@ -358,32 +469,46 @@ export function ConsultationForm({
       </fieldset>
 
       <Field
+        id={fieldId("message")}
+        errorId={errorId("message")}
         label="Anything else we should know? (optional)"
         error={errors.message?.message}
         className="mt-4"
       >
         <textarea
+          id={fieldId("message")}
           rows={4}
           className={fieldBase}
+          {...errorAria("message", errors.message?.message)}
           {...register("message")}
         />
       </Field>
 
-      <label className="mt-5 flex items-start gap-3 text-sm text-[var(--color-ink-muted)]">
-        <input
-          type="checkbox"
-          {...register("consent")}
-          className="mt-1"
-        />
-        <span>
-          I’d like HBOTQ to contact me about my consultation. I understand
-          this isn’t medical advice and that filing this form doesn’t create a
-          physician-patient relationship.
-        </span>
-      </label>
-      {errors.consent ? (
-        <p className="mt-1 text-sm text-red-600">{errors.consent.message}</p>
-      ) : null}
+      <div className="mt-5">
+        <label
+          htmlFor={fieldId("consent")}
+          className="flex items-start gap-3 text-sm text-[var(--color-ink-muted)]"
+        >
+          <input
+            id={fieldId("consent")}
+            type="checkbox"
+            required
+            className="mt-1"
+            {...errorAria("consent", errors.consent?.message)}
+            {...register("consent")}
+          />
+          <span>
+            I’d like HBOTQ to contact me about my consultation. I understand
+            this isn’t medical advice and that filing this form doesn’t create
+            a physician-patient relationship.
+          </span>
+        </label>
+        {errors.consent ? (
+          <p id={errorId("consent")} className="mt-1 text-sm text-red-600">
+            {errors.consent.message}
+          </p>
+        ) : null}
+      </div>
 
       {formError ? (
         <div
@@ -426,23 +551,34 @@ export function ConsultationForm({
 }
 
 function Field({
+  id,
+  errorId,
   label,
   children,
   error,
   className,
 }: {
+  id: string;
+  errorId: string;
   label: string;
   children: React.ReactNode;
   error?: string;
   className?: string;
 }) {
   return (
-    <label className={`block ${className ?? ""}`}>
-      <span className="block text-sm font-medium text-[var(--color-ink)] mb-1.5">
+    <div className={`block ${className ?? ""}`}>
+      <label
+        htmlFor={id}
+        className="block text-sm font-medium text-[var(--color-ink)] mb-1.5"
+      >
         {label}
-      </span>
+      </label>
       {children}
-      {error ? <p className="mt-1 text-sm text-red-600">{error}</p> : null}
-    </label>
+      {error ? (
+        <p id={errorId} className="mt-1 text-sm text-red-600">
+          {error}
+        </p>
+      ) : null}
+    </div>
   );
 }

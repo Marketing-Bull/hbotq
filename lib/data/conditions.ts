@@ -9,7 +9,7 @@ export const conditions: Condition[] = [
       "Wounds that haven't closed after 30 days of standard care often respond to hyperbaric oxygen therapy when oxygen delivery to the tissue is the missing factor.",
     metaTitle: "Hyperbaric Oxygen Therapy for Non-Healing Wounds | Queens, NY",
     metaDescription:
-      "HBOT in Woodside, Queens for chronic non-healing wounds. Our wound program combines hyperbaric oxygen, debridement, and advanced wound care for patients across NYC.",
+      "HBOT in Woodside, Queens for chronic non-healing wounds — hyperbaric oxygen, debridement and advanced wound care for patients across NYC.",
     fdaStatus: "on-label",
     heroImage: "/images/conditions/safe-effective.webp",
     howHbotHelps:
@@ -53,7 +53,7 @@ export const conditions: Condition[] = [
     metaTitle:
       "HBOT for Diabetic Foot Ulcers & Lower-Extremity Wounds | Queens, NY",
     metaDescription:
-      "Hyperbaric oxygen therapy for diabetic foot ulcers and lower-extremity wounds in Woodside, Queens. Limb-salvage focused program with experienced wound physicians.",
+      "Hyperbaric oxygen therapy for diabetic foot ulcers and lower-extremity wounds in Woodside, Queens. Limb-salvage focus, experienced wound physicians.",
     fdaStatus: "on-label",
     heroImage: "/images/conditions/diabetic-wounds.webp",
     howHbotHelps:
@@ -171,7 +171,7 @@ export const conditions: Condition[] = [
       "Patients with persistent fatigue, brain fog, and exercise intolerance after COVID-19 are increasingly turning to hyperbaric oxygen therapy. This is currently an off-label use that we discuss carefully with each patient.",
     metaTitle: "HBOT for Long COVID & Post-COVID Symptoms | Queens, NY",
     metaDescription:
-      "Hyperbaric oxygen therapy in Woodside, Queens for post-COVID fatigue, brain fog, and exercise intolerance. Off-label use; honest expectations from experienced physicians.",
+      "Hyperbaric oxygen therapy in Woodside, Queens for post-COVID fatigue, brain fog and exercise intolerance. Off-label use; honest physician guidance.",
     fdaStatus: "off-label",
     heroImage: "/images/conditions/post-covid.webp",
     howHbotHelps:
@@ -211,7 +211,7 @@ export const conditions: Condition[] = [
       "For appropriate patients, hyperbaric oxygen therapy can reduce inflammation, support tissue repair, and complement other pain management strategies. Most chronic pain indications are off-label.",
     metaTitle: "HBOT for Chronic Pain Management | Queens, NY",
     metaDescription:
-      "Hyperbaric oxygen therapy in Woodside, Queens for chronic pain conditions including complex regional pain syndrome and fibromyalgia. Honest, physician-supervised care.",
+      "Hyperbaric oxygen therapy in Woodside, Queens for chronic pain including complex regional pain syndrome and fibromyalgia. Physician-supervised care.",
     fdaStatus: "off-label",
     heroImage: "/images/conditions/treats.webp",
     howHbotHelps:
@@ -250,7 +250,7 @@ export const conditions: Condition[] = [
     metaTitle:
       "HBOT for Chronic Refractory Osteomyelitis (Bone Infection) | Queens, NY",
     metaDescription:
-      "Hyperbaric oxygen therapy in Woodside, Queens for chronic refractory osteomyelitis — recurrent bone infection that hasn't cleared with antibiotics and surgery alone.",
+      "Hyperbaric oxygen therapy in Woodside, Queens for chronic refractory osteomyelitis — bone infection antibiotics and surgery alone haven't cleared.",
     fdaStatus: "on-label",
     heroImage: "/images/conditions/safe-effective.webp",
     howHbotHelps:
@@ -294,7 +294,7 @@ export const conditions: Condition[] = [
     metaTitle:
       "HBOT for Severe Anemia & Bridge Therapy | Queens, NY",
     metaDescription:
-      "Hyperbaric oxygen therapy in Woodside, Queens as bridge therapy for severe blood-loss anemia when transfusion is unavailable or declined. FDA-approved indication, physician-supervised.",
+      "Hyperbaric oxygen therapy in Woodside, Queens as bridge therapy for severe blood-loss anemia when transfusion is unavailable or declined. FDA-approved.",
     fdaStatus: "on-label",
     heroImage: "/images/conditions/safe-effective.webp",
     howHbotHelps:

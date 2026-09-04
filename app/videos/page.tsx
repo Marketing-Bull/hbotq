@@ -20,7 +20,7 @@ import { site } from "@/lib/data/site";
 export const metadata = buildMetadata({
   title: "Video Library — Hyperbaric Oxygen Therapy Explained",
   description:
-    "Short videos from the HBOTQ team explaining how hyperbaric oxygen therapy helps with non-healing wounds, diabetic ulcers, radiation injury, sudden hearing loss, and more.",
+    "Short videos from the HBOTQ team on how hyperbaric oxygen therapy helps with non-healing wounds, diabetic ulcers, radiation injury and hearing loss.",
   path: "/videos/",
 });
 

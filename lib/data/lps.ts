@@ -93,7 +93,7 @@ export const conditionLps: ConditionLp[] = [
       "HBOT for diabetic lower-extremity wounds is FDA-approved and typically covered by Medicare, Medicaid, and most major insurers. We handle pre-authorization.",
     metaTitle: "HBOT for Diabetic Foot Ulcers in Queens, NY | HBOTQ",
     metaDescription:
-      "Hyperbaric oxygen therapy for diabetic foot ulcers and lower-extremity wounds in Woodside, Queens. FDA-approved, Medicare covered, limb-salvage focused. Free consultation.",
+      "Hyperbaric oxygen therapy for diabetic foot ulcers and lower-extremity wounds in Woodside, Queens. FDA-approved, Medicare covered, limb-salvage focused.",
   },
   {
     slug: "non-healing-wounds",
@@ -221,7 +221,7 @@ export const conditionLps: ConditionLp[] = [
       "Sudden sensorineural hearing loss is an FDA-approved indication. Medicare, Medicaid, and most major insurers typically cover HBOT. We handle pre-authorization.",
     metaTitle: "HBOT for Sudden Hearing Loss in Queens, NY | HBOTQ",
     metaDescription:
-      "Sudden sensorineural hearing loss in one ear? Start HBOT within 14 days for the best chance of recovery. HBOTQ Queens — FDA-approved, fast scheduling, insurance handled.",
+      "Sudden hearing loss in one ear? Start HBOT within 14 days for the best chance of recovery. HBOTQ Queens — FDA-approved, fast scheduling, insurance handled.",
   },
   {
     slug: "radiation-injury",
@@ -285,7 +285,7 @@ export const conditionLps: ConditionLp[] = [
       "Radiation tissue damage is FDA-approved for HBOT and typically covered by Medicare, Medicaid, and most major insurers. We handle coordination and pre-authorization.",
     metaTitle: "HBOT for Radiation Tissue Damage in Queens, NY | HBOTQ",
     metaDescription:
-      "Hyperbaric oxygen therapy for radiation injuries — osteoradionecrosis, soft tissue radionecrosis, radiation cystitis — in Woodside, Queens. FDA-approved, oncology-coordinated. Free consultation.",
+      "Hyperbaric oxygen therapy for radiation injury — osteoradionecrosis, soft tissue radionecrosis, radiation cystitis — in Queens. FDA-approved, Medicare covered.",
   },
 ];
 

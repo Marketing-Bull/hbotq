@@ -15,7 +15,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = buildMetadata({
   title: "Hyperbaric Oxygen Therapy in Queens & NYC | HBOTQ",
   description:
-    "Medical-grade hyperbaric oxygen therapy in Woodside, Queens. Board-certified physicians, hard-shell chambers, Medicare & most insurers accepted. Free consultation.",
+    "Medical-grade hyperbaric oxygen therapy in Woodside, Queens. Board-certified physicians, hard-shell chambers, Medicare accepted. Free consultation.",
   path: "/lp/hyperbaric-therapy/",
   noIndex: true,
 });

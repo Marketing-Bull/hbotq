@@ -8,7 +8,7 @@ import { buildMetadata } from "@/lib/seo/metadata";
 export const metadata = buildMetadata({
   title: "Conditions We Treat",
   description:
-    "Conditions treated with hyperbaric oxygen therapy at HBOTQ in Woodside, Queens — including FDA-approved wound, radiation, and hearing-loss indications, carefully evaluated off-label uses, and wellness and recovery sessions.",
+    "Conditions treated with hyperbaric oxygen therapy at HBOTQ in Queens — FDA-approved wound, radiation and hearing-loss indications, plus wellness sessions.",
   path: "/conditions/",
   image: "/images/og/conditions.jpg",
 });

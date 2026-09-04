@@ -12,7 +12,7 @@ import { site } from "@/lib/data/site";
 export const metadata = buildMetadata({
   title: "Areas We Serve — Hyperbaric Oxygen Therapy Across NYC",
   description:
-    "HBOTQ in Woodside, Queens provides physician-led hyperbaric oxygen therapy for patients across NYC — Manhattan, Brooklyn, Long Island City, Astoria, and all of Queens.",
+    "Physician-led hyperbaric oxygen therapy in Woodside, Queens — serving Manhattan, Brooklyn, Long Island City, Astoria and all of Queens.",
   path: "/locations/",
 });
 
