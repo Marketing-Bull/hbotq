@@ -1,0 +1,29 @@
+source,destination,status,note
+http://hbotq.com/*,https://hbotq.com/*,301,Force HTTPS
+https://www.hbotq.com/*,https://hbotq.com/*,301,Strip www
+http://www.hbotq.com/*,https://hbotq.com/*,301,2-hop today -> collapse to 1
+/contact/,/contact-us/,301,Alias
+/hyperbaric/,/hyperbaric-therapy/,301,Alias
+/physician/,/physicians/,301,Alias
+/faq/,/faqs/,301,Alias
+/privacy/,/privacy-policy/,301,Alias
+/condition/,/conditions/,301,Alias
+/radiation/,/condition/radiation-tissue-damage/,301,Alias
+/conditions/chronic-pain/,/condition/chronic-pain/,301,Legacy plural path
+/chronic-pain/,/condition/chronic-pain/,301,Legacy root-level path
+/conditions/diabetic-lower-extremity-wounds/,/condition/diabetic-lower-extremity-wounds/,301,Legacy plural path
+/diabetic-lower-extremity-wounds/,/condition/diabetic-lower-extremity-wounds/,301,Legacy root-level path
+/conditions/non-healing-wounds/,/condition/non-healing-wounds/,301,Legacy plural path
+/non-healing-wounds/,/condition/non-healing-wounds/,301,Legacy root-level path
+/conditions/post-covid/,/condition/post-covid/,301,Legacy plural path
+/post-covid/,/condition/post-covid/,301,Legacy root-level path
+/conditions/radiation-tissue-damage/,/condition/radiation-tissue-damage/,301,Legacy plural path
+/radiation-tissue-damage/,/condition/radiation-tissue-damage/,301,Legacy root-level path
+/conditions/sudden-hearing-loss/,/condition/sudden-hearing-loss/,301,Legacy plural path
+/sudden-hearing-loss/,/condition/sudden-hearing-loss/,301,Legacy root-level path
+/sitemap.xml,/sitemap_index.xml,301,Sitemap
+/wp-sitemap.xml,/sitemap_index.xml,301,Sitemap
+/index.php,/,301,WP artifact
+/?p=<ID>,/<permalink>/,301,WP ID lookup
+/?page_id=<ID>,/<permalink>/,301,WP ID lookup
+/<path>  (no trailing slash),/<path>/,301,Enforce trailing slash consistently
