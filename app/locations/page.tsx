@@ -10,7 +10,7 @@ import { buildMetadata } from "@/lib/seo/metadata";
 import { site } from "@/lib/data/site";
 
 export const metadata = buildMetadata({
-  title: "Areas We Serve — Hyperbaric Oxygen Therapy Across NYC",
+  title: "Areas We Serve — Hyperbaric Therapy Across NYC",
   description:
     "Physician-led hyperbaric oxygen therapy in Woodside, Queens — serving Manhattan, Brooklyn, Long Island City, Astoria and all of Queens.",
   path: "/locations/",

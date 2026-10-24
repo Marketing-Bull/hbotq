@@ -5,6 +5,7 @@ export const physicians: Physician[] = [
     slug: "dr-manoj-sadhnani",
     name: "Dr. Manoj Sadhnani",
     title: "Board-Certified Podiatric Physician & Surgeon",
+    metaTitle: "Dr. Manoj Sadhnani — Podiatric Surgeon & Wound Care",
     credentials: ["DPM", "Board-Certified"],
     specialties: [
       "Podiatric Surgery",
@@ -47,6 +48,7 @@ export const physicians: Physician[] = [
     slug: "rigina-matatova",
     name: "Rigina Matatova, MSN, APRN, AGPCNP-BC",
     title: "Adult-Gerontology Primary Care Nurse Practitioner",
+    metaTitle: "Rigina Matatova — Wound Care Nurse Practitioner",
     credentials: ["MSN", "APRN", "AGPCNP-BC"],
     specialties: [
       "Wound Care",

@@ -48,6 +48,7 @@ export default async function ArticlePage(props: {
 
   const author =
     physicians.find((p) => p.slug === a.authorSlug) ?? physicians[0];
+  const moreArticles = articles.filter((x) => x.slug !== a.slug);
   const related = (a.relatedConditionSlugs ?? [])
     .map((s) => getCondition(s))
     .filter((c): c is NonNullable<typeof c> => Boolean(c));
@@ -178,6 +179,30 @@ export default async function ArticlePage(props: {
                   <ConditionCard key={c.slug} listing={toConditionListing(c)} />
                 ))}
               </div>
+            </div>
+          ) : null}
+
+          {moreArticles.length ? (
+            <div className="mt-14 border-t border-[var(--color-surface-border)] pt-10">
+              <h2 className="font-display text-xl font-semibold">
+                Keep reading
+              </h2>
+              <ul className="mt-6 space-y-3">
+                {moreArticles.map((m) => (
+                  <li key={m.slug}>
+                    <Link
+                      href={`/resources/${m.slug}/`}
+                      className="font-semibold text-[var(--color-brand-500)] hover:underline"
+                    >
+                      {m.title}
+                    </Link>
+                    <span className="text-[var(--color-ink-muted)]">
+                      {" "}
+                      · {m.readMinutes} min read
+                    </span>
+                  </li>
+                ))}
+              </ul>
             </div>
           ) : null}
 

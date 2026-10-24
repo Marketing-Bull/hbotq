@@ -10,7 +10,7 @@ export const wellnessUses: WellnessUse[] = [
     slug: "athletic-recovery",
     name: "Athletic Recovery & Performance",
     shortName: "Athletic Recovery",
-    metaTitle: "HBOT for Athletic Recovery & Performance | Queens, NY",
+    metaTitle: "HBOT for Athletic Recovery | Queens, NY",
     metaDescription:
       "Athletes use hyperbaric oxygen therapy to support recovery between training and competition. A wellness use — not an FDA-approved treatment. HBOTQ, Queens.",
     summary:

@@ -5,6 +5,8 @@ import { site } from "@/lib/data/site";
 import { GTM, GTMNoScript } from "@/components/analytics/gtm";
 import { AttributionCapture } from "@/components/analytics/attribution-capture";
 import { CallRail } from "@/components/analytics/callrail";
+import { AhrefsAnalytics } from "@/components/analytics/ahrefs";
+import { VercelAnalytics } from "@/components/analytics/vercel-analytics";
 import { ChromeGate } from "@/components/layout/chrome-gate";
 import { ScrollDepth } from "@/components/analytics/scroll-depth";
 import { JsonLd } from "@/components/seo/json-ld";
@@ -86,6 +88,8 @@ export default function RootLayout({
           companyId={callRailCompanyId}
           scriptId={callRailScriptId}
         />
+        <AhrefsAnalytics />
+        <VercelAnalytics />
         <div className="h-16 lg:hidden" aria-hidden />
       </body>
     </html>

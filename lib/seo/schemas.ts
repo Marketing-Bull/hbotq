@@ -36,6 +36,35 @@ function areaServedEntry() {
 }
 
 /**
+ * A clinician as schema.org sees them: both a `Person` and a `Physician`.
+ * `Physician` alone is a MedicalBusiness/MedicalOrganization subtype, so
+ * `jobTitle` and `worksFor` (Person properties) and use as an `employee`,
+ * `author` or `reviewedBy` value fail schema.org validation. Typing the node
+ * as `["Person", "Physician"]` keeps `medicalSpecialty` and satisfies the
+ * Person-only properties and ranges.
+ */
+function physicianNode(p: { name: string; title: string }) {
+  return {
+    "@type": ["Person", "Physician"],
+    name: p.name,
+    jobTitle: p.title,
+  };
+}
+
+/**
+ * Logo as an ImageObject. Google needs a raster logo of at least 112x112px;
+ * /favicon.ico does not qualify, so this points at a square PNG.
+ */
+function logoImage() {
+  return {
+    "@type": "ImageObject",
+    url: `${site.url}/images/brand/logo.png`,
+    width: 300,
+    height: 300,
+  };
+}
+
+/**
  * List the clinic's services as MedicalProcedure entries with the matching
  * `/condition/[slug]/` URL. Mirrors the user-visible conditions index and
  * surfaces each treatment in the Knowledge Panel / rich results.
@@ -89,12 +118,16 @@ export function medicalBusinessSchema() {
 
   return {
     "@context": "https://schema.org",
-    "@type": "MedicalBusiness",
+    // MedicalClinic is what makes `medicalSpecialty` / `availableService` valid
+    // on this node (MedicalBusiness alone allows neither). MedicalBusiness and
+    // Organization are already ancestors; they are listed explicitly so
+    // crawlers that match on the literal type find them.
+    "@type": ["MedicalClinic", "MedicalBusiness", "Organization"],
     "@id": `${site.url}/#business`,
     name: site.legalName,
     alternateName: site.name,
     url: site.url,
-    logo: `${site.url}/favicon.ico`,
+    logo: logoImage(),
     image: `${site.url}/images/og/homepage.jpg`,
     telephone: site.phoneE164,
     email: site.email,
@@ -150,9 +183,7 @@ export function medicalBusinessSchema() {
     // relationship (the standalone Physician blocks on /physicians/ already
     // carry this — the inline entries were missing it).
     employee: physicians.map((p) => ({
-      "@type": "Physician",
-      name: p.name,
-      jobTitle: p.title,
+      ...physicianNode(p),
       medicalSpecialty: p.specialties,
       worksFor: { "@id": `${site.url}/#business` },
     })),
@@ -207,9 +238,7 @@ export function physicianSchema(opts: {
 }) {
   return {
     "@context": "https://schema.org",
-    "@type": "Physician",
-    name: opts.name,
-    jobTitle: opts.title,
+    ...physicianNode({ name: opts.name, title: opts.title }),
     medicalSpecialty: opts.specialties,
     worksFor: { "@id": `${site.url}/#business` },
     ...(opts.image
@@ -279,26 +308,26 @@ export function articleSchema(opts: {
   datePublished: string;
   dateModified: string;
   author: { name: string; title: string };
+  image?: string;
 }) {
+  const image = opts.image ?? "/images/og/default.jpg";
   return {
     "@context": "https://schema.org",
-    "@type": "MedicalScholarlyArticle",
+    // `Article` is what crawlers and Google's Article rich result look for;
+    // `MedicalWebPage` adds `reviewedBy` / `lastReviewed`, which are not valid
+    // on a bare Article (and MedicalScholarlyArticle does not allow them).
+    "@type": ["Article", "MedicalWebPage"],
     headline: opts.title,
+    name: opts.title,
     description: opts.description,
     url: `${site.url}${opts.path}`,
     mainEntityOfPage: `${site.url}${opts.path}`,
+    image: [`${site.url}${image}`],
     datePublished: opts.datePublished,
     dateModified: opts.dateModified,
-    author: {
-      "@type": "Physician",
-      name: opts.author.name,
-      jobTitle: opts.author.title,
-    },
-    reviewedBy: {
-      "@type": "Physician",
-      name: opts.author.name,
-      jobTitle: opts.author.title,
-    },
+    lastReviewed: opts.dateModified,
+    author: physicianNode(opts.author),
+    reviewedBy: physicianNode(opts.author),
     publisher: { "@id": `${site.url}/#business` },
   };
 }
@@ -318,11 +347,7 @@ export function medicalWebPageSchema(opts: {
     description: opts.description,
     url: `${site.url}${opts.path}`,
     lastReviewed: opts.lastReviewed,
-    reviewedBy: {
-      "@type": "Physician",
-      name: opts.reviewer.name,
-      jobTitle: opts.reviewer.title,
-    },
+    reviewedBy: physicianNode(opts.reviewer),
     publisher: { "@id": `${site.url}/#business` },
   };
   if (opts.citations?.length)

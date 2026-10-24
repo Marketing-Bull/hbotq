@@ -95,7 +95,7 @@ export const locations: Location[] = [
     slug: "long-island-city",
     area: "Long Island City",
     shortName: "Long Island City",
-    metaTitle: "Hyperbaric Oxygen Therapy Near Long Island City | HBOTQ Queens",
+    metaTitle: "Hyperbaric Oxygen Therapy Near Long Island City | HBOTQ",
     metaDescription:
       "Long Island City patients are minutes from HBOTQ in Woodside, Queens. Physician-led hyperbaric oxygen therapy, free parking, Medicare accepted.",
     summary:
@@ -150,7 +150,7 @@ export const locations: Location[] = [
     slug: "jackson-heights",
     area: "Jackson Heights",
     shortName: "Jackson Heights",
-    metaTitle: "Hyperbaric Oxygen Therapy Near Jackson Heights | HBOTQ Queens",
+    metaTitle: "Hyperbaric Oxygen Therapy Near Jackson Heights | HBOTQ",
     metaDescription:
       "Jackson Heights patients are minutes from HBOTQ in neighboring Woodside. Physician-led hyperbaric oxygen therapy, free parking, Medicare accepted.",
     summary:

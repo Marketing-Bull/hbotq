@@ -55,7 +55,7 @@ export const articles: Article[] = [
   {
     slug: "how-many-hbot-sessions-will-i-need",
     title: "How Many HBOT Sessions Will I Need?",
-    metaTitle: "How Many Hyperbaric Oxygen Therapy Sessions Will I Need? | HBOTQ",
+    metaTitle: "How Many HBOT Sessions Will I Need? | HBOTQ",
     metaDescription:
       "How long a course of hyperbaric oxygen therapy takes by condition — 10–20 sessions for sudden hearing loss, 20–40 for wounds and radiation injury.",
     excerpt:
@@ -100,7 +100,7 @@ export const articles: Article[] = [
   {
     slug: "is-hbot-covered-by-insurance",
     title: "Is Hyperbaric Oxygen Therapy Covered by Insurance?",
-    metaTitle: "Is Hyperbaric Oxygen Therapy Covered by Insurance? | HBOTQ Queens",
+    metaTitle: "Is Hyperbaric Oxygen Therapy Covered by Insurance? | HBOTQ",
     metaDescription:
       "When HBOT is covered by Medicare, Medicaid and major insurers — which FDA-approved indications qualify, what documentation is needed, what is self-pay.",
     excerpt:
@@ -206,7 +206,7 @@ export const articles: Article[] = [
   {
     slug: "hard-vs-soft-hyperbaric-chambers",
     title: "Hard vs. Soft Hyperbaric Chambers: Why It Matters",
-    metaTitle: "Hard vs. Soft Hyperbaric Chambers: What's the Difference? | HBOTQ",
+    metaTitle: "Hard vs. Soft Hyperbaric Chambers: Key Differences | HBOTQ",
     metaDescription:
       "Hard-shell and soft-sided hyperbaric chambers are not the same thing. Why the pressure difference matters — and what to look for in a provider.",
     excerpt:

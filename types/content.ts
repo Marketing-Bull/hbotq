@@ -103,6 +103,8 @@ export interface Physician {
   title: string;
   credentials: string[];
   specialties: string[];
+  /** Page <title>, kept under ~60 chars. Defaults to `${name} — ${title}`. */
+  metaTitle?: string;
   /** Short bio used on cards and meta descriptions. */
   bio: string;
   /** Longer, multi-paragraph bio for the detail page. */
