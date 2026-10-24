@@ -45,9 +45,11 @@ export function buildMetadata({
     title: { absolute: fullTitle },
     description,
     alternates: { canonical: url },
-    robots: noIndex
-      ? { index: false, follow: false }
-      : { index: true, follow: true },
+    // Keep `follow: true` even on noindex pages. `nofollow` turns every
+    // outgoing link (header, footer, body) into a nofollow link, so the pages
+    // they point at show up as receiving a mix of nofollow and dofollow
+    // internal links and lose link equity from those pages.
+    robots: { index: !noIndex, follow: true },
     openGraph: {
       title: fullTitle,
       description,

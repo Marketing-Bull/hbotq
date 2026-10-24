@@ -18,9 +18,8 @@ const STATIC_ROUTES: { path: string; priority: number }[] = [
   { path: "/physicians/", priority: 0.7 },
   { path: "/faqs/", priority: 0.7 },
   { path: "/contact-us/", priority: 0.8 },
-  { path: "/privacy-policy/", priority: 0.3 },
-  { path: "/terms-of-service/", priority: 0.3 },
-  { path: "/accessibility/", priority: 0.3 },
+  // /privacy-policy/, /terms-of-service/ and /accessibility/ are noindex, so
+  // they are left out: a noindex URL in the sitemap sends Google mixed signals.
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

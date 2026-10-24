@@ -77,6 +77,15 @@ function warn(page, idx, type, message) {
 
 // ---------- Assertion helpers ----------
 
+/** `@type` may be a string or an array (multi-typed node, e.g. Person + Physician). */
+function typesOf(node) {
+  const t = node && node["@type"];
+  return Array.isArray(t) ? t : typeof t === "string" ? [t] : [];
+}
+function hasType(node, type) {
+  return typesOf(node).includes(type);
+}
+
 function isPlainObject(v) {
   return v !== null && typeof v === "object" && !Array.isArray(v);
 }
@@ -390,6 +399,16 @@ function validateMedicalBusiness(page, idx, block) {
       warn(page, idx, "MedicalBusiness", `email does not look like an email address: ${JSON.stringify(block.email)}`);
     }
   }
+  if (!hasType(block, "Organization")) {
+    err(page, idx, "MedicalBusiness", `@type must include "Organization" (got ${JSON.stringify(block["@type"])})`);
+  }
+  // Google needs a raster logo of at least 112x112px — .ico does not qualify.
+  const logoUrl = isPlainObject(block.logo) ? block.logo.url : block.logo;
+  if (!isHttpUrl(logoUrl)) {
+    err(page, idx, "MedicalBusiness", `"logo" must be an http(s) URL or an ImageObject with one (got: ${JSON.stringify(block.logo)})`);
+  } else if (/\.ico(\?|$)/i.test(logoUrl)) {
+    err(page, idx, "MedicalBusiness", `"logo" must be a PNG/JPG/WebP image, not .ico (got: ${logoUrl})`);
+  }
   validatePostalAddress(page, idx, "MedicalBusiness", block.address);
   validateGeo(page, idx, "MedicalBusiness", block.geo);
   validateOpeningHours(page, idx, "MedicalBusiness", block.openingHoursSpecification);
@@ -412,8 +431,11 @@ function validateMedicalBusiness(page, idx, block) {
   if (Array.isArray(block.employee)) {
     for (let i = 0; i < block.employee.length; i++) {
       const e = block.employee[i];
-      if (e["@type"] !== "Physician") {
-        err(page, idx, "MedicalBusiness", `employee[${i}] @type must be "Physician" (got ${JSON.stringify(e["@type"])})`);
+      // Physician alone is an Organization subtype; `employee` expects a
+      // Person and `jobTitle` / `worksFor` are Person properties, so the
+      // node must be typed ["Person", "Physician"].
+      if (!hasType(e, "Physician") || !hasType(e, "Person")) {
+        err(page, idx, "MedicalBusiness", `employee[${i}] @type must include both "Person" and "Physician" (got ${JSON.stringify(e["@type"])})`);
       }
       validateString(page, idx, "MedicalBusiness", `employee[${i}].name`, e.name);
       validateString(page, idx, "MedicalBusiness", `employee[${i}].jobTitle`, e.jobTitle);
@@ -618,10 +640,10 @@ function validateMedicalWebPage(page, idx, block) {
   } else if (!isPlainObject(block.reviewedBy)) {
     err(page, idx, "MedicalWebPage", `"reviewedBy" must be an object`);
   } else {
-    if (block.reviewedBy["@type"] !== "Physician") {
+    if (!hasType(block.reviewedBy, "Physician")) {
       warn(
         page, idx, "MedicalWebPage",
-        `"reviewedBy[\"@type\"]" is "${block.reviewedBy["@type"]}" — expected "Physician" for medical pages`,
+        `"reviewedBy[\"@type\"]" is ${JSON.stringify(block.reviewedBy["@type"])} — expected "Physician" for medical pages`,
       );
     }
     if (!nonEmptyString(block.reviewedBy.name)) {
@@ -666,94 +688,99 @@ function validateMedicalWebPage(page, idx, block) {
   }
 }
 
-// ---------- MedicalScholarlyArticle validator ----------
+// ---------- Article validator ----------
 //
-// MedicalScholarlyArticle is emitted on every /resources/[slug]/ page via
-// articleSchema() in lib/seo/schemas.ts.
+// Article (multi-typed with MedicalWebPage) is emitted on every
+// /resources/[slug]/ page via articleSchema() in lib/seo/schemas.ts.
 //
 // Required per schema.org: headline, description, url, datePublished,
 // dateModified, author. Recommended: reviewedBy, publisher (@id cross-link),
 // mainEntityOfPage.
 
-function validateMedicalScholarlyArticle(page, idx, block) {
+function validateArticle(page, idx, block) {
   // Required fields
-  validateString(page, idx, "MedicalScholarlyArticle", "headline", block.headline);
-  validateString(page, idx, "MedicalScholarlyArticle", "description", block.description);
-  validateString(page, idx, "MedicalScholarlyArticle", "url", block.url, { url: true });
+  validateString(page, idx, "Article", "headline", block.headline);
+  validateString(page, idx, "Article", "description", block.description);
+  validateString(page, idx, "Article", "url", block.url, { url: true });
 
   // datePublished: required ISO 8601 date
   if (!present(block.datePublished)) {
-    err(page, idx, "MedicalScholarlyArticle", `missing required "datePublished" date string`);
+    err(page, idx, "Article", `missing required "datePublished" date string`);
   } else if (typeof block.datePublished !== "string") {
     err(
-      page, idx, "MedicalScholarlyArticle",
+      page, idx, "Article",
       `"datePublished" must be a string (ISO 8601 date), got ${typeof block.datePublished}`,
     );
   } else if (!/^\d{4}-\d{2}-\d{2}(T[\d:.Z+-]+)?$/.test(block.datePublished)) {
     err(
-      page, idx, "MedicalScholarlyArticle",
+      page, idx, "Article",
       `"datePublished" "${block.datePublished}" does not match ISO 8601`,
     );
   }
 
   // dateModified: required ISO 8601 date
   if (!present(block.dateModified)) {
-    err(page, idx, "MedicalScholarlyArticle", `missing required "dateModified" date string`);
+    err(page, idx, "Article", `missing required "dateModified" date string`);
   } else if (typeof block.dateModified !== "string") {
     err(
-      page, idx, "MedicalScholarlyArticle",
+      page, idx, "Article",
       `"dateModified" must be a string (ISO 8601 date), got ${typeof block.dateModified}`,
     );
   } else if (!/^\d{4}-\d{2}-\d{2}(T[\d:.Z+-]+)?$/.test(block.dateModified)) {
     err(
-      page, idx, "MedicalScholarlyArticle",
+      page, idx, "Article",
       `"dateModified" "${block.dateModified}" does not match ISO 8601`,
     );
   }
 
   // author: required — Physician or Person with name
   if (!present(block.author)) {
-    err(page, idx, "MedicalScholarlyArticle", `missing required "author" object`);
+    err(page, idx, "Article", `missing required "author" object`);
   } else if (!isPlainObject(block.author)) {
-    err(page, idx, "MedicalScholarlyArticle", `"author" must be an object`);
+    err(page, idx, "Article", `"author" must be an object`);
   } else {
     if (!nonEmptyString(block.author.name)) {
-      err(page, idx, "MedicalScholarlyArticle", `"author.name" is required`);
+      err(page, idx, "Article", `"author.name" is required`);
     }
   }
 
   // reviewedBy: recommended for medical content
   if (!present(block.reviewedBy)) {
     warn(
-      page, idx, "MedicalScholarlyArticle",
+      page, idx, "Article",
       `"reviewedBy" is recommended for medical scholarly articles — add a Physician reviewer`,
     );
   } else if (isPlainObject(block.reviewedBy) && !nonEmptyString(block.reviewedBy.name)) {
-    warn(page, idx, "MedicalScholarlyArticle", `"reviewedBy.name" should be a non-empty string`);
+    warn(page, idx, "Article", `"reviewedBy.name" should be a non-empty string`);
   }
 
   // publisher: recommended — @id cross-link to #business anchor
   if (!present(block.publisher)) {
     warn(
-      page, idx, "MedicalScholarlyArticle",
+      page, idx, "Article",
       `"publisher" is recommended — add { "@id": "${SITE.url}/#business" } to link the article to your practice`,
     );
   } else if (isPlainObject(block.publisher) && !nonEmptyString(block.publisher["@id"])) {
     warn(
-      page, idx, "MedicalScholarlyArticle",
+      page, idx, "Article",
       `"publisher[\"@id\"]" is missing — set it to "${SITE.url}/#business"`,
     );
+  }
+
+  // image: recommended by Google's Article docs
+  if (!present(block.image)) {
+    warn(page, idx, "Article", `"image" is recommended for Article rich results`);
   }
 
   // mainEntityOfPage: recommended — should match url
   if (!present(block.mainEntityOfPage)) {
     warn(
-      page, idx, "MedicalScholarlyArticle",
+      page, idx, "Article",
       `"mainEntityOfPage" is recommended — set it to the canonical URL of the article page`,
     );
   } else if (typeof block.mainEntityOfPage === "string" && !isHttpUrl(block.mainEntityOfPage)) {
     err(
-      page, idx, "MedicalScholarlyArticle",
+      page, idx, "Article",
       `"mainEntityOfPage" "${block.mainEntityOfPage}" is not a valid http(s) URL`,
     );
   }
@@ -899,7 +926,7 @@ const TYPE_VALIDATORS = {
   WebSite: validateWebSite,
   VideoObject: validateVideoObject,
   MedicalWebPage: validateMedicalWebPage,
-  MedicalScholarlyArticle: validateMedicalScholarlyArticle,
+  Article: validateArticle,
   // AggregateRating + Rating are nested inside other types; we still accept
   // them as top-level for future schema additions, and validate their fields.
   AggregateRating(page, idx, block) {
@@ -915,19 +942,21 @@ function validateBlock(page, idx, block) {
     err(page, idx, "?", `block is not a JSON object`);
     return;
   }
-  if (!nonEmptyString(block["@type"])) {
-    err(page, idx, "?", `missing required "@type" string field`);
+  const types = typesOf(block);
+  if (types.length === 0 || !types.every(nonEmptyString)) {
+    err(page, idx, "?", `missing required "@type" string (or array of strings) field`);
     return;
   }
-  const type = block["@type"];
-  stats.byType[type] = (stats.byType[type] ?? 0) + 1;
+  const label = types.join("+");
+  stats.byType[label] = (stats.byType[label] ?? 0) + 1;
   if (!validateContext(page, idx, block)) return;
-  const validator = TYPE_VALIDATORS[type];
-  if (!validator) {
-    warn(page, idx, type, `no validator defined for @type "${type}" — skipping deep validation`);
+  // A multi-typed node runs every validator that matches one of its types.
+  const validators = types.map((t) => TYPE_VALIDATORS[t]).filter(Boolean);
+  if (validators.length === 0) {
+    warn(page, idx, label, `no validator defined for @type "${label}" — skipping deep validation`);
     return;
   }
-  validator(page, idx, block);
+  for (const validator of validators) validator(page, idx, block);
 }
 
 // ---------- HTML parsing ----------

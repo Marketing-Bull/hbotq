@@ -7,7 +7,7 @@ export const conditions: Condition[] = [
     shortName: "Non-Healing Wounds",
     summary:
       "Wounds that haven't closed after 30 days of standard care often respond to hyperbaric oxygen therapy when oxygen delivery to the tissue is the missing factor.",
-    metaTitle: "Hyperbaric Oxygen Therapy for Non-Healing Wounds | Queens, NY",
+    metaTitle: "HBOT for Non-Healing Wounds | Queens, NY",
     metaDescription:
       "HBOT in Woodside, Queens for chronic non-healing wounds — hyperbaric oxygen, debridement and advanced wound care for patients across NYC.",
     fdaStatus: "on-label",
@@ -50,8 +50,7 @@ export const conditions: Condition[] = [
     shortName: "Diabetic Wounds",
     summary:
       "Diabetic foot ulcers that haven't responded to standard care for 30+ days are an FDA-approved indication for hyperbaric oxygen therapy and a focus of our wound program.",
-    metaTitle:
-      "HBOT for Diabetic Foot Ulcers & Lower-Extremity Wounds | Queens, NY",
+    metaTitle: "HBOT for Diabetic Foot Ulcers & Wounds | Queens, NY",
     metaDescription:
       "Hyperbaric oxygen therapy for diabetic foot ulcers and lower-extremity wounds in Woodside, Queens. Limb-salvage focus, experienced wound physicians.",
     fdaStatus: "on-label",
@@ -96,8 +95,7 @@ export const conditions: Condition[] = [
     shortName: "Radiation Injury",
     summary:
       "Late-effect radiation injuries — including soft tissue radionecrosis, osteoradionecrosis, and radiation cystitis or proctitis — are FDA-approved indications for hyperbaric oxygen therapy.",
-    metaTitle:
-      "HBOT for Radiation Tissue Damage & Osteoradionecrosis | Queens, NY",
+    metaTitle: "HBOT for Radiation Tissue Damage | Queens, NY",
     metaDescription:
       "Hyperbaric oxygen therapy in Woodside, Queens for soft tissue radionecrosis, osteoradionecrosis, radiation cystitis, and other late-effect radiation injuries.",
     fdaStatus: "on-label",
@@ -136,8 +134,7 @@ export const conditions: Condition[] = [
     shortName: "Sudden Hearing Loss",
     summary:
       "Sudden sensorineural hearing loss is a medical emergency. Hyperbaric oxygen therapy started within two weeks of onset can meaningfully improve recovery, and is an FDA-approved indication.",
-    metaTitle:
-      "HBOT for Sudden Sensorineural Hearing Loss | Queens, NY",
+    metaTitle: "HBOT for Sudden Hearing Loss | Queens, NY",
     metaDescription:
       "Sudden hearing loss in one ear? Hyperbaric oxygen therapy started within two weeks of onset can support recovery. HBOTQ Woodside, Queens.",
     fdaStatus: "on-label",
@@ -169,7 +166,7 @@ export const conditions: Condition[] = [
     shortName: "Post-COVID",
     summary:
       "Patients with persistent fatigue, brain fog, and exercise intolerance after COVID-19 are increasingly turning to hyperbaric oxygen therapy. This is currently an off-label use that we discuss carefully with each patient.",
-    metaTitle: "HBOT for Long COVID & Post-COVID Symptoms | Queens, NY",
+    metaTitle: "HBOT for Long COVID Symptoms | Queens, NY",
     metaDescription:
       "Hyperbaric oxygen therapy in Woodside, Queens for post-COVID fatigue, brain fog and exercise intolerance. Off-label use; honest physician guidance.",
     fdaStatus: "off-label",
@@ -247,8 +244,7 @@ export const conditions: Condition[] = [
     shortName: "Refractory Osteomyelitis",
     summary:
       "Bone infections that keep coming back after antibiotics and surgery are an FDA-approved indication for hyperbaric oxygen therapy, used alongside surgical debridement and IV antibiotics to clear infection from poorly oxygenated bone.",
-    metaTitle:
-      "HBOT for Chronic Refractory Osteomyelitis (Bone Infection) | Queens, NY",
+    metaTitle: "HBOT for Chronic Osteomyelitis | Queens, NY",
     metaDescription:
       "Hyperbaric oxygen therapy in Woodside, Queens for chronic refractory osteomyelitis — bone infection antibiotics and surgery alone haven't cleared.",
     fdaStatus: "on-label",

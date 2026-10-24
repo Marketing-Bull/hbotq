@@ -6,7 +6,7 @@ import { site } from "@/lib/data/site";
 export const metadata = buildMetadata({
   title: "Privacy Policy",
   description:
-    "How HBOTQ collects, uses, and protects the information you share with us through this website.",
+    "How HBOTQ collects, uses, shares, and protects the information you provide when you contact us or use our website, in plain language.",
   path: "/privacy-policy/",
   noIndex: true,
 });

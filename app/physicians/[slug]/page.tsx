@@ -58,7 +58,7 @@ export async function generateMetadata(props: { params: Promise<Params> }) {
     });
   }
   return buildMetadata({
-    title: `${p.name} — ${p.title}`,
+    title: p.metaTitle ?? `${p.name} — ${p.title}`,
     description: physicianDescription(p),
     path: `/physicians/${p.slug}/`,
     image: p.image,

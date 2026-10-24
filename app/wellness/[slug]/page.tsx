@@ -50,6 +50,7 @@ export default async function WellnessPage(props: {
   const { slug } = await props.params;
   const use = getWellnessUse(slug);
   if (!use) notFound();
+  const otherUses = wellnessUses.filter((w) => w.slug !== use.slug);
 
   return (
     <>
@@ -206,6 +207,33 @@ export default async function WellnessPage(props: {
           </div>
         </div>
       </section>
+
+      {otherUses.length ? (
+        <section className="section bg-white">
+          <div className="container-page max-w-4xl">
+            <h2 className="font-display text-2xl lg:text-3xl font-semibold">
+              More wellness uses
+            </h2>
+            <ul className="mt-6 grid gap-4 sm:grid-cols-2">
+              {otherUses.map((w) => (
+                <li key={w.slug}>
+                  <Link
+                    href={`/wellness/${w.slug}/`}
+                    className="block h-full rounded-2xl border border-[var(--color-surface-border)] bg-[var(--color-sand-100)] p-5 transition-colors hover:border-[var(--color-brand-300)]"
+                  >
+                    <span className="font-display text-lg font-semibold text-[var(--color-ink)]">
+                      {w.name}
+                    </span>
+                    <span className="mt-2 block text-[var(--color-ink-muted)] leading-relaxed">
+                      {w.summary}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      ) : null}
 
       <WhatToExpect />
 
