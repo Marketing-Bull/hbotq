@@ -52,3 +52,20 @@ export const pageRedirects: Record<string, string> = {
   "/feed/": "/",
   "/category/uncategorized/": "/",
 };
+
+/**
+ * Legacy redirects for paths with a file extension. They are exempt from the
+ * trailing-slash rules, so the key is the exact path.
+ */
+export const fileRedirects: Record<string, string> = {
+  "/index.php": "/",
+  "/sitemap_index.xml": "/sitemap.xml",
+  "/wp-sitemap.xml": "/sitemap.xml",
+  "/page-sitemap.xml": "/sitemap.xml",
+  "/condition-sitemap.xml": "/sitemap.xml",
+  "/local-sitemap.xml": "/sitemap.xml",
+  "/locations.kml": "/locations/",
+};
+
+/** Bare domain that is redirected to the canonical `www` host (see proxy.ts). */
+export const APEX_HOST = "hbotq.com";

@@ -1,5 +1,5 @@
 import type { NextConfig } from "next";
-import { pageRedirects } from "./lib/redirects";
+import { APEX_HOST, fileRedirects, pageRedirects } from "./lib/redirects";
 
 const nextConfig: NextConfig = {
   trailingSlash: true,
@@ -15,28 +15,19 @@ const nextConfig: NextConfig = {
   // itself (straight to the destination for legacy paths), so turn this off.
   skipTrailingSlashRedirect: true,
   async redirects() {
+    // Skip the bare domain: proxy.ts sends it to www in a single hop, with the
+    // legacy mapping already applied. Without this, `hbotq.com/hyperbaric/`
+    // would redirect to `hbotq.com/lp/...` first and to www second.
+    const missing = [{ type: "host" as const, value: APEX_HOST }];
     return [
-      { source: "/index.php", destination: "/", permanent: true },
-
-      // Legacy pages. proxy.ts handles the unslashed spelling of each.
-      ...Object.entries(pageRedirects).map(([source, destination]) => ({
-        source,
-        destination,
-        permanent: true,
-      })),
-
-      // Rank Math sitemaps. The old robots.txt points Google at
-      // /sitemap_index.xml; app/sitemap.ts serves /sitemap.xml instead, so
-      // without these the indexed sitemap URLs 404. Paths with a file
-      // extension are exempt from trailingSlash, so no slashed variants.
-      { source: "/sitemap_index.xml", destination: "/sitemap.xml", permanent: true },
-      { source: "/wp-sitemap.xml", destination: "/sitemap.xml", permanent: true },
-      { source: "/page-sitemap.xml", destination: "/sitemap.xml", permanent: true },
-      { source: "/condition-sitemap.xml", destination: "/sitemap.xml", permanent: true },
-      { source: "/local-sitemap.xml", destination: "/sitemap.xml", permanent: true },
-
-      // WordPress artifact that still returns 200 on the old site.
-      { source: "/locations.kml", destination: "/locations/", permanent: true },
+      ...Object.entries({ ...fileRedirects, ...pageRedirects }).map(
+        ([source, destination]) => ({
+          source,
+          destination,
+          permanent: true,
+          missing,
+        }),
+      ),
     ];
   },
 };
