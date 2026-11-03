@@ -9,7 +9,7 @@ import { ConsultationForm } from "@/components/forms/consultation-form";
 import { CtaBanner } from "@/components/sections/cta-banner";
 import { JsonLd } from "@/components/seo/json-ld";
 import { locations, getLocation } from "@/lib/data/locations";
-import { medicalBusinessSchema, breadcrumbSchema } from "@/lib/seo/schemas";
+import { breadcrumbSchema } from "@/lib/seo/schemas";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { site } from "@/lib/data/site";
 
@@ -55,7 +55,6 @@ export default async function LocationPage(props: {
 
   return (
     <>
-      <JsonLd data={medicalBusinessSchema()} />
       <JsonLd
         data={breadcrumbSchema([
           { name: "Home", url: `${site.url}/` },
