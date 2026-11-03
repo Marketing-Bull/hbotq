@@ -44,7 +44,7 @@ merge first.
    ```sh
    curl -sI https://hbotq.com/            # 308 → https://www.hbotq.com/
    curl -sI https://hbotq.com/faq         # 308 → https://www.hbotq.com/faqs/
-   curl -sI https://hbotq.com/hyperbaric  # 308 → https://www.hbotq.com/lp/hyperbaric-therapy/
+   curl -sI https://hbotq.com/hyperbaric  # 308 → https://www.hbotq.com/treatment/
    curl -sI "https://hbotq.com/faqs/?a=1" # 308 → https://www.hbotq.com/faqs/?a=1
    curl -sI https://hbotq.com/sitemap.xml # 308 → https://www.hbotq.com/sitemap.xml
    curl -sI https://www.hbotq.com/        # 200

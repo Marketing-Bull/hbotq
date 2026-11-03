@@ -6,7 +6,7 @@
  * - `next.config.ts` turns each entry into a 308 for the slashed spelling.
  * - `proxy.ts` handles the *unslashed* spelling (`/hyperbaric`). Next.js applies
  *   its built-in trailing-slash redirect before any `redirects()` rule, so
- *   `/hyperbaric` used to go `/hyperbaric` → `/hyperbaric/` → `/lp/hyperbaric-therapy/`,
+ *   `/hyperbaric` used to go `/hyperbaric` → `/hyperbaric/` → `/treatment/`,
  *   which Ahrefs reports as a redirect chain. With
  *   `skipTrailingSlashRedirect` on, the proxy does the slash redirect itself
  *   and sends mapped paths straight to their destination in one hop.
@@ -22,8 +22,12 @@ export const pageRedirects: Record<string, string> = {
   "/contact/": "/contact-us/",
   "/physician/": "/physicians/",
   "/treatments/": "/treatment/",
-  "/hyperbaric-therapy/": "/lp/hyperbaric-therapy/",
-  "/hyperbaric/": "/lp/hyperbaric-therapy/",
+  // The old /hyperbaric-therapy/ page was indexable and in the old sitemap.
+  // Its closest indexable match is /treatment/ — not the ad LP, which is
+  // noindex and would drop whatever rankings the old URL carried. Ads link to
+  // the LPs directly, so nothing paid depends on these two.
+  "/hyperbaric-therapy/": "/treatment/",
+  "/hyperbaric/": "/treatment/",
   "/privacy/": "/privacy-policy/",
   "/condition/": "/conditions/",
   "/radiation/": "/condition/radiation-tissue-damage/",
