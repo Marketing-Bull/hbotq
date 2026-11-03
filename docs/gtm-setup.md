@@ -36,7 +36,7 @@ Delete or disable:
   | `/physician` | `/physicians/` |
   | `/treatments` | `/treatment/` |
   | `/accepted-insurance` | removed |
-  | `/hyperbaric-therapy` | `/lp/hyperbaric-therapy/` |
+  | `/hyperbaric-therapy` | `/treatment/` |
   | `/conditions/<slug>/` | `/condition/<slug>/` |
 
 - Any **Consent Mode** or cookie-banner gating tag. There is no consent banner on

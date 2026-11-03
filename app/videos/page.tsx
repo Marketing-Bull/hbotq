@@ -13,7 +13,7 @@ import {
   TIKTOK_PROFILE_URL,
 } from "@/lib/data/videos";
 import { getCondition } from "@/lib/data/conditions";
-import { medicalBusinessSchema, breadcrumbSchema, videoObjectSchema } from "@/lib/seo/schemas";
+import { breadcrumbSchema, videoObjectSchema } from "@/lib/seo/schemas";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { site } from "@/lib/data/site";
 
@@ -29,7 +29,6 @@ export const dynamic = "force-static";
 export default function VideosPage() {
   return (
     <>
-      <JsonLd data={medicalBusinessSchema()} />
       <JsonLd
         data={breadcrumbSchema([
           { name: "Home", url: `${site.url}/` },

@@ -37,7 +37,6 @@ export const primaryNav = [
 export const footerNav = {
   explore: [
     { label: "Treatment", href: "/treatment/" },
-    { label: "Hyperbaric Therapy", href: "/lp/hyperbaric-therapy/" },
     { label: "Conditions", href: "/conditions/" },
     { label: "Areas We Serve", href: "/locations/" },
     { label: "Wellness & Recovery", href: "/wellness/" },

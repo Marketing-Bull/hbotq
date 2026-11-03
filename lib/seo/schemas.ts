@@ -289,7 +289,11 @@ export function videoObjectSchema(v: {
       `https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`,
       `https://i.ytimg.com/vi/${v.id}/maxresdefault.jpg`,
     ],
-    uploadDate: v.uploadDate,
+    // Google requires a full datetime with a timezone; the data holds plain
+    // dates. Noon UTC keeps the same calendar day in New York.
+    uploadDate: /^\d{4}-\d{2}-\d{2}$/.test(v.uploadDate)
+      ? `${v.uploadDate}T12:00:00+00:00`
+      : v.uploadDate,
     ...(v.duration ? { duration: v.duration } : {}),
     embedUrl: `https://www.youtube-nocookie.com/embed/${v.id}`,
     contentUrl: `https://www.youtube.com/watch?v=${v.id}`,

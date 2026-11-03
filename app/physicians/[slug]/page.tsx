@@ -8,7 +8,7 @@ import { PhysicianCtaButtons } from "@/components/cards/physician-cta-buttons";
 import { PhysicianProfileLinks } from "@/components/cards/physician-profile-links";
 import { physicians } from "@/lib/data/physicians";
 import type { Physician } from "@/types/content";
-import { medicalBusinessSchema, physicianSchema, breadcrumbSchema } from "@/lib/seo/schemas";
+import { physicianSchema, breadcrumbSchema } from "@/lib/seo/schemas";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { site } from "@/lib/data/site";
 
@@ -80,7 +80,6 @@ export default async function PhysicianDetailPage(props: {
 
   return (
     <>
-      <JsonLd data={medicalBusinessSchema()} />
       <JsonLd data={physicianSchema(p)} />
       <JsonLd
         data={breadcrumbSchema([

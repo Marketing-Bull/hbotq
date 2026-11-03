@@ -5,7 +5,7 @@ import { MapHours } from "@/components/sections/map-hours";
 import { CtaBanner } from "@/components/sections/cta-banner";
 import { JsonLd } from "@/components/seo/json-ld";
 import { locations } from "@/lib/data/locations";
-import { medicalBusinessSchema, breadcrumbSchema } from "@/lib/seo/schemas";
+import { breadcrumbSchema } from "@/lib/seo/schemas";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { site } from "@/lib/data/site";
 
@@ -21,7 +21,6 @@ export const dynamic = "force-static";
 export default function LocationsPage() {
   return (
     <>
-      <JsonLd data={medicalBusinessSchema()} />
       <JsonLd
         data={breadcrumbSchema([
           { name: "Home", url: `${site.url}/` },
