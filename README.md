@@ -158,7 +158,7 @@ Condition slugs are **frozen for SEO** — they match the legacy WordPress URLs.
 - Shared Zod schema in `lib/validation/consultation.ts` — same source of truth on the client and the server
 - **Honeypot**: hidden `website` field is checked **before** validation; if filled, the route returns `{ok:true}` silently (no email sent, no field error leaked) so bots can’t learn they were caught
 - **Rate limit**: 15-second per-IP cooldown in-memory (sufficient given Vercel’s function lifecycle; swap for upstash/redis if abuse becomes a real problem)
-- Email rendered with `@react-email/components` and sent via Resend; success redirects to `/thank-you/` which fires `form_submission_success` to GTM
+- Email rendered with `@react-email/components` and sent via Resend; success redirects to `/thank-you/` which fires `conversion_confirmed` to GTM (`components/analytics/conversion-confirmed.tsx`). The site never emits `form_submission_success`
 
 ### Components
 
@@ -239,6 +239,41 @@ contact. The workflow behind the trigger still needs to be finished:
   `condition_label`) and put `message` into a contact Note so intake staff see the context
 - Add an internal notification so new leads get seen promptly
 - **Publish/activate the workflow** — until then, leads arrive but aren't filed
+
+### Google Analytics / GTM — fix the container (audited 2026-11-10)
+
+Checked against the live site in a real browser and the published container
+(`gtm.js`). **The site side is correct**; every open item is inside GTM.
+
+**Working**
+
+- `GTM-N3QDS5PC` is installed on every page (root `app/layout.tsx`), including
+  the bare `hbotq.com` redirect target and the `/lp/` pages.
+- GA4 `G-YXDRBF5K4G` loads and its hits are accepted (HTTP 204).
+- SPA page views: fixed 2026-11-10 by enabling GA4 Enhanced measurement →
+  *Page changes based on browser history events*. Each client-side navigation
+  now sends its own `page_view`. Expect pages/session and per-page traffic to
+  rise from that date; it is previously-missing data, not a traffic jump.
+  Do **not** also add a code-side `page_view` push, or every view double-counts.
+
+**Still broken in GTM**
+
+1. **Remarketing tag has a doubled prefix.** The Google Ads Remarketing tag's
+   Conversion ID is `AW-977457982`; GTM adds `AW-` itself, so hits go to
+   `AW-AW-977457982`. Set the field to `977457982` (digits only) and **publish**.
+   An earlier edit was saved but never published.
+2. **No Google Ads conversion for form leads.** The container has no Google Ads
+   Conversion Tracking tag, only a call-conversion tag. Add one (ID `977457982`
+   + the form conversion action's label) firing on `conversion_confirmed`.
+3. **GA4 lead events never fire.** The `generate_lead` / `consultation_conversion`
+   tags trigger on `form_submission_success`, which the site never sends.
+   Repoint their trigger to `conversion_confirmed`.
+4. **Call-conversion label looks like a placeholder.** It is `call_conversion`;
+   real labels are random strings. Copy the actual label from the call conversion
+   action in Google Ads.
+
+After publishing, re-verify in GTM Preview / GA4 DebugView. Full event and tag
+spec: `docs/gtm-setup.md` (its "no tags yet" status line is out of date).
 
 > Other operational tasks — CRM record cleanup, dashboard configuration, branch and
 > scheduled-job housekeeping — are tracked in the team's internal tracker rather than here.
